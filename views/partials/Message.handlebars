@@ -1,0 +1,18 @@
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+   <div class="toast-container top-0 end-0 p-3 text-warning">
+      <div id="toast" class="toast" role="alert" aria-live="assertive"
+           aria-atomic="true">
+         <div class="d-flex">
+            <div class="toast-body" id="toast-body">
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+   const toastElement = document.querySelector(".toast");
+   const toast = new bootstrap.Toast(toastElement);
+</script>

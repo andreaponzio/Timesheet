@@ -1,0 +1,21 @@
+<h6>Consuntivazioni</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/workday/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               {{#if note}}
+                  <span>{{moment date lang="it" format="dddd, DD MMMM YYYY"}}</span><br>
+                  <span class="css-summarize fst-italic">{{description}} -  {{note}}</span>
+               {{else}}
+                  <span>{{moment date lang="it" format="dddd, DD MMMM YYYY"}}</span><br>
+                  <span class="css-summarize fst-italic">{{description}}</span>
+               {{/if}}
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{hour}}<br><span class="css-summarize-number">Totale</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

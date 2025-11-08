@@ -1,0 +1,96 @@
+<form id="form" action="/activity/0" method="post">
+
+   <!-- Activity data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Attività</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" readonly>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="internal_ref" class="form-label">Rif. interno</label>
+         <input type="text" class="form-control" id="internal_ref" name="internal_ref" value="{{data.internal_ref}}"
+                maxlength="25"
+                required>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="external_ref" class="form-label">Rif. esterno</label>
+         <input type="text" class="form-control" id="external_ref" name="external_ref" value="{{data.external_ref}}"
+                maxlength="25">
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="type" class="form-label">Tipo</label>
+         <select class="form-select" id="type" name="type" required>
+            <option value="" selected>Seleziona tipo</option>
+            <option value="1">Change request</option>
+            <option value="2">AMS</option>
+            <option value="3">Altro</option>
+            <option value="4">Interna</option>
+         </select>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Descrizione</label>
+         <input type="text" class="form-control" id="description" name="description" value="{{data.description}}"
+                maxlength="80" required>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="flex-grow-1">
+         <label for="wbs" name="wbs" class="form-label">Commessa</label>
+         <select class="form-select" id="wbs" name="wbs" required>
+            <option value="" selected>Seleziona commessa</option>
+            {{#each data.wbs_list}}
+               <option value="{{id}}" {{#eq id ../data.wbs_id}}selected{{/eq}}>{{description1}} ({{internal_ref}})
+               </option>
+            {{/each}}
+         </select>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="css-flex-30">
+         <label for="functional" class="form-label">Funzionale</label>
+         <input type="text" class="form-control" id="functional" name="functional" value="{{data.functional}}"
+                maxlength="30">
+      </div>
+      <div class="css-flex-30 ms-2">
+         <label for="technical" class="form-label">Tecnico</label>
+         <input type="text" class="form-control" id="technical" name="technical" value="{{data.technical}}"
+                maxlength="30">
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="hour" class="form-label">Ore</label>
+         <input type="number" class="form-control" id="hour" name="hour" min="0" step="0.5"
+                value="{{data.hour}}" required>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="status" class="form-label">Stato</label>
+         <select class="form-select" id="status" name="status" required>
+            <option value="" selected>Seleziona stato</option>
+            <option value="1">Aperta</option>
+            <option value="2">Assegnata</option>
+            <option value="3">Test</option>
+            <option value="4">Chiusa</option>
+            <option value="5">Annullata</option>
+         </select>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="flex-grow-1">
+         <label for="note" name="note" class="form-label">Note</label>
+         <textarea class="form-control" id="note" name="note">{{data.note}}</textarea>
+      </div>
+   </div>
+
+   <!-- Save  & Cancel operation -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <a href="/activity" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> Error}}
+</form>

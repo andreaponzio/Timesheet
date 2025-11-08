@@ -1,0 +1,292 @@
+{
+   "data": [
+      {
+         "internal_ref": "30IS1021/0007-01",
+         "customer": 100001,
+         "description1": "Training|LE|",
+         "description2": "Training|LE|On Boarding",
+         "id": 200001,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1021/0007-02",
+         "customer": 100001,
+         "description1": "Training|LE|",
+         "description2": "Training|LE|Form. Obbligatoria",
+         "id": 200002,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1021/0007-04",
+         "customer": 100001,
+         "description1": "Training|LE|",
+         "description2": "Training|LE|Form. Personale",
+         "id": 200003,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "A/3000-01",
+         "customer": 100001,
+         "description1": "Assente per impegni personali",
+         "description2": "Assente per impegni personali",
+         "id": 200004,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "253000FORHARD-LE-IND-03",
+         "customer": 100001,
+         "description1": "Formazione Hard Skill",
+         "description2": "Corso di Lingue",
+         "id": 200005,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "253000FOROBBL-LE-IND-02",
+         "customer": 100001,
+         "description1": "Formazione Obbligatoria",
+         "description2": "Formazione Obbligatoria",
+         "id": 200006,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1025/0003-01-22",
+         "customer": 100001,
+         "description1": "Supporto Sales Cycle LE 2025 NO APEF",
+         "description2": "MARELLI 2025",
+         "id": 200007,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "253000FORHARD-TECH-03",
+         "customer": 100001,
+         "description1": "Formazione hard skill - TECH",
+         "description2": "Corso di Lingue - TECH",
+         "id": 200008,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-90-01",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Integrazione-Interfacce (GOV)",
+         "id": 200009,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-30-01",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "ECS",
+         "id": 200010,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-10-01",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Project Management",
+         "id": 200011,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-90-05",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Integrazione STOCKAGER",
+         "id": 200012,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-90-02",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Supporto Tecnico",
+         "id": 200013,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-210-01",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Change Request a corpo",
+         "id": 200014,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-200-02",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Attività GTS",
+         "id": 200015,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0083-40-01",
+         "customer": 100002,
+         "description1": "ABB E-Mobility–ORION PROCESS OWNER SUPP",
+         "description2": "Analysis & Design",
+         "id": 200016,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1024/0024-SEM-01-01",
+         "customer": 100002,
+         "description1": "ABB E-MOBILITY - AMS",
+         "description2": "830 - Evolutivo",
+         "id": 200017,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1024/0024-SFT-01-01",
+         "customer": 100002,
+         "description1": "ABB E-MOBILITY - AMS",
+         "description2": "803 - Operativo II Livello",
+         "id": 200018,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1025/0029-40-01",
+         "customer": 100010,
+         "description1": "ABB - Robotica",
+         "description2": "Analysis & Design",
+         "id": 200019,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1018/0053-12",
+         "customer": 100005,
+         "description1": "AHLSTROM - Fatturazione elettronica",
+         "description2": "Change in Scope",
+         "id": 200020,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1018/0053-10",
+         "customer": 100005,
+         "description1": "AHLSTROM - Fatturazione elettronica",
+         "description2": "Go Live & Support",
+         "id": 200021,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1018/0053-02",
+         "customer": 100005,
+         "description1": "AHLSTROM - Fatturazione elettronica",
+         "description2": "Infr. & System Architecture",
+         "id": 200022,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1024/0021-360-01",
+         "customer": 100008,
+         "description1": "ATM - Supporto specialistico funzionali",
+         "description2": "Altro - SAP",
+         "id": 200023,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1025/0026-40-01",
+         "customer": 100011,
+         "description1": "DELOITTE - HAIER Service",
+         "description2": "Analysis & Design",
+         "id": 200024,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1025/0026-330-01",
+         "customer": 100011,
+         "description1": "DELOITTE - HAIER Service",
+         "description2": "ECS",
+         "id": 200025,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS5021/0051-SEM-01-01",
+         "customer": 100009,
+         "description1": "ERCOS - AMS",
+         "description2": "830 - Evolutivo",
+         "id": 200026,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0066-40-01",
+         "customer": 100006,
+         "description1": "GIAS - Supporto Evolutive SAP",
+         "description2": "Change Request SD",
+         "id": 200027,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0066-330-01",
+         "customer": 100006,
+         "description1": "GIAS - Supporto Evolutive SAP",
+         "description2": "Haier Altea 2024 --> CR&TM Deloitte",
+         "id": 200028,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1022/0066-30-01",
+         "customer": 100006,
+         "description1": "GIAS - Supporto Evolutive SAP",
+         "description2": "Change Request MM",
+         "id": 200029,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0035-10-01",
+         "customer": 100007,
+         "description1": "MARELLI-PriceFx+FIFO MX+MergeDE+MatCost",
+         "description2": "Project Management",
+         "id": 200030,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0053-50-01",
+         "customer": 100007,
+         "description1": "MARELLI - Project ASN Custom",
+         "description2": "Design&Build Sprint",
+         "id": 200031,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0035-40-01",
+         "customer": 100007,
+         "description1": "MARELLI-PriceFx+FIFO MX+MergeDE+MatCost",
+         "description2": "Analysis & Design",
+         "id": 200032,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0053-40-01",
+         "customer": 100007,
+         "description1": "MARELLI - Project ASN Custom",
+         "description2": "Analysis & Design",
+         "id": 200033,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0053-330-01",
+         "customer": 100007,
+         "description1": "MARELLI - Project ASN Custom",
+         "description2": "ECS",
+         "id": 200034,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0015-40-01",
+         "customer": 100003,
+         "description1": "MARELLI - SelfBilling Invoicing ERS",
+         "description2": "Analysis & Design",
+         "id": 200035,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "internal_ref": "30IS1023/0032-40-01",
+         "customer": 100004,
+         "description1": "TOD''S SPA - RE-FX per IFRS16",
+         "description2": "Analysis & Design",
+         "id": 200036,
+         "changed_on": "2000-01-01 00:00:00"
+      }
+   ]
+}

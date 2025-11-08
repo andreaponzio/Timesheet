@@ -1,0 +1,33 @@
+{
+   "name": "timesheet",
+   "version": "1.0.0",
+   "description": "Consuntivazione",
+   "homepage": "https://github.com/andreaponzio/Timesheet#readme",
+   "bugs": {
+      "url": "https://github.com/andreaponzio/Timesheet/issues"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/andreaponzio/Timesheet.git"
+   },
+   "license": "ISC",
+   "author": "Andrea Ponzio",
+   "type": "commonjs",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "dependencies": {
+      "@types/express": "^5.0.5",
+      "@types/express-handlebars": "^5.3.1",
+      "@types/handlebars-helpers": "^0.5.6",
+      "@types/method-override": "^3.0.0",
+      "@types/node": "^24.10.0",
+      "express": "^5.1.0",
+      "express-handlebars": "^8.0.3",
+      "handlebars-helpers": "^0.10.0",
+      "method-override": "^3.0.0",
+      "node": "^25.1.0",
+      "typescript": "^5.9.3"
+   }
+}

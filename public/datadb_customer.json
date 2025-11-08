@@ -1,0 +1,59 @@
+{
+   "data": [
+      {
+         "description": "ALTEA UP",
+         "id": 100001,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "ABB E-Mobility",
+         "id": 100002,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "Marelli Global",
+         "id": 100003,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "TOD''S S.p.",
+         "id": 100004,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "AHLSTROM-M",
+         "id": 100005,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "Gias S.r.l",
+         "id": 100006,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "Marelli Aftermarket",
+         "id": 100007,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "ATM MILANO",
+         "id": 100008,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "ERCOS S.P.",
+         "id": 100009,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "ABB SPA",
+         "id": 100010,
+         "changed_on": "2000-01-01 00:00:00"
+      },
+      {
+         "description": "DELOITTE-HAIER",
+         "id": 100011,
+         "changed_on": "2000-01-01 00:00:00"
+      }
+   ]
+}

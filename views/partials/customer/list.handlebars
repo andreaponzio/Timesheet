@@ -1,0 +1,15 @@
+<h6>Clienti</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/customer/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               <p>{{description}}</p>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{wbs}}<br><span class="css-summarize-number">Wbs</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

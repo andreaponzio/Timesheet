@@ -1,0 +1,18 @@
+<h6>Consuntivazione</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/workday/group/{{idgroup}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-90">
+               <span>{{moment date lang="it" format="dddd, DD MMMM YYYY"}}</span><br>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{hour}}<br><span class="css-summarize-number">Ore</span>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{activity}}<br><span class="css-summarize-number">Attività</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

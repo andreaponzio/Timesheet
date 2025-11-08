@@ -1,0 +1,59 @@
+<form id="form" action="/customer/{{data.id}}" method="post">
+   <input type="hidden" id="_method" name="_method" value="post">
+
+   <!-- Customer data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Cliente</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" disabled>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Descrizione</label>
+         <input type="text" class="form-control" id="description" name="description" value="{{data.description}}"
+                maxlength="40" required>
+      </div>
+   </div>
+
+   <!-- Save change & Delete customer -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      {{#unless data.wbs}}
+         <button type="button" class="btn btn-danger me-1" onclick="deleteObject({{data.id}});">
+            <i class="bi bi-trash"></i>
+         </button>
+      {{/unless}}
+      <a href="/customer" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+
+   <!-- List of Wbs -->
+   <h6>Commesse</h6>
+   <ul class="list-group p-2 css-font-size-95">
+      {{#each data.wbs}}
+         <a href="/wbs/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+            <div class="d-flex flex-row align-items-center">
+               <div class="css-flex-95">
+                  <span>{{internal_ref}}</span><br>
+                  <span class="css-summarize fst-italic">{{description1}} | {{description2}} ({{customer}})</span>
+               </div>
+            </div>
+         </a>
+      {{/each}}
+   </ul>
+   {{> YesOrNo}}
+   {{> Error}}
+</form>
+
+<script>
+   function modalSubmit() {
+      document.querySelector("#form").submit();
+   }
+   function deleteObject(id) {
+      document.querySelector("#_method").value = "delete";
+      let modal = new bootstrap.Modal("#YesOrNo");
+      modal.show();
+   }
+</script>

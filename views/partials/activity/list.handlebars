@@ -1,0 +1,23 @@
+<h6>Attività</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/activity/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               <span>{{description}}</span><br>
+               <span class="css-summarize fst-italic">{{wbs}}</span>
+               <span class="css-summarize fst-italic">{{internal_ref}} | {{external_ref}}</span>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{hour}}<br><span class="css-summarize-number">Totale</span>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{total}}<br><span class="css-summarize-number">Consumate</span>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{request}}<br><span class="css-summarize-number">Trasporti</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

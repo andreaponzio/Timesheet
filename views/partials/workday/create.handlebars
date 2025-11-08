@@ -1,0 +1,91 @@
+<form id="form" action="/workday/0" method="post">
+
+   <!-- Workday data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Timesheet</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" readonly>
+      </div>
+      <div class="css-flex-70 ms-2">
+         <label for="activity" class="form-label">
+            Attività
+            <a href="/activity/{{data.activity_id}}" class="css-disabled-link">
+            </a>
+         </label>
+         <select class="form-select" id="activity" name="activity" required>
+            <option value="" selected>Selezionare un'attività</option>
+            {{#each data.activity_list}}
+               <option value="{{id}}">{{description}} ({{internal_ref}})
+               </option>
+            {{/each}}
+         </select>
+      </div>
+
+      <div class="css-flex-15">
+         <label for="date" class="form-label">Data</label>
+         <input type="datetime-local" class="form-control" id="date" name="date" value="{{data.date}}" required>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-70">
+         <label for="place" class="form-label">Località</label>
+         <label class="css-font-size-75">(è possibile selezionare uno di questi luoghi:
+            <label class="link-primary" onclick="setPlace(1);">Casa</label>,
+            <label class="link-primary" onclick="setPlace(2);">Ufficio</label> o
+            <label class="link-primary" onclick="setPlace(3);">Cliente</label>)
+         </label>
+         <input type="text" class="form-control" id="place" name="place" value="{{data.place}}" required>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="hour" class="form-label">Ore</label>
+         <input type="number" class="form-control" id="hour" name="hour" min="1" max="8" step="0.5" required>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="extrainfo" class="form-label">Extra info</label>
+         <select class="form-select" id="extrainfo" name="extrainfo" required>
+            <option value="1">Normale</option>
+            <option value="2">Reperibilità Fascia 1</option>
+            <option value="3">Ferie</option>
+            <option value="4">Attività extra da remoto</option>
+            <option value="5">Permessi</option>
+         </select>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="flex-grow-1">
+         <label for="note" name="note" class="form-label">Note</label>
+         <textarea class="form-control" id="note" name="note"></textarea>
+      </div>
+   </div>
+
+   <!-- Save  & Cancel operation -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <a href="/workday" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> Error}}
+</form>
+
+<script>
+   function setPlace(value) {
+      let place = document.querySelector('#place');
+      switch(value) {
+         case 1:
+            place.value = "Casa";
+            break;
+
+         case 2:
+            place.value = "Ufficio";
+            break;
+
+         default:
+            place.value = "Cliente (definire)";
+      }
+   }
+</script>

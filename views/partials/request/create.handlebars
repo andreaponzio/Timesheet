@@ -1,0 +1,73 @@
+<form id="form" action="/request/{{data.id}}" method="post">
+
+   <!-- Request data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Attività</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" disabled>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="request" class="form-label">Richiesta</label>
+         <input type="text" class="form-control" id="request" name="request" value="{{data.request}}" required>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="type" class="form-label">Tipo</label>
+         <select class="form-select" id="type" name="type" required>
+            <option value="" selected>Sel. tipo</option>
+            <option value="1" {{#eq data.type 1}}selected{{/eq}}>Customizing</option>
+            <option value="2" {{#eq data.type 2}}selected{{/eq}}>Workbench</option>
+            <option value="3" {{#eq data.type 3}}selected{{/eq}}>Altro</option>
+         </select>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Descrizione</label>
+         <input type="text" class="form-control" id="description" name="description" value="{{data.description}}"
+                maxlength="80" required>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="css-flex-30">
+         <label for="owner" class="form-label">Responsabile</label>
+         <input type="text" class="form-control" id="owner" name="owner" value="{{data.owner}}" maxlength="80">
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="date" class="form-label">Data</label>
+         <input type="datetime-local" class="form-control" id="date" name="date" value="{{data.date}}" required>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="activity" class="form-label">
+            Attività
+            <a href="/activity/{{data.activity_id}}" class="css-disabled-link">
+               <i class="bi bi-arrow-right-short"></i>
+            </a>
+         </label>
+         <select class="form-select" id="activity" name="activity" required>
+            <option value="" selected>Selezionare un'attività</option>
+            {{#each data.activity_list}}
+               <option value="{{id}}">{{description}} ({{internal_ref}})
+               </option>
+            {{/each}}
+         </select>
+      </div>
+   </div>
+   <div class="d-flex mt-1">
+      <div class="flex-grow-1">
+         <label for="note" class="form-label">Note</label>
+         <textarea class="form-control" id="note" name="note" maxlength="2000">{{data.note}}</textarea>
+      </div>
+   </div>
+
+   <!-- Save change & Delete request -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1"
+              data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Registra modifiche attività">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <a href="/request" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> Error}}
+</form>

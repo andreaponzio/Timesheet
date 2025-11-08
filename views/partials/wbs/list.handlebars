@@ -1,0 +1,16 @@
+<h6>Commesse</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/wbs/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               <span>{{internal_ref}}</span><br>
+               <span class="css-summarize fst-italic">{{description1}} | {{description2}} ({{customer}})</span>
+            </div>
+            <div class="border-start css-flex-5 text-center">
+               {{activity}}<br><span class="css-summarize-number">Attività</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

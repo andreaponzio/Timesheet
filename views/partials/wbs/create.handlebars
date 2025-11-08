@@ -1,0 +1,50 @@
+<form id="form" action="/wbs/0" method="post">
+
+   <!-- Wbs data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Wbs</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" disabled>
+      </div>
+      <div class="css-flex-20 ms-2">
+         <label for="internal_ref" class="form-label">Rif. interno</label>
+         <input type="text" class="form-control css-uppercase" id="internal_ref" name="internal_ref"
+                value="{{data.internal_ref}}"
+                maxlength="25"
+                required>
+      </div>
+      <div class="css-flex-75 ms-2">
+         <label for="customer" class="form-label">Cliente</label>
+         <select class="form-select" id="customer" name="customer" required>
+            <option value="" selected>Selezione un cliente</option>
+            {{#each data.customer_list}}
+               <option value="{{id}}" {{#eq id ../data.customer_id}}selected{{/eq}}>{{description}}</option>
+            {{/each}}
+         </select>
+      </div>
+   </div>
+   <div class="d-flex d-flex-row mt-1">
+      <div class="css-flex-50">
+         <label for="description1" class="form-label">Descrizione 1</label>
+         <input type="text" class="form-control" id="description1" name="description1" value="{{data.description1}}"
+                maxlength="40"
+                required>
+      </div>
+      <div class="css-flex-50 ms-2">
+         <label for="description2" class="form-label">Descrizione 2</label>
+         <input type="text" class="form-control" id="description2" name="description2" value="{{data.description2}}"
+                maxlength="40">
+      </div>
+   </div>
+
+   <!-- Save  & Cancel operation -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <a href="/wbs" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> Error}}
+</form>

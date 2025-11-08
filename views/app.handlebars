@@ -1,0 +1,108 @@
+<div class="d-flex flex-column vh-100">
+
+   <!-- toast message -->
+   {{> Message}}
+
+   <!-- Header -->
+   <div class="d-flex flex-row align-items-center justify-content-around">
+      <div class="dropdown mx-1 css-dropdown">
+         <button class="btn btn-secondary btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+            <i class="bi bi-list"></i>
+         </button>
+         <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">???</a></li>
+         </ul>
+      </div>
+
+      <div class="mx-1 css-title">Timesheet</div>
+
+      <div class="input-group m-1">
+         <span class="input-group-text" id="search" name="search">
+            <a href="search" class="css-disabled-link"><i class="bi bi-search"></i></a>
+         </span>
+         <input type="search" class="form-control form-control-sm">
+      </div>
+
+      <div class="dropdown mx-1 css-dropdown">
+         <button class="btn btn-secondary btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+            <i class="bi bi-gear"></i>
+         </button>
+         <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">???</a></li>
+         </ul>
+      </div>
+   </div>
+
+   <!-- New objects menu -->
+   <div class="dropdown ms-5">
+      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+         Nuovo
+      </button>
+      <ul class="dropdown-menu dropdown-menu-dark">
+         <li><a class="dropdown-item active" href="/customer/0">Cliente</a></li>
+         <li><a class="dropdown-item" href="/wbs/0">Commessa</a></li>
+         <li><a class="dropdown-item" href="/activity/0">Attività</a></li>
+         <li><a class="dropdown-item" href="/request/0">Trasporto</a></li>
+         <li><a class="dropdown-item" href="/workday/0">Consuntivazione</a></li>
+      </ul>
+   </div>
+
+   <!-- Menu & Data -->
+   <div class="d-flex flex-row overflow-hidden">
+      <div class="p-2 css-flex-15">
+
+         <!-- Main menu -->
+         <div class="d-inline-flex">
+            <i class="bi bi-box me-1"></i>
+            <h6>Anagrafiche</h6>
+         </div>
+         <ul class="list-group css-font-size-95">
+            <a href="/customer"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-people mx-1"></i>Clienti
+            </a>
+            <a href="/wbs" class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-archive mx-1"></i>Commesse
+            </a>
+            <a href="/activity"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-activity mx-1"></i>Attività
+            </a>
+            <a href="/request"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-truck mx-1"></i>Trasporto
+            </a>
+            <a href="/workday"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-stopwatch mx-1"></i>Consuntivazione
+            </a>
+         </ul>
+      </div>
+
+      <!-- Render data by view value -->
+      <div class="p-2 overflow-y-auto css-flex-85">
+         {{#eq view 1}} {{> customer/list}} {{/eq}}
+         {{#eq view 2}} {{> wbs/list}} {{/eq}}
+         {{#eq view 3}} {{> activity/list}} {{/eq}}
+         {{#eq view 4}} {{> request/list}} {{/eq}}
+         {{#eq view 5}} {{> workday/list}} {{/eq}}
+
+         {{#eq view 6}} {{> customer/details}} {{/eq}}
+         {{#eq view 7}} {{> wbs/details}} {{/eq}}
+         {{#eq view 8}} {{> activity/details}} {{/eq}}
+         {{#eq view 9}} {{> request/details}} {{/eq}}
+         {{#eq view 10}} {{> workday/details}} {{/eq}}
+
+         {{#eq view 11}} {{> customer/create}} {{/eq}}
+         {{#eq view 12}} {{> wbs/create}} {{/eq}}
+         {{#eq view 13}} {{> activity/create}} {{/eq}}
+         {{#eq view 14}} {{> request/create}} {{/eq}}
+         {{#eq view 15}} {{> workday/create}} {{/eq}}
+
+         {{#eq view 16}} {{> workday/group}} {{/eq}}
+      </div>
+   </div>
+</div>
