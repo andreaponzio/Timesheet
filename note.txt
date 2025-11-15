@@ -1,0 +1,61 @@
+
+
+interface IWeek {
+   first: Date;
+   last: Date;
+}
+
+let week: IWeek[] = [];
+let month: number;
+let year: number;
+let lastDay: number;
+let dayOfWeek: number;
+let first: Date;
+let day: number;
+let nextMonth: number;
+
+month = 0; //new Date().getMonth();
+year = new Date().getFullYear();
+lastDay = new Date(year, month, 0).getDate();
+
+let xx: number = new Date(year, month, lastDay).getDay();
+nextMonth = 7 - new Date(year, month, lastDay).getDay();
+
+for(day = 1; day <= lastDay; day++) {
+   dayOfWeek = new Date(year, month, day).getDay();
+   if(week.length === 0 && first === undefined)
+      first = new Date(year, month, day, 0, 0, 0);
+   else if(dayOfWeek === 1)
+      first = new Date(year, month, day, 0, 0, 0);
+   else if(dayOfWeek === 0) {
+      week.push({
+         first: first,
+         last: new Date(year, month, day, 23, 59, 59)
+      });
+      first = undefined;
+   }
+}
+
+if(first !== undefined) {
+   week.push({
+      first: first,
+      last: new Date(year, month, lastDay, 23, 59, 59)
+   });
+}
+
+/*if(nextMonth !== 0 && first !== undefined) {
+   month++;
+   for(day = 1; day <= nextMonth; day++) {
+      dayOfWeek = new Date(year, month, day).getDay();
+      if(dayOfWeek === 0) {
+         week.push({
+            first: first,
+            last: new Date(year, month, day, 23, 59, 59)
+         });
+         first = undefined;
+      }
+   }
+}*/
+
+for(let w of week)
+   console.log(w.first + "/" + w.last);

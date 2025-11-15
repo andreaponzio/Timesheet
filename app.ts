@@ -8,6 +8,7 @@ import helpers from "handlebars-helpers";
 import * as parser from "body-parser";
 import methodOverride from "method-override";
 import path from "node:path";
+import {port} from "./public/config.json";
 
 import {router as routerInit} from "./routers/routeInit";
 import {router as routerApp} from "./routers/routeApp";
@@ -16,8 +17,7 @@ import {router as routerWbs} from "./routers/routeWbs";
 import {router as routerActivity} from "./routers/routeActivity";
 import {router as routerRequest} from "./routers/routeRequest";
 import {router as routerWorkday} from "./routers/routeWorkday";
-
-import {port} from "./public/config.json";
+import {router as routerReport} from "./routers/routeReport";
 
 /**
  * Inizializza applicazione.
@@ -53,6 +53,7 @@ app.use("/wbs", routerWbs);
 app.use("/activity", routerActivity);
 app.use("/request", routerRequest);
 app.use("/workday", routerWorkday);
+app.use("/report", routerReport);
 
 /**
  * Middleware eseguito quando non viene trovata nessuna route valida.

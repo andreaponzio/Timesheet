@@ -54,7 +54,7 @@
    <div class="d-flex flex-row overflow-hidden">
       <div class="p-2 css-flex-15">
 
-         <!-- Main menu -->
+         <!-- Master data menu -->
          <div class="d-inline-flex">
             <i class="bi bi-box me-1"></i>
             <h6>Anagrafiche</h6>
@@ -64,7 +64,8 @@
                class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
                <i class="bi bi-people mx-1"></i>Clienti
             </a>
-            <a href="/wbs" class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+            <a href="/wbs"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
                <i class="bi bi-archive mx-1"></i>Commesse
             </a>
             <a href="/activity"
@@ -80,9 +81,33 @@
                <i class="bi bi-stopwatch mx-1"></i>Consuntivazione
             </a>
          </ul>
+
+         <!-- Reporting menu -->
+         <div class="p-2 css-flex-15">
+            <div class="d-inline-flex">
+               <i class="bi bi-box me-1"></i>
+               <h6>Report</h6>
+            </div>
+            <div class="overflow-y-auto css-flex-85">
+               <ul class="list-group css-font-size-95">
+                  <a href="/report/week"
+                     class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+                     <i class="bi bi-calendar-week mx-1"></i></i>Settimanale
+                  </a>
+                  <a href="/report/month"
+                     class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+                     <i class="bi bi-calendar3 mx-1"></i>Mensile
+                  </a>
+                  <a href="/report/free"
+                     class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+                     <i class="bi bi-calendar3-range mx-1"></i>Libera
+                  </a>
+               </ul>
+            </div>
+         </div>
       </div>
 
-      <!-- Render data by view value -->
+      <!-- Master data -->
       <div class="p-2 overflow-y-auto css-flex-85">
          {{#eq view 1}} {{> customer/list}} {{/eq}}
          {{#eq view 2}} {{> wbs/list}} {{/eq}}
