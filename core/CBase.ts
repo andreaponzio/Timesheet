@@ -29,16 +29,16 @@ export enum objectType {
    request_create,
    workday_create,
 
-   workday_group
-}
+   workday_group,
 
+   week_list
+}
 export enum activityType {
    change_request = 1,
    ams,
    other,
    internal
 }
-
 export enum activityStatus {
    open = 1,
    wip,
@@ -46,20 +46,17 @@ export enum activityStatus {
    closed,
    cancelled
 }
-
 export enum changeRequestType {
    customizing = 1,
    workbench,
    other
 }
-
 export enum systemType {
    developer = 1,
    quality,
    nrt,
    production
 }
-
 export enum numericInterval {
    customer = "CUSTOMER",
    wbs = "WBS",
@@ -68,7 +65,6 @@ export enum numericInterval {
    change_request = "REQUEST",
    workday_group = "WORKDAYGRP"
 }
-
 export enum extraInfo {
    normale = 0,
    reperibilita,
@@ -76,7 +72,6 @@ export enum extraInfo {
    attivitaExtra,
    permessi
 }
-
 export interface IBase {
    id: number;
    changed_on: Date;

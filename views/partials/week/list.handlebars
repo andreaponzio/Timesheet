@@ -1,0 +1,54 @@
+<h6>Dettaglio settimanale</h6>
+<ul class="list-group p-2 css-font-size-95">
+   <form id="form" action="week" method="post">
+      <label for="month" class="form-label">Mese</label>
+      <div class="d-flex d-inline-row justify-content-center">
+         <input type="month" class="form-control" id="month" name="month" value="{{data.date}}" required>
+         <button type="submit" class="btn btn-success mx-1">
+            <i class="bi bi-check2-square"></i>
+         </button>
+         <a href="/workday" type="button" class="d-inline-flex btn btn-secondary">
+            <i class="bi bi-x-square"></i>
+         </a>
+      </div>
+   </form>
+</ul>
+
+{{#if data.display}}
+   <div class="text-center">
+      <a href="week/{{data.date}}" type="button" class="btn btn-success">
+         <i class="bi bi-download"></i>
+      </a>
+   </div>
+   <div class="accordion mt-2" id="activityObjects">
+      {{#each data.workday}}
+         <div class="accordion-item">
+            <h2 class="accordion-header">
+               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                       data-bs-target="#{{id}}"
+                       aria-expanded="false" aria-controls="workday">
+                  Settimana:
+                  {{moment start lang="it" format="DD MMMM YYYY"}} -
+                  {{moment end lang="it" format="DD MMMM YYYY"}}
+               </button>
+            </h2>
+            <div id="{{id}}" class="accordion-collapse collapse" data-bs-parent="#activityObjects">
+               <div class="accordion-body">
+                  <ul class="list-group p-2 css-font-size-95">
+                     {{#each data}}
+                        <a href="/workday/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+                           <div class="d-flex flex-row align-items-center">
+                              <div>
+                                 <span>{{moment date lang="it" format="dddd, DD MMMM YYYY"}} {{note}}</span><br>
+                                 <span class="css-summarize fst-italic">Ore: {{hour}}</span>
+                              </div>
+                           </div>
+                        </a>
+                     {{/each}}
+                  </ul>
+               </div>
+            </div>
+         </div>
+      {{/each}}
+   </div>
+{{/if}}

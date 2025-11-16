@@ -18,11 +18,13 @@
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "dependencies": {
+      "@types/exceljs": "^0.5.3",
       "@types/express": "^5.0.5",
       "@types/express-handlebars": "^5.3.1",
       "@types/handlebars-helpers": "^0.5.6",
       "@types/method-override": "^3.0.0",
       "@types/node": "^24.10.0",
+      "exceljs": "^4.4.0",
       "express": "^5.1.0",
       "express-handlebars": "^8.0.3",
       "handlebars-helpers": "^0.10.0",

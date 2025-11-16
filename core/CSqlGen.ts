@@ -20,12 +20,10 @@ export namespace SqlGen {
       NOT_EQUAL = '<>',
       LIKE = 'LIKE'
    }
-
    export enum Sign {
       EXCLUDE = 'E',
       INCLUDE = 'I'
    }
-
    export enum Operator {
       AND = "AND",
       OR = "OR"
@@ -40,7 +38,6 @@ export namespace SqlGen {
       low: string | number;
       high?: string | number;
    }
-
    export interface IField {
       name?: string;
       operator?: Operator;

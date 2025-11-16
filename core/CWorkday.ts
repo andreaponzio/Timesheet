@@ -26,6 +26,12 @@ export interface IWorkdaySummarize {
    hour: number;
    activity: number;
 }
+export interface IWeekWorkday {
+   start: Date;
+   end: Date;
+   id: string;
+   data: IWorkday[];
+}
 
 export default class CWorkday extends CBase {
    /**
@@ -147,7 +153,7 @@ export default class CWorkday extends CBase {
     * @public
     */
    public loadAll(where: IField[]): IWorkday[] {
-      return [] as IWorkday[];
+      return this._select("workday", CSqlGen.allField, where) as IWorkday[];
    }
 
    /**
