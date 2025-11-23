@@ -10,13 +10,12 @@
             <div class="d-flex d-flex-row">
                <div class="css-flex-70">
                   <label for="rwdate" class="form-label">Data</label>
-                  <input type="datetime-local" class="form-control" id="rwdate" name="rwdate" value="{{data.rdate}}"
-                         required>
+                  <input type="datetime-local" class="form-control" id="rwdate" name="rwdate" value="{{data.rdate}}">
                </div>
                <div class="flex-grow-1 ms-2">
                   <label for="rwhour" class="form-label">Ore</label>
                   <input type="number" class="form-control" id="rwhour" name="rwhour" min="1" max="8" step="0.5"
-                         value="1" required>
+                         value="1">
                </div>
             </div>
             <div class="d-flex d-flex-row">
@@ -27,7 +26,7 @@
                      <label class="link-primary" onclick="setPlace(2);">Ufficio</label> o
                      <label class="link-primary" onclick="setPlace(3);">Cliente</label>)
                   </label>
-                  <input type="text" class="form-control" id="rwplace" name="rwplace" required>
+                  <input type="text" class="form-control" id="rwplace" name="rwplace">
                </div>
             </div>
          </div>

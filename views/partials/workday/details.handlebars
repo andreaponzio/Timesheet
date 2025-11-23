@@ -10,7 +10,9 @@
       <div class="css-flex-70 ms-2">
          <label for="activity" class="form-label">
             Attività
-            <a href="/activity/{{data.activity_id}}" class="css-disabled-link">
+            {{log data.activity_id}}
+            <a href="/activity/{{data.activity}}" class="css-disabled-link">
+               <i class="bi bi-arrow-right-short"></i>
             </a>
          </label>
          <input type="text" class="form-control" id="activity" value="{{data.activity_description}}" readonly>

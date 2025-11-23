@@ -10,7 +10,7 @@
             <div class="d-flex d-flex-row">
                <div class="css-flex-40 ms-2">
                   <label for="rrrequest" class="form-label">Richiesta</label>
-                  <input type="text" class="form-control" id="rrrequest" name="rrrequest" required>
+                  <input type="text" class="form-control" id="rrrequest" name="rrrequest">
                </div>
                <div class="flex-grow-1 ms-2">
                   <label for="rrtype" class="form-label">Tipo</label>
@@ -25,16 +25,14 @@
             <div class="d-flex d-flex-row">
                <div class="flex-grow-1">
                   <label for="rrdescription" class="form-label">Descrizione</label>
-                  <input type="text" class="form-control" id="rrdescription" name="rrdescription" maxlength="80"
-                         required>
+                  <input type="text" class="form-control" id="rrdescription" name="rrdescription" maxlength="80">
                </div>
             </div>
 
             <div class="d-flex d-flex-row">
                <div class="flex-grow-1">
                   <label for="rrdate" class="form-label">Data</label>
-                  <input type="datetime-local" class="form-control" id="rrdate" name="rrdate" value="{{data.rdate}}"
-                         required>
+                  <input type="datetime-local" class="form-control" id="rrdate" name="rrdate" value="{{data.rdate}}">
                </div>
             </div>
          </div>
