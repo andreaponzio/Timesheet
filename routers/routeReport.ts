@@ -82,7 +82,7 @@ router.get("/week", (request: Request, response: Response) => {
 });
 
 /**
- * Scrive in un file excel i dati settimanali..
+ * Scrive in un file excel i dati settimanali.
  */
 router.get("/week/:id", (request: Request, response: Response) => {
    let o: CWorkday;
@@ -145,7 +145,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
    }
 
    // Scrive file Excel e riporta nella pagina principale::
-   workbook.xlsx.writeFile(`${out}${request.params.id}.xlsx`).then();
+   workbook.xlsx.writeFile(`${out}W${request.params.id}.xlsx`).then();
    response.redirect("/report/week");
 });
 
@@ -168,18 +168,4 @@ router.post("/week", (request: Request, response: Response) => {
          display: true
       }
    });
-});
-
-/**
- * Permette di analizzare i dati mensili.
- */
-router.get("/month", (request: Request, response: Response) => {
-
-});
-
-/**
- * Permette di analizzare un periodo libero.
- */
-router.get("/free", (request: Request, response: Response) => {
-
 });
