@@ -17,8 +17,9 @@ interface IExcel {
    date: string;
    hour: number;
    note: string;
-   description: string;
-   internal_ref: string;
+   activity_description: string;
+   activity_internal_ref: string;
+   wbs_internal_ref: string;
    place: string;
 }
 
@@ -120,8 +121,9 @@ router.get("/week/:id", (request: Request, response: Response) => {
          {header: "Data", key: "date", width: 20},
          {header: "Ore", key: "hour", width: 8},
          {header: "Note", key: "note", width: 80},
-         {header: "Descrizione", key: "description", width: 80},
-         {header: "WBS", key: "internal_ref", width: 25},
+         {header: "Descrizione", key: "activity_description", width: 80},
+         {header: "Rif. interno", key: "activity_internal_ref", width: 80},
+         {header: "WBS", key: "wbs_internal_ref", width: 25},
          {header: "Luogo", key: "place", width: 20},
       ];
       cell = worksheet.getCell("A1")
@@ -138,8 +140,9 @@ router.get("/week/:id", (request: Request, response: Response) => {
             date: r.date,
             hour: r.hour,
             note: r.note,
-            description: r.description,
-            internal_ref: r.internal_ref,
+            activity_description: r.activity_description,
+            activity_internal_ref: r.activity_internal_ref,
+            wbs_internal_ref: r.wbs_internal_ref,
             place: r.place
          });
    }
