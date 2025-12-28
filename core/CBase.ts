@@ -31,7 +31,9 @@ export enum objectType {
 
    workday_group,
 
-   week_list
+   week_list,
+
+   search
 }
 export enum activityType {
    change_request = 1,
@@ -63,7 +65,8 @@ export enum numericInterval {
    activity = "ACTVITY",
    workday = "WORKDAY",
    change_request = "REQUEST",
-   workday_group = "WORKDAYGRP"
+   workday_group = "WORKDAYGRP",
+   search = "SEARCH"
 }
 export enum extraInfo {
    normale = 0,
@@ -96,7 +99,6 @@ export default abstract class CBase extends CDatabase {
    public abstract loadAll(where: IField[]): unknown[];
    public abstract save(): void;
    public abstract delete(): void;
-   public abstract index(create: boolean): void;
    public abstract summarize(): unknown[];
 
    /**

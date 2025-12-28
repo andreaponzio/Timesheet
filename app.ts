@@ -18,6 +18,7 @@ import {router as routerActivity} from "./routers/routeActivity";
 import {router as routerRequest} from "./routers/routeRequest";
 import {router as routerWorkday} from "./routers/routeWorkday";
 import {router as routerReport} from "./routers/routeReport";
+import {router as routerSearch} from "./routers/routeSearch";
 
 /**
  * Inizializza applicazione.
@@ -54,6 +55,7 @@ app.use("/activity", routerActivity);
 app.use("/request", routerRequest);
 app.use("/workday", routerWorkday);
 app.use("/report", routerReport);
+app.use("/search", routerSearch);
 
 /**
  * Middleware eseguito quando non viene trovata nessuna route valida.

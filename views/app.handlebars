@@ -15,13 +15,14 @@
          </ul>
       </div>
 
-      <div class="mx-1 css-title">Timesheet</div>
-
-      <div class="input-group m-1">
-         <span class="input-group-text" id="search" name="search">
-            <a href="search" class="css-disabled-link"><i class="bi bi-search"></i></a>
-         </span>
-         <input type="search" class="form-control form-control-sm">
+      <div class="d-inline-flex flex-fill">
+         <div class="mx-1 css-title">Timesheet</div>
+         <form class="flex-grow-1" id="formSearch" action="/search" method="post">
+            <div class= "input-group m-1">
+               <input type="search" class="form-control form-control-sm" id="search" name="search">
+               <button class="btn btn-secondary" onclick="submit();"><i class="bi bi-search"></i></button>
+            </div>
+         </form>
       </div>
 
       <div class="dropdown mx-1 css-dropdown">
@@ -122,6 +123,8 @@
          {{#eq view 16}} {{> workday/group}} {{/eq}}
 
          {{#eq view 17}} {{> week/list}} {{/eq}}
+
+         {{#eq view 18}} {{> search/list}} {{/eq}}
       </div>
    </div>
 </div>

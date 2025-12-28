@@ -59,3 +59,8 @@ if(first !== undefined) {
 
 for(let w of week)
    console.log(w.first + "/" + w.last);
+
+
+   import {CInit} from "./core/CInit";
+   let i: CInit = new CInit();
+   i.search();

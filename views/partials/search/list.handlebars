@@ -1,0 +1,18 @@
+<h6>Risultato ricerca</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="{{url}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               <span>{{data}}</span><br>
+               <span class="css-summarize fst-italic">
+                  {{#eq type 1}}Cliente{{/eq}}
+                  {{#eq type 2}}Commessa{{/eq}}
+                  {{#eq type 3}}Attività{{/eq}}
+                  {{#eq type 4}}Richiesta{{/eq}}
+               </span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

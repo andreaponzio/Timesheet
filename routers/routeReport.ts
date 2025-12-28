@@ -119,6 +119,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
       worksheet = workbook.addWorksheet(`Settimana ${counter}`);
       worksheet.columns = [
          {header: "Data", key: "date", width: 20},
+         {header: "Giorno", key: "day", width: 10},
          {header: "Ore", key: "hour", width: 8},
          {header: "Note", key: "note", width: 80},
          {header: "Descrizione", key: "activity_description", width: 80},
@@ -138,6 +139,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
       for(let r of data)
          worksheet.addRow({
             date: r.date,
+            day: new Date(r.date).getDate(),
             hour: r.hour,
             note: r.note,
             activity_description: r.activity_description,

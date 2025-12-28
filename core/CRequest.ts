@@ -152,7 +152,7 @@ export default class CRequest extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[]): IRequest[] {
+   public loadAll(where: IField[] = []): IRequest[] {
       return this._select("request", CSqlGen.allField, where) as IRequest[];
    }
 
@@ -328,46 +328,6 @@ export default class CRequest extends CBase {
       }
       catch(e) {
          throw e;
-      }
-   }
-
-   /**
-    * Inserisce o aggiorna tabella indice per ricerca.
-    * @param create creazione o aggiornamento.
-    */
-   public index(create: boolean = true): void {
-      switch(create) {
-         case false:
-            this._insert("index", [
-               {name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]},
-               {
-                  name: "type",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: objectType.request_list}] as IOption[]
-               },
-               {
-                  name: "key",
-                  value: [{
-                     sign: Sign.INCLUDE,
-                     option: Option.EQUAL,
-                     low: '${d.request}|${d.description}|${d.owner}|${d.note}'
-                  }] as IOption[]
-               }
-            ] as IField[]);
-            break;
-
-         default:
-            this._update("index", [
-                  {
-                     name: "key",
-                     value: [{
-                        sign: Sign.INCLUDE,
-                        option: Option.EQUAL,
-                        low: '${d.request}|${d.description}|${d.owner}|${d.note}'
-                     }] as IOption[]
-                  }] as IField[],
-               [
-                  {name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]}
-               ] as IField[]);
       }
    }
 

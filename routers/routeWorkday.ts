@@ -108,7 +108,7 @@ router.post("/:id", (request: Request, response: Response) => {
       o.place = request.body.place;
       o.note = request.body.note;
       o.save();
-      response.redirect("/activity");
+      response.redirect("/workday");
    }
    catch(e) {
       o.load(parseInt(request.params.id));

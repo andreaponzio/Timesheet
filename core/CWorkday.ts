@@ -152,7 +152,7 @@ export default class CWorkday extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[]): IWorkday[] {
+   public loadAll(where: IField[] = []): IWorkday[] {
       return this._select("workday", CSqlGen.allField, where) as IWorkday[];
    }
 
@@ -219,46 +219,6 @@ export default class CWorkday extends CBase {
             name: "id",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
-   }
-
-   /**
-    * Inserisce o aggiorna tabella indice per ricerca.
-    * @param create creazione o aggiornamento.
-    */
-   public index(create: boolean = true): void {
-      switch(create) {
-         case false:
-            this._insert("index", [
-               {name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]},
-               {
-                  name: "type",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: objectType.workday_list}] as IOption[]
-               },
-               {
-                  name: "key",
-                  value: [{
-                     sign: Sign.INCLUDE,
-                     option: Option.EQUAL,
-                     low: '${d.date}|${d.extrainfo}|${d.note}'
-                  }] as IOption[]
-               }
-            ] as IField[]);
-            break;
-
-         default:
-            this._update("index", [
-                  {
-                     name: "key",
-                     value: [{
-                        sign: Sign.INCLUDE,
-                        option: Option.EQUAL,
-                        low: '${d.date}|${d.extrainfo}|${d.note}'
-                     }] as IOption[]
-                  }] as IField[],
-               [
-                  {name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]}
-               ] as IField[]);
-      }
    }
 
    /**

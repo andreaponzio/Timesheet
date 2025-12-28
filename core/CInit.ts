@@ -10,7 +10,12 @@ import {data as activity_data} from "../public/datadb_activity.json";
 import {data as request_data} from "../public/datadb_request.json";
 import {data as requestenv_data} from "../public/datadb_requestenv.json";
 import {data as workday_data} from "../public/datadb_workday.json";
-import {numericInterval, objectType} from "./CBase";
+import CBase, {numericInterval, objectType} from "./CBase";
+import CActivity, {IActivity} from "./CActivity";
+import CCustomer, {ICustomer} from "./CCustomer";
+import CWbs, {IWbs} from "./CWbs";
+import CRequest, {IRequest} from "./CRequest";
+import CWorkday, {IWorkday} from "./CWorkday";
 
 export class CInit {
    private db: CDatabase;
@@ -30,7 +35,6 @@ export class CInit {
       o.executeRun("DELETE FROM main.request;");
       o.executeRun("DELETE FROM main.requestenv;");
       o.executeRun("DELETE FROM main.workday;");
-      o.executeRun("DELETE FROM main.search;");
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
                     VALUES ('${numericInterval.customer}', 100000);`);
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
@@ -54,11 +58,6 @@ export class CInit {
                                 VALUES (${d.id},
                                         '${d.description}',
                                         '${this.db.convertDate(this.date)}');`);
-            this.db.executeRun(`INSERT INTO main.search
-                                VALUES (${d.id},
-                                        ${objectType.customer_list},
-                                        '${d.description}',
-                                        '${d.changed_on}');`);
             this.db.getId(numericInterval.customer);
          });
       }
@@ -80,11 +79,6 @@ export class CInit {
                         '${d.description2}',
                         ${d.id},
                         '${this.db.convertDate(this.date)}');`);
-            this.db.executeRun(`INSERT INTO main.search
-                                VALUES (${d.id},
-                                        ${objectType.wbs_list},
-                                        '${d.internal_ref}|${d.description1}',
-                                        '${d.changed_on}');`);
             this.db.getId(numericInterval.wbs);
          });
       }
@@ -112,11 +106,6 @@ export class CInit {
                         '${d.note}',
                         ${d.id},
                         '${this.db.convertDate(this.date)}');`);
-            this.db.executeRun(`INSERT INTO main.search
-                                VALUES (${d.id},
-                                        ${objectType.activity_list},
-                                        '${d.internal_ref}|${d.description}|${d.functional}|${d.technical}',
-                                        '${d.changed_on}');`);
             this.db.getId(numericInterval.activity);
          });
       }
@@ -141,11 +130,6 @@ export class CInit {
                         '${d.note}',
                         ${d.id},
                         '${this.db.convertDate(this.date)}');`);
-            this.db.executeRun(`INSERT INTO main.search
-                                VALUES (${d.id},
-                                        ${objectType.request_list},
-                                        '${d.request}|${d.description}|${d.owner}|${d.note}',
-                                        '${d.changed_on}');`);
             this.db.getId(numericInterval.change_request);
          });
       }
@@ -195,5 +179,71 @@ export class CInit {
       catch(e) {
          console.log(e.message);
       }
+   }
+   public search(): void {
+      let customer: CCustomer;
+      let wbs: CWbs;
+      let activity: CActivity;
+      let request: CRequest;
+
+      let customer_data: ICustomer[];
+      let wbs_data: IWbs[];
+      let activity_data: IActivity[];
+      let request_data: IRequest[];
+
+      this.db.executeRun("DELETE FROM main.search;");
+      try {
+         this.db.executeRun(`INSERT INTO main.numberid (id, last_number)
+                             VALUES ('${numericInterval.search}', 100000);`);
+      }
+      catch(e) {
+         this.db.executeRun(`UPDATE main.numberid
+                             SET last_number = 100000
+                             WHERE id = '${numericInterval.search}';`);
+      }
+
+      customer = new CCustomer();
+      customer_data = customer.loadAll();
+      customer_data.forEach(d => {
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                                     '/customer/${d.id}', 1)`);
+      });
+
+      wbs = new CWbs();
+      wbs_data = wbs.loadAll();
+      wbs_data.forEach(d => {
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',
+                                     '/wbs/${d.id}', 2)`);
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description1}',
+                                     '/wbs/${d.id}', 2)`);
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description2}',
+                                     '/wbs/${d.id}', 2)`);
+      });
+
+      activity = new CActivity();
+      activity_data = activity.loadAll();
+      activity_data.forEach(d => {
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',
+                                     '/activity/${d.id}', 3)`);
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                                     '/activity/${d.id}', 3)`);
+      });
+
+      request = new CRequest();
+      request_data = request.loadAll();
+      request_data.forEach(d => {
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.request}',
+                                     '/request/${d.id}', 4)`);
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                                     '/request/${d.id}', 4)`);
+      });
    }
 }
