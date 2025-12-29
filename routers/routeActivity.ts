@@ -194,7 +194,7 @@ router.post("/workday/:id", (request: Request, response: Response) => {
       o.hour = parseInt(request.body.rwhour);
       o.place = request.body.rwplace;
       o.extrainfo = extraInfo.normale;
-      o.note = "";
+      o.note = request.body.rwnote;
       o.save();
       response.redirect(`/activity/${request.params.id}`);
    }
