@@ -11,7 +11,7 @@ import CActivity, {IActivity} from "../core/CActivity";
  * Funzioni locali.
  */
 let listOfActivity = (object: CActivity): IActivity[] => {
-   return object.executeAll("SELECT id, internal_ref, description FROM main.activity ORDER BY description;") as IActivity[];
+   return object.executeAll("SELECT id, internal_ref, description FROM main.activity WHERE status in (1, 2, 3) ORDER BY description;") as IActivity[];
 }
 
 /**
