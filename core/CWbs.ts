@@ -182,6 +182,30 @@ export default class CWbs extends CBase {
     * Restituisce lista delle attività associate alla commessa.
     */
    public getActivity(): IWbs[] {
-      return this.executeAll(`SELECT * FROM main.activity WHERE wbs = ${this.id};`) as IWbs[];
+      return this.executeAll(`SELECT *
+                              FROM main.activity
+                              WHERE wbs = ${this.id};`) as IWbs[];
+   }
+
+   /**
+    * Permette di aggiornare i indici di ricerca.
+    */
+   public search(): void {
+      // Elimina vecchi indici di ricerca:
+      this._delete("search", [{
+         name: "id",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+      }] as IField[]);
+
+      // Genera i nuovi indici di ricerca:
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
+                               '/wbs/${this.id}', 2)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description1}',
+                               '/wbs/${this.id}', 2)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description2}',
+                               '/wbs/${this.id}', 2)`);
    }
 }

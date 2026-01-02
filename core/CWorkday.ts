@@ -238,4 +238,9 @@ export default class CWorkday extends CBase {
                               FROM main.workday_group
                               WHERE idgroup = ${idgroup};`) as IWorkdaySummarize[];
    }
+
+   /**
+    * Permette di aggiornare i indici di ricerca.
+    */
+   public search(): void {}
 }

@@ -33,7 +33,8 @@ export enum objectType {
 
    week_list,
 
-   search
+   search,
+   tools
 }
 export enum activityType {
    change_request = 1,
@@ -100,6 +101,7 @@ export default abstract class CBase extends CDatabase {
    public abstract save(): void;
    public abstract delete(): void;
    public abstract summarize(): unknown[];
+   public abstract search(): void;
 
    /**
     * Get & Set.

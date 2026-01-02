@@ -15,7 +15,6 @@ import CActivity, {IActivity} from "./CActivity";
 import CCustomer, {ICustomer} from "./CCustomer";
 import CWbs, {IWbs} from "./CWbs";
 import CRequest, {IRequest} from "./CRequest";
-import CWorkday, {IWorkday} from "./CWorkday";
 
 export class CInit {
    private db: CDatabase;

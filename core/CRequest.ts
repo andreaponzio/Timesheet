@@ -345,4 +345,23 @@ export default class CRequest extends CBase {
    public getHistory(): IRequestEnv[] {
       return this.env;
    }
+
+   /**
+    * Permette di aggiornare gli indici di ricerca.
+    */
+   public search(): void {
+      // Elimina vecchi indici di ricerca:
+      this._delete("search", [{
+         name: "id",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+      }] as IField[]);
+
+      // Genera i nuovi indici di ricerca:
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request}',
+                               '/request/${this.id}', 4)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                               '/request/${this.id}', 4)`);
+   }
 }

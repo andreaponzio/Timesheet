@@ -11,11 +11,14 @@
             <i class="bi bi-list"></i>
          </button>
          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">???</a></li>
+            <li><a class="dropdown-item p-2" href="/tools/index">
+               <i class="bi bi-hand-index-thumb"></i>
+               Rigenera indici di ricerca
+            </a></li>
          </ul>
       </div>
 
-      <div class="d-inline-flex flex-fill">
+      <div class="d-inline-flex flex-fill mx-2">
          <div class="mx-1 css-title">Timesheet</div>
          <form class="flex-grow-1" id="formSearch" action="/search" method="post">
             <div class= "input-group m-1">
@@ -31,7 +34,7 @@
             <i class="bi bi-gear"></i>
          </button>
          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">???</a></li>
+            <li><a class="dropdown-item" href="#"></a></li>
          </ul>
       </div>
    </div>
@@ -125,6 +128,7 @@
          {{#eq view 17}} {{> week/list}} {{/eq}}
 
          {{#eq view 18}} {{> search/list}} {{/eq}}
+         {{#eq view 19}} {{> tools/index}} {{/eq}}
       </div>
    </div>
 </div>

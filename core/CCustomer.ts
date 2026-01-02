@@ -138,4 +138,20 @@ export default class CCustomer extends CBase {
                               FROM main.wbs
                               WHERE customer = ${this.id};`) as IWbs[];
    }
+
+   /**
+    * Permette di aggiornare gli indici di ricerca.
+    */
+   public search(): void {
+      // Elimina vecchi indici di ricerca:
+      this._delete("search", [{
+         name: "id",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+      }] as IField[]);
+
+      // Genera i nuovi indici di ricerca:
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                               '/customer/${this.id}', 1)`);
+   }
 }

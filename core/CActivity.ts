@@ -296,4 +296,23 @@ export default class CActivity extends CBase {
                               FROM main.workday
                               WHERE activity = ${this.id};`) as IWorkday[];
    }
+
+   /**
+    * Permette di aggiornare gli indici di ricerca.
+    */
+   public search(): void {
+      // Elimina vecchi indici di ricerca:
+      this._delete("search", [{
+         name: "id",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+      }] as IField[]);
+
+      // Genera i nuovi indici di ricerca:
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
+                               '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                               '/activity/${this.id}', 3)`);
+   }
 }
