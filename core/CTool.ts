@@ -1,3 +1,4 @@
+import {extraInfo} from "./CBase";
 /**
  * @author Andrea Ponzio
  * @version 1.0.0
@@ -108,5 +109,34 @@ export default class CTool {
 
       // Restituisce intervalli:
       return data;
+   }
+
+   /**
+    * Permette di convertire il valore dell'Extra Info nella corrispettiva descrizione.
+    * @param value valore Extra Info.
+    * @return descrizione.
+    */
+   public static convertExtraInfo(value: number): string {
+      let description: string = "";
+
+      switch(value) {
+         case extraInfo.reperibilita:
+            description = "P010";
+            break;
+
+         case extraInfo.ferie:
+            description = "A000";
+            break;
+
+         case extraInfo.attivitaExtra:
+            description = "P015";
+            break;
+
+         case extraInfo.permessi:
+            description = "A010";
+            break;
+      }
+
+      return description;
    }
 }

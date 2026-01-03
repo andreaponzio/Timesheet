@@ -70,7 +70,7 @@ export enum numericInterval {
    search = "SEARCH"
 }
 export enum extraInfo {
-   normale = 0,
+   normale = 1,
    reperibilita,
    ferie,
    attivitaExtra,

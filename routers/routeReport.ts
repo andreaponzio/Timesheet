@@ -4,7 +4,7 @@
  */
 import express, {Request, Response, Router} from "express";
 import exceljs from "exceljs";
-import {objectType} from "../core/CBase";
+import CBase, {objectType} from "../core/CBase";
 import CTool, {IDate} from "../core/CTool";
 import {SqlGen} from "../core/CSqlGen";
 import CWorkday, {IWeekWorkday} from "../core/CWorkday";
@@ -138,7 +138,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
       ];
 
       // Assegna colore all'intestazione di colonna:
-      for(col = 1; col < 9; col++) {
+      for(col = 1; col < 10; col++) {
          switch(col) {
             case 1:
                cell = worksheet.getCell("A1");
@@ -171,6 +171,10 @@ router.get("/week/:id", (request: Request, response: Response) => {
             case 8:
                cell = worksheet.getCell("H1");
                break;
+
+            case 9:
+               cell = worksheet.getCell("I1");
+               break;
          }
          cell.font = {bold: true};
          cell.fill = {
@@ -187,6 +191,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
             date: r.date,
             day: new Date(r.date).getDate(),
             hour: r.hour,
+            extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
             note: r.note,
             activity_description: r.activity_description,
             activity_internal_ref: r.activity_internal_ref,
