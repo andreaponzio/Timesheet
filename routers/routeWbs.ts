@@ -46,7 +46,7 @@ router.get("/:id", (request: Request, response: Response) => {
    o = new CWbs();
    c = new CCustomer();
 
-   switch(parseInt(request.params.id)) {
+   switch(parseInt(request.params.id as string)) {
       case 0:
          response.render("app", {
             view: objectType.wbs_create,
@@ -58,7 +58,7 @@ router.get("/:id", (request: Request, response: Response) => {
          break;
 
       default:
-         o.load(parseInt(request.params.id));
+         o.load(parseInt(request.params.id as string));
          c.load(o.customer);
          response.render("app", {
             view: objectType.wbs_details,
@@ -84,8 +84,8 @@ router.post("/:id", (request: Request, response: Response) => {
 
    o = new CWbs();
    try {
-      if(parseInt(request.params.id))
-         o.load(parseInt(request.params.id));
+      if(parseInt(request.params.id as string))
+         o.load(parseInt(request.params.id as string));
       o.internal_ref = request.body.internal_ref;
       o.customer = parseInt(request.body.customer);
       o.description1 = request.body.description1;
@@ -119,7 +119,7 @@ router.delete("/:id", (request: Request, response: Response) => {
    try {
       o = new CWbs();
       c = new CCustomer();
-      o.load(parseInt(request.params.id));
+      o.load(parseInt(request.params.id as string));
       c.load(o.customer);
       if(!o.getActivity().length) {
          o.delete();

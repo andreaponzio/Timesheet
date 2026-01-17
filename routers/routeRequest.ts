@@ -46,7 +46,7 @@ router.get("/:id", (request: Request, response: Response) => {
    o = new CRequest();
    a = new CActivity();
 
-   switch(parseInt(request.params.id)) {
+   switch(parseInt(request.params.id as string)) {
       case 0:
          response.render("app", {
             view: objectType.request_create,
@@ -58,7 +58,7 @@ router.get("/:id", (request: Request, response: Response) => {
          break;
 
       default:
-         o.load(parseInt(request.params.id));
+         o.load(parseInt(request.params.id as string));
          a.load(o.activity);
          response.render("app", {
             view: objectType.request_details,
@@ -90,8 +90,8 @@ router.post("/:id", (request: Request, response: Response) => {
    a = new CActivity();
 
    try {
-      if(parseInt(request.params.id))
-         o.load(parseInt(request.params.id));
+      if(parseInt(request.params.id as string))
+         o.load(parseInt(request.params.id as string));
       o.activity = request.body.activity;
       o.request = request.body.request;
       o.type = parseInt(request.body.type);
@@ -100,7 +100,7 @@ router.post("/:id", (request: Request, response: Response) => {
       o.date = new Date(request.body.date);
       o.note = request.body.note;
       o.save();
-      if(!parseInt(request.params.id)) {
+      if(!parseInt(request.params.id as string)) {
          o.transport();
          o.saveTransport();
       }
@@ -137,7 +137,7 @@ router.delete("/:id", (request: Request, response: Response) => {
 
    o = new CRequest();
    a = new CActivity();
-   o.load(parseInt(request.params.id));
+   o.load(parseInt(request.params.id as string));
    a.load(o.activity);
 
    try {
@@ -174,7 +174,7 @@ router.patch("/:id", (request: Request, response: Response) => {
 
    o = new CRequest();
    a = new CActivity();
-   o.load(parseInt(request.params.id));
+   o.load(parseInt(request.params.id as string));
    a.load(o.activity);
 
    try {
@@ -212,7 +212,7 @@ router.put("/:id", (request: Request, response: Response) => {
 
    o = new CRequest();
    a = new CActivity();
-   o.load(parseInt(request.params.id));
+   o.load(parseInt(request.params.id as string));
    a.load(o.activity);
 
    try {

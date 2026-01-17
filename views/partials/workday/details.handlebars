@@ -62,6 +62,10 @@
       <button type="submit" class="btn btn-success me-1">
          <i class="bi bi-floppy"></i>
       </button>
+      <button type="button" class="btn btn-success me-1"
+              onclick="copyObject({{data.id}});">
+         <i class="bi bi-copy"></i>
+      </button>
       <button type="button" class="btn btn-danger me-1" onclick="deleteObject({{data.id}});">
          <i class="bi bi-trash"></i>
       </button>
@@ -71,19 +75,23 @@
    </div>
    {{> YesOrNo}}
    {{> Error}}
+   {{> CopyWorkday}}
 </form>
 
 <script>
    function modalSubmit() {
       document.querySelector("#form").submit();
    }
-
+   function copyObject(id) {
+      document.querySelector("#_method").value = "post";
+      let modal = new bootstrap.Modal("#CopyWorkday");
+      modal.show();
+   }
    function deleteObject(id) {
       document.querySelector("#_method").value = "delete";
       let modal = new bootstrap.Modal("#YesOrNo");
       modal.show();
    }
-
    function setPlace(value) {
       let place = document.querySelector('#place');
       switch(value) {
@@ -95,6 +103,21 @@
             break;
          default:
             place.value = "Cliente (definire)";
+      }
+   }
+   function modalRapidSubmit(flow) {
+      switch(flow) {
+         case 1:
+            let d = parseInt(document.querySelector("#cpdate").value);
+            if(isNaN(d)) {
+               document.querySelector(".toast-body").innerText = "Selezionare una data";
+               toast.show();
+            }
+            else {
+               document.querySelector("#form").action = "/workday/copy/{{data.id}}";
+               document.querySelector("#form").submit();
+            }
+            break;
       }
    }
 </script>

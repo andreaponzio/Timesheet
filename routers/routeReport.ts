@@ -106,7 +106,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
    o = new CWorkday();
 
    // Suddivide la data scelta in anno e mese e genera le settimane:
-   date = request.params.id.split("-");
+   date = (request.params.id as string).split("-");
 
    // Genera lista consuntivazioni settimanali:
    week = getWeekWorkday(parseInt(date[0]), parseInt(date[1]) - 1, false);

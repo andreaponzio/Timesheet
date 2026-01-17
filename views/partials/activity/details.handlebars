@@ -121,6 +121,12 @@
             <li>
                <button type="button" class="dropdown-item" onclick="rapidRequest();">Trasporto rapido...</button>
             </li>
+            <li>
+               <hr class="dropdown-divider">
+            </li>
+            <li>
+               <button type="button" class="dropdown-item" onclick="importRequest();">Importa dati trasporto...</button>
+            </li>
          </ul>
       </div>
    </div>
@@ -201,6 +207,10 @@
    }
    function rapidRequest() {
       let modal = new bootstrap.Modal("#RapidRequest");
+      modal.show();
+   }
+   function importRequest() {
+      let modal = new bootstrap.Modal("#ImportRequest");
       modal.show();
    }
    function modalRapidSubmit(flow) {

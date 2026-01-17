@@ -4,7 +4,7 @@
  */
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
-import CWorkday, {IWorkday, IWorkdaySummarize} from "../core/CWorkday";
+import CWorkday from "../core/CWorkday";
 import CActivity, {IActivity} from "../core/CActivity";
 
 /**
@@ -43,7 +43,7 @@ router.get("/:id", (request: Request, response: Response) => {
    o = new CWorkday();
    a = new CActivity();
 
-   switch(parseInt(request.params.id)) {
+   switch(parseInt(request.params.id as string)) {
       case 0:
          response.render("app", {
             view: objectType.workday_create,
@@ -56,7 +56,7 @@ router.get("/:id", (request: Request, response: Response) => {
          break;
 
       default:
-         o.load(parseInt(request.params.id));
+         o.load(parseInt(request.params.id as string));
          a.load(o.activity);
          response.render("app", {
             view: objectType.workday_details,
@@ -85,7 +85,7 @@ router.get("/group/:id", (request: Request, response: Response) => {
 
    response.render("app", {
       view: objectType.workday_group,
-      data: o.getGroupData(parseInt(request.params.id))
+      data: o.getGroupData(parseInt(request.params.id as string))
    });
 });
 
@@ -99,8 +99,8 @@ router.post("/:id", (request: Request, response: Response) => {
    o = new CWorkday();
    a = new CActivity();
    try {
-      if(parseInt(request.params.id))
-         o.load(parseInt(request.params.id));
+      if(parseInt(request.params.id as string))
+         o.load(parseInt(request.params.id as string));
       o.activity = parseInt(request.body.activity);
       o.date = new Date(request.body.date);
       o.hour = parseInt(request.body.hour);
@@ -111,7 +111,7 @@ router.post("/:id", (request: Request, response: Response) => {
       response.redirect("/workday");
    }
    catch(e) {
-      o.load(parseInt(request.params.id));
+      o.load(parseInt(request.params.id as string));
       o.activity = parseInt(request.body.activity);
       response.render("app", {
          view: objectType.workday_list,
@@ -138,11 +138,32 @@ router.delete("/:id", (request: Request, response: Response) => {
 
    try {
       o = new CWorkday();
-      o.load(parseInt(request.params.id));
+      o.load(parseInt(request.params.id as string));
       o.delete();
       response.redirect("/workday");
    }
    catch(e) {
       response.redirect("/workday");
    }
+});
+
+/**
+ * Copia una consuntivazione in un'altra data.
+ */
+router.post("/copy/:id", (request: Request, response: Response) => {
+   let wold: CWorkday;
+   let wnew: CWorkday;
+
+   wold = new CWorkday();
+   wnew = new CWorkday();
+
+   wold.load(parseInt(request.params.id as string));
+   wnew.activity = wold.activity;
+   wnew.date = request.body.cpdate;
+   wnew.hour = wold.hour;
+   wnew.extrainfo = wold.extrainfo;
+   wnew.place = wold.place;
+   wnew.note = wold.note;
+   wnew.save();
+   response.redirect("/workday");
 });

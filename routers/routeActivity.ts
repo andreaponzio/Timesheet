@@ -51,7 +51,7 @@ router.get("/:id", (request: Request, response: Response) => {
    w = new CWbs();
    c = new CCustomer();
 
-   switch(parseInt(request.params.id)) {
+   switch(parseInt(request.params.id as string)) {
       case 0:
          response.render("app", {
             view: objectType.activity_create,
@@ -63,7 +63,7 @@ router.get("/:id", (request: Request, response: Response) => {
          break;
 
       default:
-         o.load(parseInt(request.params.id));
+         o.load(parseInt(request.params.id as string));
          w.load(o.wbs);
          c.load(w.customer);
          response.render("app", {
@@ -104,8 +104,8 @@ router.post("/:id", (request: Request, response: Response) => {
    c = new CCustomer();
 
    try {
-      if(parseInt(request.params.id))
-         o.load(parseInt(request.params.id));
+      if(parseInt(request.params.id as string))
+         o.load(parseInt(request.params.id as string));
       o.internal_ref = request.body.internal_ref;
       o.external_ref = request.body.external_ref;
       o.type = parseInt(request.body.type);
@@ -155,7 +155,7 @@ router.delete("/:id", (request: Request, response: Response) => {
 
    o = new CActivity();
    c = new CRequest();
-   o.load(parseInt(request.params.id));
+   o.load(parseInt(request.params.id as string));
    c.load(o.wbs);
    if(!o.getRequest().length) {
       o.delete();
@@ -189,7 +189,7 @@ router.post("/workday/:id", (request: Request, response: Response) => {
 
    o = new CWorkday();
    try {
-      o.activity = parseInt(request.params.id);
+      o.activity = parseInt(request.params.id as string);
       o.date = new Date(request.body.rwdate);
       o.hour = parseInt(request.body.rwhour);
       o.place = request.body.rwplace;
@@ -211,7 +211,7 @@ router.post("/request/:id", (request: Request, response: Response) => {
    o = new CRequest();
 
    try {
-      o.activity = parseInt(request.params.id);
+      o.activity = parseInt(request.params.id as string);
       o.request = request.body.rrrequest;
       o.type = parseInt(request.body.rrtype);
       o.description = request.body.rrdescription;

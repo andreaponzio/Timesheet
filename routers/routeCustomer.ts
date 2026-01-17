@@ -38,7 +38,7 @@ router.get("/", (request: Request, response: Response) => {
 router.get("/:id", (request: Request, response: Response) => {
    let o: CCustomer;
 
-   switch(parseInt(request.params.id)) {
+   switch(parseInt(request.params.id as string)) {
       case 0:
          response.render("app", {
             view: objectType.customer_create
@@ -47,7 +47,7 @@ router.get("/:id", (request: Request, response: Response) => {
 
       default:
          o = new CCustomer();
-         o.load(parseInt(request.params.id));
+         o.load(parseInt(request.params.id as string));
          response.render("app", {
             view: objectType.customer_details,
             data: {
@@ -67,8 +67,8 @@ router.post("/:id", (request: Request, response: Response) => {
 
    try {
       o = new CCustomer();
-      if(parseInt(request.params.id))
-         o.load(parseInt(request.params.id));
+      if(parseInt(request.params.id as string))
+         o.load(parseInt(request.params.id as string));
       o.description = request.body.description.toUpperCase();
       o.save();
       response.redirect("/customer");
@@ -93,7 +93,7 @@ router.delete("/:id", (request: Request, response: Response) => {
 
    try {
       o = new CCustomer();
-      o.load(parseInt(request.params.id));
+      o.load(parseInt(request.params.id as string));
       if(!o.getWbs().length) {
          o.delete();
          response.redirect("/customer");
