@@ -6,13 +6,7 @@ import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CWorkday from "../core/CWorkday";
 import CActivity, {IActivity} from "../core/CActivity";
-
-/**
- * Funzioni locali.
- */
-let listOfActivity = (object: CActivity): IActivity[] => {
-   return object.executeAll("SELECT id, internal_ref, description FROM main.activity WHERE status in (1, 2, 3) ORDER BY description;") as IActivity[];
-}
+import CTool from "../core/CTool";
 
 /**
  * Dichiarazioni locali.
@@ -50,7 +44,7 @@ router.get("/:id", (request: Request, response: Response) => {
             data: {
                id: 0,
                date: o.convertDate(new Date(), 3),
-               activity_list: listOfActivity(a)
+               activity_list: CTool.getActivity(a)
             }
          });
          break;
@@ -69,7 +63,7 @@ router.get("/:id", (request: Request, response: Response) => {
                extrainfo: o.extrainfo,
                place: o.place,
                note: o.note,
-               activity_list: listOfActivity(a)
+               activity_list: CTool.getActivity(a)
             }
          });
    }
@@ -124,7 +118,7 @@ router.post("/:id", (request: Request, response: Response) => {
             extrainfo: o.extrainfo,
             place: o.place,
             note: o.note,
-            activity_list: listOfActivity(a)
+            activity_list: CTool.getActivity(a)
          }
       });
    }

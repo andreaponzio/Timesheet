@@ -21,8 +21,8 @@
       <div class="d-inline-flex flex-fill mx-2">
          <div class="mx-1 css-title">Timesheet</div>
          <form class="flex-grow-1" id="formSearch" action="/search" method="post">
-            <div class= "input-group m-1">
-               <input type="search" class="form-control form-control-sm" id="search" name="search">
+            <div class="input-group m-1">
+               <input type="search" class="form-control form-control-sm" id="search" name="search" value="{{search}}">
                <button class="btn btn-secondary" onclick="submit();"><i class="bi bi-search"></i></button>
             </div>
          </form>
@@ -41,15 +41,15 @@
 
    <!-- New objects menu -->
    <div class="dropdown ms-5">
-      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+      <button class="btn btn-secondary btn-sm dropdown-toggle css-font-size-90" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">
          Nuovo
       </button>
-      <ul class="dropdown-menu dropdown-menu-dark">
+      <ul class="dropdown-menu dropdown-menu-dark css-font-size-90">
          <li><a class="dropdown-item active" href="/customer/0">Cliente</a></li>
          <li><a class="dropdown-item" href="/wbs/0">Commessa</a></li>
          <li><a class="dropdown-item" href="/activity/0">Attività</a></li>
-         <li><a class="dropdown-item" href="/request/0">Trasporto</a></li>
+         <li><a class="dropdown-item" href="/request/import/0">Trasporto</a></li>
          <li><a class="dropdown-item" href="/workday/0">Consuntivazione</a></li>
       </ul>
    </div>

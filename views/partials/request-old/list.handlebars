@@ -1,0 +1,13 @@
+<h6>Richieste di trasporto</h6>
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data}}
+      <a href="/request/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div>
+               <span>{{request}} - {{description}}</span><br>
+               <span class="css-summarize fst-italic">{{activity}} ({{customer}})</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

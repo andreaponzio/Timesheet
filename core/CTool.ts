@@ -1,4 +1,11 @@
+/**
+ * @author Andrea Ponzio
+ * @version 1.0.0
+ */
+
 import {extraInfo} from "./CBase";
+import CActivity, {IActivity} from "./CActivity";
+
 /**
  * @author Andrea Ponzio
  * @version 1.0.0
@@ -138,5 +145,13 @@ export default class CTool {
       }
 
       return description;
+   }
+
+   /**
+    * Permette di ottenere l'elenco delle attività attive.
+    * @param object oggetto attività per l'accesso alla base dati.
+    * */
+   public static getActivity(object: CActivity): IActivity[] {
+      return object.executeAll("SELECT id, internal_ref, description FROM main.activity WHERE status in (1, 2, 3) ORDER BY description;") as IActivity[];
    }
 }

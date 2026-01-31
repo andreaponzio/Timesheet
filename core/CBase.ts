@@ -49,11 +49,6 @@ export enum activityStatus {
    closed,
    cancelled
 }
-export enum changeRequestType {
-   customizing = 1,
-   workbench,
-   other
-}
 export enum systemType {
    developer = 1,
    quality,
@@ -151,10 +146,11 @@ export default abstract class CBase extends CDatabase {
     * @param tablename nome della tabella.
     * @param output campi da esportare.
     * @param condition condizione di selezione.
+    * @param extension aggiunta all'istruzione SQL generata.
     * @protected
     */
-   protected _select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = []): unknown[] {
-      this.sqlGen.select("main." + tablename, output, condition);
+   protected _select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = [], extension: string = ""): unknown[] {
+      this.sqlGen.select("main." + tablename, output, condition, extension);
       return this.executeAll(this.sqlGen.statement);
    }
 
@@ -162,22 +158,23 @@ export default abstract class CBase extends CDatabase {
     * Esegue istruzione INSERT.
     * @param tablename nome dalla tabella.
     * @param values lista campi-valore.
-    * @param noid non aggiunge campo ID e CHANGED_ON.
+    * @param noid non aggiunge campo ID.
+    * @param nochangeon non aggiunge campi CHENDE_ON.
     * @protected
     */
-   protected _insert(tablename: string, values: IField[], noid: boolean = false): unknown {
+   protected _insert(tablename: string, values: IField[], noid: boolean = false, nochangeon: boolean = false): unknown {
       // Se richiesto viene aggiunto il tag sia per l'ID sia per la data di ultima modifica:
-      if(!noid) {
+      if(!noid)
          values.unshift({
             name: "id",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          } as IField);
 
+      if(!nochangeon)
          values.push({
             name: "changed_on",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.getDatetime()}] as IOption[]
          } as IField);
-      }
 
       // Genera ed esegue istruzione INSERT:
       this.sqlGen.insert("main." + tablename, values);

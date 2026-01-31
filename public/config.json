@@ -1,5 +1,6 @@
 {
    "filename": "./data.sqlite",
    "port": 49152,
-   "out": "./export/"
+   "dirIn": "../import/",
+   "dirOut": "../export/"
 }

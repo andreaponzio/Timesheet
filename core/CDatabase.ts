@@ -185,4 +185,14 @@ export default class CDatabase {
       CDatabase._statement = CDatabase._db.prepare(statement);
       return CDatabase._statement.all();
    }
+
+   /**
+    * Permette di eseguire un'istruzione SQL con parametri.
+    * @param statement istruzione SQl.
+    * @param params parametri da sostituire.
+    */
+   public execute(statement: string, ...params: any): unknown {
+      CDatabase._statement = CDatabase._db.prepare(statement);
+      return CDatabase._statement.run(...params);
+   }
 }

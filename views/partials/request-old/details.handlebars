@@ -1,0 +1,128 @@
+<form id="form" action="/request/{{data.id}}" method="post">
+   <input type="hidden" id="_method" name="_method" value="post">
+
+   <!-- Request data -->
+   <div class="d-flex d-flex-row">
+      <div class="css-flex-8">
+         <label for="id" class="form-label">Attività</label>
+         <input type="number" class="form-control" id="id" value="{{data.id}}" readonly>
+      </div>
+      <div class="css-flex-10 ms-2">
+         <label for="request" class="form-label">Richiesta</label>
+         <input type="text" class="form-control" id="request" value="{{data.request}}" readonly>
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="type" class="form-label">Tipo</label>
+         <select class="form-select" id="type" name="type">
+            <option value="1" {{#eq data.type 1}}selected{{/eq}}>Customizing</option>
+            <option value="2" {{#eq data.type 2}}selected{{/eq}}>Workbench</option>
+            <option value="3" {{#eq data.type 3}}selected{{/eq}}>Altro</option>
+         </select>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Descrizione</label>
+         <input type="text" class="form-control" id="description" name="description" value="{{data.description}}"
+                maxlength="80" required>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row mt-1">
+      <div class="css-flex-40">
+         <label for="owner" class="form-label">Responsabile</label>
+         <input type="text" class="form-control" id="owner" name="owner" value="{{data.owner}}" maxlength="80">
+      </div>
+      <div class="css-flex-15 ms-2">
+         <label for="date" class="form-label">Data</label>
+         <input type="datetime-local" class="form-control" id="date" name="date" value="{{data.date}}" required>
+      </div>
+      <div class="flex-grow-1 ms-2">
+         <label for="activity" class="form-label">
+            Attività
+            <a href="/activity/{{data.activity_id}}" class="css-disabled-link">
+               <i class="bi bi-arrow-right-short"></i>
+            </a>
+         </label>
+         <select class="form-select" id="activity" name="activity">
+            {{#each data.activity_list}}
+               <option value="{{id}}" {{#eq id ../data.activity_id}}selected{{/eq}}>{{description}} ({{internal_ref}})
+               </option>
+            {{/each}}
+         </select>
+      </div>
+   </div>
+   <div class="d-flex mt-1">
+      <div class="flex-grow-1">
+         <label for="note" class="form-label">Note</label>
+         <textarea class="form-control" id="note" name="note" maxlength="2000">{{data.note}}</textarea>
+      </div>
+   </div>
+
+   <!-- Save change & Delete request-old -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <button type="button" class="btn btn-danger me-1" onclick="deleteObject({{data.id}});">
+         <i class="bi bi-trash"></i>
+      </button>
+      <button type="button" class="d-inline-flex btn btn-primary me-1" onclick="transportObject({{data.id}});">
+         <i class="bi bi-truck"></i>
+      </button>
+      <a href="/request" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+
+   <!-- List of Change request-old -->
+   <h6>Log di trasporto</h6>
+   <table class="table table-hover p-2">
+      <thead>
+      <tr>
+         <th scope="col">Ambiente</th>
+         <th scope="col">Data</th>
+         <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each data.env}}
+         <tr>
+            <th scope="row">
+               {{#eq env 1}}Sviluppo{{/eq}}
+               {{#eq env 2}}Qualità{{/eq}}
+               {{#eq env 3}}NRT{{/eq}}
+               {{#eq env 4}}Produzione{{/eq}}
+            </th>
+            <td>{{date}}</td>
+            <td>
+               {{#isnt @index 0}}
+                  <button type="button" class="btn btn-dark" onclick="transportDeleteObject({{../data.id}});">
+                     <i class="bi bi-trash"></i>
+                  </button>
+               {{/isnt}}
+            </td>
+         </tr>
+      {{/each}}
+      </tbody>
+   </table>
+   {{> YesOrNo}}
+   {{> Error}}
+</form>
+
+<script>
+   function modalSubmit() {
+      document.querySelector("#form").submit();
+   }
+   function deleteObject(id) {
+      document.querySelector("#_method").value = "delete";
+      let modal = new bootstrap.Modal("#YesOrNo");
+      modal.show();
+   }
+   function transportObject(id) {
+      document.querySelector("#_method").value = "patch";
+      document.querySelector("#form").submit();
+   }
+   function transportDeleteObject(id, env) {
+      document.querySelector("#_method").value = "put";
+      document.querySelector("#form").submit();
+   }
+</script>

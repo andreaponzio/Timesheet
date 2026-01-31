@@ -6,7 +6,6 @@ import express, {Router, Request, Response} from "express";
 import CCustomer, {ICustomer} from "../core/CCustomer";
 import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
-import CRequest, {IRequest} from "../core/CRequest";
 import {objectType} from "../core/CBase";
 
 /**
@@ -30,16 +29,13 @@ router.post("/index", (request: Request, response: Response) => {
    let customer: CCustomer;
    let wbs: CWbs;
    let activity: CActivity;
-   let transport: CRequest;
    let customer_data: ICustomer[];
    let wbs_data: IWbs[];
    let activity_data: IActivity[];
-   let transport_data: IRequest[];
 
    customer = new CCustomer();
    wbs = new CWbs();
    activity = new CActivity();
-   transport = new CRequest();
 
    // Aggiornamento clienti:
    if(request.body.customer === "on") {
@@ -71,17 +67,6 @@ router.post("/index", (request: Request, response: Response) => {
          activity.load(d.id);
          activity.search();
          activity = undefined;
-      });
-   }
-
-   // Aggiornamento richieste di trasporto:
-   if(request.body.request === "on") {
-      transport_data = transport.loadAll();
-      transport_data.forEach(d => {
-         transport = new CRequest();
-         transport.load(d.id);
-         transport.search();
-         transport = undefined;
       });
    }
 

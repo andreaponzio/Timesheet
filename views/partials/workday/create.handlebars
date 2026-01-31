@@ -6,7 +6,7 @@
          <label for="id" class="form-label">Timesheet</label>
          <input type="number" class="form-control" id="id" value="{{data.id}}" readonly>
       </div>
-      <div class="css-flex-70 ms-2">
+      <div class="css-flex-70 ">
          <label for="activity" class="form-label">
             Attività
             <a href="/activity/{{data.activity_id}}" class="css-disabled-link">
@@ -15,8 +15,7 @@
          <select class="form-select" id="activity" name="activity" required>
             <option value="" selected>Selezionare un'attività</option>
             {{#each data.activity_list}}
-               <option value="{{id}}">{{description}} ({{internal_ref}})
-               </option>
+               <option value="{{id}}">{{description}} ({{internal_ref}})</option>
             {{/each}}
          </select>
       </div>

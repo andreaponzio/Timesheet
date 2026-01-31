@@ -88,7 +88,7 @@
 
    <div class="d-flex d-flex-row mt-1">
       <div class="flex-grow-1">
-         <label for="note" name="note" class="form-label">Note</label>
+         <label for="note" class="form-label">Note</label>
          <textarea class="form-control" id="note" name="note">{{data.note}}</textarea>
       </div>
    </div>
@@ -118,15 +118,6 @@
             <li>
                <button type="button" class="dropdown-item" onclick="rapidWorkday();">Consuntivazione rapida...</button>
             </li>
-            <li>
-               <button type="button" class="dropdown-item" onclick="rapidRequest();">Trasporto rapido...</button>
-            </li>
-            <li>
-               <hr class="dropdown-divider">
-            </li>
-            <li>
-               <button type="button" class="dropdown-item" onclick="importRequest();">Importa dati trasporto...</button>
-            </li>
          </ul>
       </div>
    </div>
@@ -136,7 +127,8 @@
       <!-- List of workdays -->
       <div class="accordion-item">
          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#workday"
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#workday"
                     aria-expanded="false" aria-controls="workday">
                Consuntivazione
             </button>
@@ -162,15 +154,16 @@
       <!-- List of Change requests -->
       <div class="accordion-item">
          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#request"
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#request"
                     aria-expanded="false" aria-controls="request">
-               Richiesta di trasporto
+               Richieste di trasporto
             </button>
          </h2>
          <div id="request" class="accordion-collapse collapse" data-bs-parent="#activityObjects">
             <div class="accordion-body">
                <ul class="list-group p-2 css-font-size-95">
-                  {{#each data.request}}
+                  {{#each data.request_list}}
                      <a href="/request/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
                         <div class="d-flex flex-row align-items-center">
                            <div>
@@ -189,7 +182,6 @@
    {{> YesOrNo}}
    {{> Error}}
    {{> RapidWorkday}}
-   {{> RapidRequest}}
 </form>
 
 <script>
@@ -203,14 +195,6 @@
    }
    function rapidWorkday() {
       let modal = new bootstrap.Modal("#RapidWorkday");
-      modal.show();
-   }
-   function rapidRequest() {
-      let modal = new bootstrap.Modal("#RapidRequest");
-      modal.show();
-   }
-   function importRequest() {
-      let modal = new bootstrap.Modal("#ImportRequest");
       modal.show();
    }
    function modalRapidSubmit(flow) {
@@ -231,23 +215,6 @@
                document.querySelector("#form").submit();
             }
             break;
-
-         default:
-            let r = document.querySelector("#rrrequest").value.trim().length;
-            let d = document.querySelector("#rrdescription").value.trim().length;
-
-            if(!r) {
-               document.querySelector(".toast-body").innerText = "Inserire un numero di richiesta";
-               toast.show();
-            }
-            else if(!d) {
-               document.querySelector(".toast-body").innerText = "Specificare una descrizione";
-               toast.show();
-            }
-            else {
-               document.querySelector("#form").action = "/activity/request/{{data.id}}";
-               document.querySelector("#form").submit();
-            }
       }
    }
 </script>

@@ -34,6 +34,7 @@ router.post("/", (request: Request, response: Response) => {
    // Visualizza dati:
    response.render("app", {
       view: objectType.search,
-      data: data
+      data: data,
+      search: request.body.search
    });
 });

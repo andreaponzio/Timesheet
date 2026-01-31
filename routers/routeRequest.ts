@@ -3,24 +3,19 @@
  * @version 1.0.0
  */
 import express, {Request, Response, Router} from "express";
-import CRequest from "../core/CRequest";
 import {objectType} from "../core/CBase";
-import CActivity, {IActivity} from "../core/CActivity";
-
-/**
- * Funzioni locali.
- */
-let listOfActivity = (object: CActivity): IActivity[] => {
-   return object.executeAll("SELECT id, internal_ref, description FROM main.activity") as IActivity[];
-}
+import CTool from "../core/CTool";
+import CActivity from "../core/CActivity";
+import CRequest from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
+let error: string;
 
 /**
- * Pagina principale.
+ * Visualizza la lista delle richieste.
  */
 router.get("/", (request: Request, response: Response) => {
    let o: CRequest;
@@ -36,207 +31,84 @@ router.get("/", (request: Request, response: Response) => {
 });
 
 /**
- * Permette di creare una richiesta di trasporto se l'identificativo passato è zero, altrimenti
- * visualizza il dettaglio.
+ * Visualizza i dettagli della richiesta selezionata.
  */
 router.get("/:id", (request: Request, response: Response) => {
-   let o: CRequest;
-   let a: CActivity;
+   let tr: CRequest;
+   let activity: CActivity;
 
-   o = new CRequest();
-   a = new CActivity();
+   tr = new CRequest();
+   activity = new CActivity();
+   tr.load(parseInt(request.params.id as string));
+   activity.load(tr.activity);
 
-   switch(parseInt(request.params.id as string)) {
-      case 0:
-         response.render("app", {
-            view: objectType.request_create,
-            data: {
-               id: 0,
-               activity_list: listOfActivity(a)
-            }
-         });
-         break;
-
-      default:
-         o.load(parseInt(request.params.id as string));
-         a.load(o.activity);
-         response.render("app", {
-            view: objectType.request_details,
-            data: {
-               id: o.id,
-               request: o.request,
-               type: o.type,
-               description: o.description,
-               owner: o.owner,
-               date: o.convertDate(o.date, 3),
-               note: o.note,
-               env: o.env,
-               activity_id: a.id,
-               activity_description: a.description,
-               activity_list: listOfActivity(a),
-            }
-         });
-   }
+   response.render("app", {
+      view: objectType.request_details,
+      data: {
+         request: tr.data,
+         activity: activity.data
+      }
+   });
 });
 
 /**
- * Effettua la creazione o l'aggiornamento di una richiesta di trasporto.
+ * Disegna la pagina per l'import massivo delle richieste di trasporto e per
+ * la loro associazione all'attività. Quando l'attività passata è zero, significa
+ * che dovrà essere selezionata, altrimenti la selezione sarà automatica.
  */
-router.post("/:id", (request: Request, response: Response) => {
-   let o: CRequest;
-   let a: CActivity;
+router.get("/import/:id", (request: Request, response: Response) => {
+   response.render("app", {
+      view: objectType.request_create,
+      data: {
+         id: parseInt(request.params.id as string),
+         list_activity: CTool.getActivity(new CActivity()),
+         error: error
+      }
+   });
+});
 
-   o = new CRequest();
-   a = new CActivity();
+/**
+ * Importa un elenco di richieste di trasporto e le assegna all'attività selezionata.
+ */
+router.post("/import/:id", (request: Request, response: Response) => {
+   let listOfRequest: string[];
+   let activity: number;
+
+   error = "";
 
    try {
-      if(parseInt(request.params.id as string))
-         o.load(parseInt(request.params.id as string));
-      o.activity = request.body.activity;
-      o.request = request.body.request;
-      o.type = parseInt(request.body.type);
-      o.description = request.body.description;
-      o.owner = request.body.owner;
-      o.date = new Date(request.body.date);
-      o.note = request.body.note;
-      o.save();
-      if(!parseInt(request.params.id as string)) {
-         o.transport();
-         o.saveTransport();
-      }
-      response.redirect("/request");
+      listOfRequest = (request.body.request as string).split(";");
+      activity = parseInt(request.params.id as string);
+      if(activity === 0)
+         activity = parseInt(request.body.activity as string);
+      CRequest.import(activity, listOfRequest);
+      response.redirect(`/activity/${activity}`);
    }
    catch(e) {
-      a.load(o.activity);
-      response.render("app", {
-         view: objectType.request_create,
-         data: {
-            id: o.id,
-            request: o.request,
-            type: o.type,
-            description: o.description,
-            owner: o.owner,
-            date: o.date,
-            note: o.note,
-            env: o.env,
-            activity_id: a.id,
-            activity_description: a.description,
-            activity_list: listOfActivity(a),
-            error: e.message
-         }
-      });
+      error = e.message;
+      response.redirect(`/request/${request.params.id}`);
    }
 });
 
 /**
- * Elimina la richiesta di trasporto.
+ * Effettua la cancellazione fisica della richiesta selezionata.
  */
 router.delete("/:id", (request: Request, response: Response) => {
-   let o: CRequest;
-   let a: CActivity;
+   let tr: CRequest;
 
-   o = new CRequest();
-   a = new CActivity();
-   o.load(parseInt(request.params.id as string));
-   a.load(o.activity);
-
+   tr = new CRequest();
    try {
-      o.delete();
+      tr.load(parseInt(request.params.id as string));
+      tr.delete();
       response.redirect("/request");
    }
    catch(e) {
-      response.render("app", {
-         view: objectType.activity_details,
-         data: {
-            id: o.id,
-            request: o.request,
-            type: o.type,
-            description: o.description,
-            owner: o.owner,
-            date: o.date,
-            note: o.note,
-            env: o.env,
-            activity_id: a.id,
-            activity_description: a.description,
-            activity_list: listOfActivity(a),
+      response.render(`/request/${request.params.id}`, {
             error: e.message
          }
-      });
+      );
    }
-});
-
-/**
- * Effettua trasporto della richiesta.
- */
-router.patch("/:id", (request: Request, response: Response) => {
-   let o: CRequest;
-   let a: CActivity;
-
-   o = new CRequest();
-   a = new CActivity();
-   o.load(parseInt(request.params.id as string));
-   a.load(o.activity);
-
-   try {
-      o.transport();
-      o.saveTransport();
-      response.redirect(`/request/${o.id}`);
-   }
-   catch(e) {
-      response.render("app", {
-         view: objectType.activity_details,
-         data: {
-            id: o.id,
-            request: o.request,
-            type: o.type,
-            description: o.description,
-            owner: o.owner,
-            date: o.date,
-            note: o.note,
-            env: o.env,
-            activity_id: a.id,
-            activity_description: a.description,
-            activity_list: listOfActivity(a),
-            error: e.message
-         }
-      });
-   }
-});
-
-/**
- * Resetta un trasporto della richiesta.
- */
-router.put("/:id", (request: Request, response: Response) => {
-   let o: CRequest;
-   let a: CActivity;
-
-   o = new CRequest();
-   a = new CActivity();
-   o.load(parseInt(request.params.id as string));
-   a.load(o.activity);
-
-   try {
-      o.transport(undefined, true);
-      o.saveTransport();
-      response.redirect(`/request/${o.id}`);
-   }
-   catch(e) {
-      response.render("app", {
-         view: objectType.activity_details,
-         data: {
-            id: o.id,
-            request: o.request,
-            type: o.type,
-            description: o.description,
-            owner: o.owner,
-            date: o.date,
-            note: o.note,
-            env: o.env,
-            activity_id: a.id,
-            activity_description: a.description,
-            activity_list: listOfActivity(a),
-            error: e.message
-         }
-      });
+   finally {
+      tr = undefined;
    }
 });

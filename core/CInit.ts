@@ -10,11 +10,10 @@ import {data as activity_data} from "../public/datadb_activity.json";
 import {data as request_data} from "../public/datadb_request.json";
 import {data as requestenv_data} from "../public/datadb_requestenv.json";
 import {data as workday_data} from "../public/datadb_workday.json";
-import CBase, {numericInterval, objectType} from "./CBase";
+import {numericInterval} from "./CBase";
 import CActivity, {IActivity} from "./CActivity";
 import CCustomer, {ICustomer} from "./CCustomer";
 import CWbs, {IWbs} from "./CWbs";
-import CRequest, {IRequest} from "./CRequest";
 
 export class CInit {
    private db: CDatabase;
@@ -31,8 +30,8 @@ export class CInit {
       o.executeRun("DELETE FROM main.customer;");
       o.executeRun("DELETE FROM main.wbs;");
       o.executeRun("DELETE FROM main.activity;");
-      o.executeRun("DELETE FROM main.request;");
-      o.executeRun("DELETE FROM main.requestenv;");
+      o.executeRun("DELETE FROM main.request-old;");
+      o.executeRun("DELETE FROM main.request_binary;");
       o.executeRun("DELETE FROM main.workday;");
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
                     VALUES ('${numericInterval.customer}', 100000);`);
@@ -183,12 +182,10 @@ export class CInit {
       let customer: CCustomer;
       let wbs: CWbs;
       let activity: CActivity;
-      let request: CRequest;
 
       let customer_data: ICustomer[];
       let wbs_data: IWbs[];
       let activity_data: IActivity[];
-      let request_data: IRequest[];
 
       this.db.executeRun("DELETE FROM main.search;");
       try {
@@ -232,17 +229,6 @@ export class CInit {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
                                      '/activity/${d.id}', 3)`);
-      });
-
-      request = new CRequest();
-      request_data = request.loadAll();
-      request_data.forEach(d => {
-         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.request}',
-                                     '/request/${d.id}', 4)`);
-         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
-                                     '/request/${d.id}', 4)`);
       });
    }
 }

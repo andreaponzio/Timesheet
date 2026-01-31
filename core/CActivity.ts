@@ -3,7 +3,6 @@
  * @version 1.0.0
  */
 import CBase, {IBase, numericInterval, objectType} from "./CBase";
-import {IRequest} from "./CRequest";
 import {IWorkday} from "./CWorkday";
 import {SqlGen} from "./CSqlGen";
 import CSqlGen = SqlGen.CSqlGen;
@@ -31,6 +30,11 @@ export interface IActivitySummarize {
    description1: string;
    wbs: number;
    request: number;
+}
+export interface IActivityRequest {
+   request: string;
+   description: string;
+   date: Date;
 }
 
 export default class CActivity extends CBase {
@@ -265,8 +269,7 @@ export default class CActivity extends CBase {
    public delete(): void {
       if(this.id)
          this._delete("activity", [{
-            name: "id",
-            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+            name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
    }
 
@@ -280,21 +283,23 @@ export default class CActivity extends CBase {
    }
 
    /**
-    * Restituisce lista delle richieste di trasporto associate all'attività.
-    */
-   public getRequest(): IRequest[] {
-      return this.executeAll(`SELECT *
-                              FROM main.request
-                              WHERE activity = ${this.id};`) as IRequest[];
-   }
-
-   /**
     * Restituisce lista delle consuntivazioni dell'attività.
     */
    public getWorkday(): IWorkday[] {
       return this.executeAll(`SELECT *
                               FROM main.workday
-                              WHERE activity = ${this.id};`) as IWorkday[];
+                              WHERE activity = ${this.id}
+                              ORDER BY date DESC;`) as IWorkday[];
+   }
+
+   /**
+    * Restituisce lista delle richieste di trasporto associate all'attività.
+    */
+   public getRequest(): IActivityRequest[] {
+      return this.executeAll(`SELECT request, description, date, id
+                              FROM main.request
+                              WHERE activity = ${this.id}
+                              ORDER BY date DESC;`) as IActivityRequest[];
    }
 
    /**

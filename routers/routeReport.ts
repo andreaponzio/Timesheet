@@ -11,7 +11,7 @@ import CWorkday, {IWeekWorkday} from "../core/CWorkday";
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import {out} from "../public/config.json";
+import {dirOut} from "../public/config.json";
 import CDatabase from "../core/CDatabase";
 
 interface IExcel {
@@ -201,7 +201,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
    }
 
    // Scrive file Excel e riporta nella pagina principale:
-   workbook.xlsx.writeFile(`${out}W${request.params.id}.xlsx`).then(() => {
+   workbook.xlsx.writeFile(`${dirOut}W${request.params.id}.xlsx`).then(() => {
       excelError = "";
       response.redirect("/report/week");
    }).catch((err) => {

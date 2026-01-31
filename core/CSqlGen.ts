@@ -68,10 +68,11 @@ export namespace SqlGen {
       /**
        * Costruisce la condizione di WHERE in base ai campi passati.
        * @param field lista campo-valore per la condizione di filtro.
+       * @param semicolon aggiunge o non aggiunte punto e virgola finale;
        * @return condizione WHERE.
        * @private
        */
-      private _generateWhere(field: IField[]): string {
+      private _generateWhere(field: IField[], semicolon: boolean = true): string {
          let conditionPart1: string;
          let conditionPart2: string;
          let result: string = "";
@@ -174,7 +175,10 @@ export namespace SqlGen {
             result = "1 = 1";
 
          // Elimina spazi superflui all'inizio e fine dell'istruzione:
-         return `${result.trim()};`;
+         if(semicolon)
+            return `${result.trim()};`;
+         else
+            return `${result.trim()}`;
       }
 
       /**
@@ -265,11 +269,14 @@ export namespace SqlGen {
        * @param tablename nome della tabella sorgente.
        * @param output campi da esportare.
        * @param condition condizione da applicare alla selezione.
+       * @param extension aggiunta all'istruzione SQL generata.
        */
-      public select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = []): void {
+      public select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = [], extension: string = ""): void {
          this._statement = `SELECT ${output.join(", ")}
                             FROM ${tablename}
-                            WHERE ${this._generateWhere(condition)}`;
+                            WHERE ${this._generateWhere(condition, extension.length === 0)}`;
+         if(extension.length > 0)
+            this._statement = `${this._statement} ${extension};`;
       }
 
       /**

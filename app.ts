@@ -15,11 +15,12 @@ import {router as routerApp} from "./routers/routeApp";
 import {router as routerCustomer} from "./routers/routeCustomer";
 import {router as routerWbs} from "./routers/routeWbs";
 import {router as routerActivity} from "./routers/routeActivity";
-import {router as routerRequest} from "./routers/routeRequest";
 import {router as routerWorkday} from "./routers/routeWorkday";
 import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
+import {router as routerRequest} from "./routers/routeRequest";
+import CRequest from "./core/CRequest";
 
 /**
  * Inizializza applicazione.
@@ -53,16 +54,16 @@ app.use("/", routerApp);
 app.use("/customer", routerCustomer);
 app.use("/wbs", routerWbs);
 app.use("/activity", routerActivity);
-app.use("/request", routerRequest);
 app.use("/workday", routerWorkday);
 app.use("/report", routerReport);
 app.use("/search", routerSearch);
 app.use("/tools", routerTools);
+app.use("/request", routerRequest);
 
 /**
  * Middleware eseguito quando non viene trovata nessuna route valida.
  */
-/*app.use("*", (request: Request, response: Response, next: NextFunction) => {
+/*app.use("*", (request-old: Request, response: Response, next: NextFunction) => {
    response.redirect("/");
 });*/
 
