@@ -8,6 +8,7 @@ import CWbs, {IWbs} from "../core/CWbs";
 import CCustomer from "../core/CCustomer";
 import CWorkday from "../core/CWorkday";
 import {extraInfo, objectType} from "../core/CBase";
+import CRequest from "../core/CRequest";
 
 /**
  * Funzioni locali.
@@ -20,6 +21,7 @@ let listOfWbs = (object: CActivity): IWbs[] => {
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
+let error: string;
 
 /**
  * Pagina principale.
@@ -216,26 +218,22 @@ router.post("/workday/:id", (request: Request, response: Response) => {
 });
 
 /**
- * Inserimenti rapido di una richiesta di trasporto.
+ * Aggiunge le richieste di trasporto all'attività.
  */
 router.post("/request/:id", (request: Request, response: Response) => {
-   // let o: CRequestOld;
-   //
-   // o = new CRequestOld();
-   //
-   // try {
-   //    o.activity = parseInt(request-old.params.id as string);
-   //    o.request-old = request-old.body.rrrequest;
-   //    o.type = parseInt(request-old.body.rrtype);
-   //    o.description = request-old.body.rrdescription;
-   //    o.owner = "";
-   //    o.date = new Date(request-old.body.rrdate);
-   //    o.note = "";
-   //    o.save();
-   //    o.transport();
-   //    response.redirect(`/activity/${request-old.params.id}`);
-   // }
-   // catch(e) {
-   //    console.error(e);
-   // }
+   let listOfRequest: string[];
+   let activity: number;
+
+   error = "";
+
+   try {
+      listOfRequest = (request.body.rrequest as string).split(";");
+      activity = parseInt(request.params.id as string);
+      CRequest.import(activity, listOfRequest);
+      response.redirect(`/activity/${activity}`);
+   }
+   catch(e) {
+      error = e.message;
+      response.redirect(`/request/${request.params.id}`);
+   }
 });

@@ -118,6 +118,9 @@
             <li>
                <button type="button" class="dropdown-item" onclick="rapidWorkday();">Consuntivazione rapida...</button>
             </li>
+            <li>
+               <button type="button" class="dropdown-item" onclick="rapidRequest();">Import richieste di trasporto...</button>
+            </li>
          </ul>
       </div>
    </div>
@@ -182,6 +185,7 @@
    {{> YesOrNo}}
    {{> Error}}
    {{> RapidWorkday}}
+   {{> RapidRequest}}
 </form>
 
 <script>
@@ -195,6 +199,10 @@
    }
    function rapidWorkday() {
       let modal = new bootstrap.Modal("#RapidWorkday");
+      modal.show();
+   }
+   function rapidRequest() {
+      let modal = new bootstrap.Modal("#RapidRequest");
       modal.show();
    }
    function modalRapidSubmit(flow) {
@@ -212,6 +220,20 @@
             }
             else {
                document.querySelector("#form").action = "/activity/workday/{{data.id}}";
+               document.querySelector("#form").submit();
+            }
+            break;
+
+         case 2:
+            if(document.querySelector("#rrequest").value.length === 0) {
+               document.querySelector(".toast-body").innerText = "Inserire almeno un richiesta di trasporto";
+               toast.show();
+            }
+            else {
+               document.querySelector("#form").action = "/activity/request/{{data.id}}";
+               document.querySelector("#import").hidden = true;
+               document.querySelector("#cancel").hidden = true;
+               document.querySelector("#wait").hidden = false;
                document.querySelector("#form").submit();
             }
             break;
