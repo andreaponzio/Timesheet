@@ -242,5 +242,6 @@ export default class CWorkday extends CBase {
    /**
     * Permette di aggiornare i indici di ricerca.
     */
-   public search(): void {}
+   public search(): void {
+   }
 }

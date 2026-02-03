@@ -83,7 +83,7 @@ export default class CCustomer extends CBase {
    }
 
    /**
-    * Aggiorna l'anagrafica in linea.
+    * Aggiorna l'anagrafica in linea e anche l'indice di ricerca.
     * @public
     */
    public save(): void {
@@ -103,6 +103,9 @@ export default class CCustomer extends CBase {
                   value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
                }] as IField[]);
          }
+
+         // Aggiorna indice di ricerca:
+         this.search();
       }
       catch
          (e) {

@@ -163,7 +163,7 @@ export default class CActivity extends CBase {
    }
 
    /**
-    * Aggiorna l'anagrafica in linea.
+    * Aggiorna l'anagrafica in linea e anche l'indice di ricerca.
     * @public
     */
    public save(): void {
@@ -256,6 +256,9 @@ export default class CActivity extends CBase {
                   }
                ] as IField[]);
          }
+
+         // Aggiorna indice di ricerca:
+         this.search();
       }
       catch(e) {
          throw e;

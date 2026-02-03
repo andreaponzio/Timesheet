@@ -230,7 +230,7 @@ export default class CRequest extends CBase {
    }
 
    /**
-    * Efettua il salvataggio dei dati del trasporto.
+    * Effettua il salvataggio dei dati del trasporto e aggiorna indice di ricerca.
     */
    public save(): void {
       try {
@@ -371,6 +371,9 @@ export default class CRequest extends CBase {
                   }
                ] as IField[], true, true);
          });
+
+         // Aggiorna indice di ricerca:
+         this.search();
       }
       catch(e) {
          throw e;
