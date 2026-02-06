@@ -30,11 +30,11 @@ export enum objectType {
    workday_create,
 
    workday_group,
-
    week_list,
-
    search,
-   tools
+   index,
+   prodsys,
+   tr_status
 }
 export enum activityType {
    change_request = 1,

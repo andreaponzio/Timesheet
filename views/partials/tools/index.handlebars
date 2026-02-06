@@ -1,10 +1,11 @@
 <h6>Rigenerazione indici</h6>
 <ul class="list-group p-2 css-font-size-95">
    <form id="form" action="/tools/index" method="post">
+
       <!-- Clienti -->
       <div class="form-check">
          <input class="form-check-input" type="checkbox" id="customer" name="customer">
-         <label class="form-check-label" for="checkDefault">
+         <label class="form-check-label" for="customer">
             Clienti
          </label>
       </div>
@@ -12,7 +13,7 @@
       <!-- WBS -->
       <div class="form-check">
          <input class="form-check-input" type="checkbox" id="wbs" name="wbs">
-         <label class="form-check-label" for="checkDefault">
+         <label class="form-check-label" for="wbs">
             Commesse
          </label>
       </div>
@@ -20,7 +21,7 @@
       <!-- Attività -->
       <div class="form-check">
          <input class="form-check-input" type="checkbox" id="activity" name="activity">
-         <label class="form-check-label" for="checkDefault">
+         <label class="form-check-label" for="activity">
             Attività
          </label>
       </div>
@@ -28,17 +29,31 @@
       <!-- Richieste di trasporto -->
       <div class="form-check">
          <input class="form-check-input" type="checkbox" id="request" name="request">
-         <label class="form-check-label" for="checkDefault">
+         <label class="form-check-label" for="request">
             Richieste di trasporto
          </label>
       </div>
 
       <!-- Save or Cancel -->
-      <button type="submit" class="btn btn-success me-1">
-         <i class="bi bi-floppy"></i>
-      </button>
-      <a href="/" type="button" class="d-inline-flex btn btn-secondary">
-         <i class="bi bi-x-square"></i>
-      </a>
+      <div class="d-flex d-inline-row mt-2">
+         <div class="spinner-border" role="status" id="wait" hidden></div>
+         <button type="button" class="btn btn-success me-1" id="index" onclick="generate();">
+            <i class="bi bi-floppy"></i>
+         </button>
+         <div id="cancel">
+            <a href="/" type="button" class="d-inline-flex btn btn-secondary">
+               <i class="bi bi-x-square"></i>
+            </a>
+         </div>
+      </div>
    </form>
 </ul>
+
+<script>
+   function generate() {
+      document.querySelector("#index").hidden = true;
+      document.querySelector("#cancel").hidden = true;
+      document.querySelector("#wait").hidden = false;
+      document.querySelector("#form").submit();
+   }
+</script>

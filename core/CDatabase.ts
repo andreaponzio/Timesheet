@@ -177,7 +177,7 @@ export default class CDatabase {
    }
 
    /**
-    * Esegue l'istruzione SQL che restituisce un solo record.
+    * Esegue l'istruzione SQL che restituisce un dataset.
     * @param statement istruzione SQL.
     * @public
     */

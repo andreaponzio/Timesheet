@@ -415,7 +415,7 @@ export default class CRequest extends CBase {
    }
 
    /**
-    * Permette di aggiornare gli indici di ricerca.
+    * Legge le richieste di acquisto complete di informazioni aggiuntive (come l'attività, ...).
     */
    public summarize(): IRequestSummarize[] {
       return this.executeAll("SELECT * FROM request_summarize;") as IRequestSummarize[];

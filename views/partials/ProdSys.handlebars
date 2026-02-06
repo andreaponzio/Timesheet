@@ -1,0 +1,27 @@
+<div class="modal fade" id="ProdSys" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticProdSysLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h1 class="modal-title fs-5">Sistemi finali TR</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <div class="d-flex d-flex-row mt-1">
+               <div class="flex-grow-1">
+                  <label for="prodsys" class="form-label">Lista dei sistemi finali separati da ";"</label>
+                  <textarea class="form-control" id="prodsys" name="prodsys" required></textarea>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">
+               <i class="bi bi-x-square"></i>
+            </button>
+            <button type="button" class="btn btn-success" id="import" onclick="modalSubmit(1);">
+               <i class="bi bi-floppy"></i>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

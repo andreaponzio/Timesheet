@@ -15,6 +15,10 @@
                <i class="bi bi-hand-index-thumb"></i>
                Rigenera indici di ricerca
             </a></li>
+            <li><a class="dropdown-item p-2" href="/tools/prodsys">
+               <i class="bi bi-server"></i>
+               Imposta sistemi produttivi per TR...
+            </a></li>
          </ul>
       </div>
 
@@ -94,9 +98,15 @@
             </div>
             <div class="overflow-y-auto css-flex-85">
                <ul class="list-group css-font-size-95">
+                  <a href="/request/trstatus/0"
+                     class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+                     <i class="bi bi-truck mx-1"></i>Stato TR
+                  </a>
+               </ul>
+               <ul class="list-group css-font-size-95">
                   <a href="/report/week"
                      class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
-                     <i class="bi bi-calendar-week mx-1"></i></i>Settimanale
+                     <i class="bi bi-calendar-week mx-1"></i>Settimanale
                   </a>
                </ul>
             </div>
@@ -124,11 +134,11 @@
          {{#eq view 15}} {{> workday/create}} {{/eq}}
 
          {{#eq view 16}} {{> workday/group}} {{/eq}}
-
          {{#eq view 17}} {{> week/list}} {{/eq}}
-
          {{#eq view 18}} {{> search/list}} {{/eq}}
          {{#eq view 19}} {{> tools/index}} {{/eq}}
+         {{#eq view 20}} {{> tools/prodsys}} {{/eq}}
+         {{#eq view 21}} {{> request/trstatus}} {{/eq}}
       </div>
    </div>
 </div>

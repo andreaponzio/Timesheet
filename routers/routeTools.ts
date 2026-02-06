@@ -7,6 +7,7 @@ import CCustomer, {ICustomer} from "../core/CCustomer";
 import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
 import {objectType} from "../core/CBase";
+import CRequest from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
@@ -18,7 +19,7 @@ export let router: Router = express.Router();
  */
 router.get("/index", (request: Request, response: Response) => {
    response.render("app", {
-      view: objectType.tools
+      view: objectType.index
    });
 });
 
@@ -72,4 +73,73 @@ router.post("/index", (request: Request, response: Response) => {
 
    // Riporta sulla pagina principale:
    response.redirect("/");
+});
+
+/**
+ * Pagina principale per gestione sistemi finali TR.
+ */
+router.get("/prodsys", (request: Request, response: Response) => {
+   let tr: CRequest;
+   let prodsys: string[];
+
+   tr = new CRequest();
+
+   // Legge sistemi finali da passare alla pagina:
+   prodsys = tr.executeAll("SELECT * FROM main.prod_system") as string[];
+
+   // Disegna la pagina con l'elenco dei sistemi finali:
+   response.render("app", {
+      view: objectType.prodsys,
+      data: prodsys
+   });
+});
+
+/**
+ * Aggiunge i sistemi finali alla tabella.
+ */
+router.post("/prodsys", (request: Request, response: Response) => {
+   let tr: CRequest;
+   let prodsys: string[];
+
+   tr = new CRequest();
+
+   // Aggiunge i sistemi finali alla tabella:
+   prodsys = request.body.prodsys.split(";");
+   prodsys.forEach(d => {
+      try {
+         tr.executeRun(`INSERT INTO main.prod_system (systemid)
+                        VALUES ('${d.toUpperCase().trim()}');`);
+      }
+      catch(e) {
+      }
+   });
+
+   // Riporta sulla pagina principale:
+   response.redirect("/tools/prodsys");
+});
+
+/**
+ * Rimuove i sistemi finali selezionati.
+ */
+router.delete("/prodsys", (request: Request, response: Response) => {
+   let tr: CRequest;
+   let key: string;
+
+   tr = new CRequest();
+
+   // Elimina i sistemi finali dalla tabella:
+   for(let d in request.body) {
+      if(request.body[d] === "on")
+         try {
+            key = d.slice(1);
+            tr.executeRun(`DELETE
+                           FROM main.prod_system
+                           WHERE systemid = '${key}';`);
+         }
+         catch(e) {
+         }
+   }
+
+   // Riporta sulla pagina principale:
+   response.redirect("/tools/prodsys");
 });

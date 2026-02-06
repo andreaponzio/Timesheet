@@ -1,0 +1,50 @@
+<h6>Sistemi finali per TR</h6>
+<form id="form" action="/tools/prodsys" method="post">
+   <input type="hidden" id="_method" name="_method" value="post">
+
+   <div class="d-flex d-inline-column">
+      {{#each data}}
+         <div class="form-check mx-2">
+            <input class="form-check-input" type="checkbox" id="{{systemid}}" name="@{{systemid}}">
+            <label class="form-check-label" for="{{systemid}}">
+               {{systemid}}
+            </label>
+         </div>
+      {{/each}}
+   </div>
+
+   <!-- Commands -->
+   <div class="mt-2">
+      <button type="button" class="btn btn-success me-1" onclick="addSys();">
+         <i class="bi bi-plus-square"></i>
+      </button>
+      <button type="button" class="d-inline-flex btn btn-danger me-1" onclick="remSys();">
+         <i class="bi bi-trash"></i>
+      </button>
+      <a href="/" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> ProdSys}}
+   {{> YesOrNo}}
+</form>
+
+<script>
+   function addSys() {
+      let modal = new bootstrap.Modal("#ProdSys");
+      modal.show();
+   }
+   function remSys() {
+      document.querySelector("#_method").value = "delete";
+      let modal = new bootstrap.Modal("#YesOrNo");
+      modal.show();
+   }
+   function modalSubmit(flow) {
+      if(flow === 1 && !document.querySelector("#prodsys").value.trim().length) {
+         document.querySelector(".toast-body").innerText = "Inserire almeno un sistema";
+         toast.show();
+      }
+      else
+         document.querySelector("#form").submit();
+   }
+</script>

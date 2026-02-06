@@ -6,7 +6,7 @@ import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CTool from "../core/CTool";
 import CActivity from "../core/CActivity";
-import CRequest from "../core/CRequest";
+import CRequest, {IRequestSummarize} from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
@@ -31,7 +31,7 @@ router.get("/", (request: Request, response: Response) => {
 });
 
 /**
- * Visualizza i dettagli della richiesta selezionata.
+ * Visualizza i dettagli della richiesta selezionata:.
  */
 router.get("/:id", (request: Request, response: Response) => {
    let tr: CRequest;
@@ -111,4 +111,57 @@ router.delete("/:id", (request: Request, response: Response) => {
    finally {
       tr = undefined;
    }
+});
+
+/**
+ * Permette di analizzare lo stato delle TR.
+ */
+router.get("/trstatus/:id", (request: Request, response: Response) => {
+   let tr: CRequest;
+   let listOfRequest: IRequestSummarize[];
+   let prodsys: string[];
+   let id: number[];
+   let filter: string = "";
+
+   tr = new CRequest();
+
+   // Legge sistemi finali e prepara filtro:
+   try {
+      prodsys = tr.executeAll("SELECT * FROM main.prod_system;") as string[];
+      prodsys.forEach(s => {
+         filter = filter + `,'${s["systemid"]}'`;
+      });
+      filter = filter.slice(1);
+   }
+   catch(e) {
+   }
+
+   // Filtra le richieste in base al tipo filtro:
+   switch(parseInt(request.params.id as string)) {
+      case 0:
+         listOfRequest = tr.executeAll("SELECT * FROM main.request_status GROUP BY id;") as IRequestSummarize[];
+         break;
+
+      case 1:
+         filter = `HAVING SUM(COALESCE(systemid IN (${filter}), 0)) = 0`;
+         listOfRequest = tr.executeAll(`SELECT *
+                                        FROM main.request_status
+                                        GROUP BY id ${filter};`) as IRequestSummarize[];
+         break;
+
+      case 2:
+         filter = `HAVING SUM(COALESCE(systemid IN (${filter}), 0)) > 0`;
+         listOfRequest = tr.executeAll(`SELECT *
+                                        FROM main.request_status
+                                        GROUP BY id ${filter};`) as IRequestSummarize[];
+         break;
+   }
+
+   response.render("app", {
+      view: objectType.tr_status,
+      data: {
+         request: listOfRequest,
+         checked: parseInt(request.params.id as string)
+      }
+   });
 });

@@ -1,0 +1,32 @@
+<h6>Stato delle richieste di trasporto</h6>
+
+<div class="d-flex d-inline-column justify-content-center">
+   <div class="form-check">
+      <input class="form-check-input" type="radio" id="all" name="type"
+             {{#eq data.checked 0}}checked{{/eq}} onclick="location.href='/request/trstatus/0'">
+      <label class="form-check-label" for="all">Tutte</label>
+   </div>
+   <div class="form-check mx-2">
+      <input class="form-check-input" type="radio" id="open" name="type"
+             {{#eq data.checked 1}}checked{{/eq}} onclick="location.href='/request/trstatus/1'">
+      <label class="form-check-label" for="open">Non ancora in produzione</label>
+   </div>
+   <div class="form-check mx-2">
+      <input class="form-check-input" type="radio" id="close" name="type"
+             {{#eq data.checked 2}}checked{{/eq}} onclick="location.href='/request/trstatus/2'">
+      <label class="form-check-label" for="close">Produzione</label>
+   </div>
+</div>
+
+<ul class="list-group p-2 css-font-size-95">
+   {{#each data.request}}
+      <a href="/request/{{id}}" class="list-group-item list-group-item-action css-listgroup-item">
+         <div class="d-flex flex-row align-items-center">
+            <div class="css-flex-95">
+               <span>{{request}} - {{description}}</span><br>
+               <span class="css-summarize fst-italic">{{activity}} ({{customer}})</span>
+            </div>
+         </div>
+      </a>
+   {{/each}}
+</ul>

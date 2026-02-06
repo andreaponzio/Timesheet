@@ -13,6 +13,7 @@ import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
 import {dirOut} from "../public/config.json";
 import CDatabase from "../core/CDatabase";
+import CRequest from "../core/CRequest";
 
 interface IExcel {
    date: string;

@@ -64,3 +64,37 @@ for(let w of week)
    import {CInit} from "./core/CInit";
    let i: CInit = new CInit();
    i.search();
+
+with
+   activity_cte as (
+      select main.activity.id,
+             main.activity.description,
+             main.activity.internal_ref,
+             main.activity.external_ref,
+             main.activity.hour,
+             main.activity.wbs
+      from main.activity ),
+   workday_cte as (
+      select main.workday.activity, sum(main.workday.hour) as total
+      from main.workday
+      group by main.workday.activity),
+   request_cte as (
+      select main.request.activity, count(main.request.id) as request
+      from main.request
+      GROUP BY main.request.activity),
+   wbs_cte as (
+      select main.wbs.id, main.wbs.description1
+      from main.wbs )
+select activity_cte.id,
+       activity_cte.description,
+       activity_cte.internal_ref,
+       activity_cte.external_ref,
+       activity_cte.hour,
+       wbs_cte.id as wbs,
+       wbs_cte.description1 as dwbs,
+       request_cte.request,
+       workday_cte.total
+from activity_cte
+        CROSS JOIN workday_cte on workday_cte.activity = activity_cte.id
+        CROSS JOIN request_cte on request_cte.activity = activity_cte.id
+        CROSS JOIN wbs_cte on wbs_cte.id = activity_cte.wbs
