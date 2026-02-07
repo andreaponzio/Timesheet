@@ -1,21 +1,36 @@
 <h6>Stato delle richieste di trasporto</h6>
 
-<div class="d-flex d-inline-column justify-content-center">
-   <div class="form-check">
-      <input class="form-check-input" type="radio" id="all" name="type"
-             {{#eq data.checked 0}}checked{{/eq}} onclick="location.href='/request/trstatus/0'">
-      <label class="form-check-label" for="all">Tutte</label>
-   </div>
-   <div class="form-check mx-2">
-      <input class="form-check-input" type="radio" id="open" name="type"
-             {{#eq data.checked 1}}checked{{/eq}} onclick="location.href='/request/trstatus/1'">
-      <label class="form-check-label" for="open">Non ancora in produzione</label>
-   </div>
-   <div class="form-check mx-2">
-      <input class="form-check-input" type="radio" id="close" name="type"
-             {{#eq data.checked 2}}checked{{/eq}} onclick="location.href='/request/trstatus/2'">
-      <label class="form-check-label" for="close">Produzione</label>
-   </div>
+<div class="p-2">
+   <label for="activity" class="form-label">
+      Filtro su attività
+   </label>
+   <form id="form" action="/request/trstatus" method="post">
+      <input type="text" id="ftype" name="ftype" value="{{data.checked}}" hidden>
+      <select class="form-select" id="activity" name="activity" onchange="filter();">
+         <option value="0">Tutte</option>
+         {{#each data.activity_list}}
+            <option value="{{id}}"{{#eq id ../data.activity}}selected{{/eq}}>{{description}} ({{internal_ref}})</option>
+         {{/each}}
+      </select>
+
+      <div class="d-flex d-inline-column justify-content-center mt-2">
+         <div class="form-check">
+            <input class="form-check-input" type="radio" id="0" name="type"
+                   {{#eq data.checked "0"}}checked{{/eq}} onclick="filter();">
+            <label class="form-check-label" for="all">Tutte</label>
+         </div>
+         <div class="form-check mx-2">
+            <input class="form-check-input" type="radio" id="1" name="type"
+                   {{#eq data.checked "1"}}checked{{/eq}} onclick="filter();">
+            <label class="form-check-label" for="open">Non ancora in produzione</label>
+         </div>
+         <div class="form-check mx-2">
+            <input class="form-check-input" type="radio" id="2" name="type"
+                   {{#eq data.checked "2"}}checked{{/eq}} onclick="filter();">
+            <label class="form-check-label" for="close">Produzione</label>
+         </div>
+      </div>
+   </form>
 </div>
 
 <ul class="list-group p-2 css-font-size-95">
@@ -30,3 +45,10 @@
       </a>
    {{/each}}
 </ul>
+
+<script>
+   function filter() {
+      document.querySelector("#ftype").value = document.querySelectorAll('input[type="radio"]:checked')[0].id;
+      document.querySelector("#form").submit();
+   }
+</script>
