@@ -48,6 +48,7 @@ export interface IRequest extends IBase {
    object: IRequestObject[];
    attribute: IRequestAttribute[];
    cofile: IRequestCofile[];
+   note: string;
 }
 export interface IRequestSummarize {
    id: number;
@@ -96,6 +97,12 @@ export default class CRequest extends CBase {
    }
    get cofile(): IRequestCofile[] {
       return this._data.cofile;
+   }
+   get note(): string {
+      return this._data.note;
+   }
+   set note(value: string) {
+      this._data.note = value;
    }
 
    /**
@@ -185,6 +192,7 @@ export default class CRequest extends CBase {
       this._data.object = [];
       this._data.attribute = [];
       this._data.cofile = [];
+      this._data.note = undefined;
    }
 
    /**
@@ -218,6 +226,14 @@ export default class CRequest extends CBase {
             name: "id",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[], "ORDER BY date") as IRequestCofile[];
+         try {
+            this._data.note = this._select("request_note", CSqlGen.allField, [{
+               name: "id",
+               value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+            }] as IField[])[0]["note"] as string;
+         }
+         catch(e) {
+         }
       }
    }
 
@@ -373,6 +389,34 @@ export default class CRequest extends CBase {
          });
 
          // Aggiorna indice di ricerca:
+         this.search();
+      }
+      catch(e) {
+         throw e;
+      }
+   }
+
+   /**
+    * Effettua il salvataggio delle note ed aggiorna gli indici di ricerca.
+    */
+   public saveNote(): void {
+      try {
+         if(this.executeGet(`SELECT COUNT(*) as v
+                             FROM request_note
+                             WHERE id = ${this.id};`)["v"] as number === 0)
+            this._insert("request_note", [
+               {
+                  name: "note",
+                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+               }
+            ]);
+         else
+            this._update("request_note", [
+               {
+                  name: "note",
+                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+               }
+            ]);
          this.search();
       }
       catch(e) {

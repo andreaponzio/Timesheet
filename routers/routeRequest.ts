@@ -52,6 +52,30 @@ router.get("/:id", (request: Request, response: Response) => {
 });
 
 /**
+ * Aggiorna le note inserite.
+ */
+router.post("/:id", (request: Request, response: Response) => {
+   let tr: CRequest;
+
+   tr = new CRequest();
+   try {
+      tr.load(parseInt(request.params.id as string));
+      tr.note = request.body.note;
+      tr.saveNote();
+      response.redirect("/request/");
+   }
+   catch(e) {
+      response.render(`/request/${request.params.id}`, {
+            error: e.message
+         }
+      );
+   }
+   finally {
+      tr = undefined;
+   }
+});
+
+/**
  * Disegna la pagina per l'import massivo delle richieste di trasporto e per
  * la loro associazione all'attività. Quando l'attività passata è zero, significa
  * che dovrà essere selezionata, altrimenti la selezione sarà automatica.

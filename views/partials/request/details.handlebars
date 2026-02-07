@@ -46,8 +46,18 @@
       </div>
    </div>
 
+   <div class="d-flex d-flex-row mt-1">
+      <div class="flex-grow-1">
+         <label for="note" class="form-label">Note</label>
+         <textarea class="form-control" id="note" name="note">{{data.request.note}}</textarea>
+      </div>
+   </div>
+
    <!-- Save change & Delete request-old -->
    <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="button" class="btn btn-success me-1" onclick="modalSubmit();">
+         <i class="bi bi-floppy"></i>
+      </button>
       <button type="button" class="btn btn-danger me-1" onclick="deleteObject({{data.request.id}});">
          <i class="bi bi-trash"></i>
       </button>
