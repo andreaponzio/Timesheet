@@ -20,7 +20,6 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
-import CRequest from "./core/CRequest";
 
 /**
  * Inizializza applicazione.

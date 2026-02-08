@@ -6,12 +6,13 @@ import CBase, {IBase, numericInterval} from "./CBase";
 import * as fs from "node:fs";
 import {Buffer} from "node:buffer";
 import {SqlGen} from "./CSqlGen";
+import {dirIn, dirOut} from "../public/config.json";
 import CSqlGen = SqlGen.CSqlGen;
-import Sign = SqlGen.Sign;
-import Option = SqlGen.Option;
 import IOption = SqlGen.IOption;
 import IField = SqlGen.IField;
-import {dirIn} from "../public/config.json";
+import Sign = SqlGen.Sign;
+import Option = SqlGen.Option;
+import * as assert from "node:assert";
 
 export interface IRequestObject {
    as4pos: number;
@@ -171,6 +172,45 @@ export default class CRequest extends CBase {
    }
 
    /**
+    * Esporta tutte le informazioni della TR specificata.
+    * @param id identificativo della TR.
+    */
+   public static export(id: number): void {
+      let tr: CRequest;
+      let bin: unknown;
+      let filename: string;
+
+      tr = new CRequest();
+
+      try {
+         tr.load(id);
+
+         // Scrive json:
+         filename = dirOut + tr.request.trim() + ".json";
+         fs.writeFileSync(filename, JSON.stringify(tr.data));
+
+         // Legge le informazioni binarie dalla base dati:
+         bin = tr._select("request_binary", ["r", "k"], [{
+            name: "id",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: tr.id}] as IOption[]
+         }] as IField[])[0];
+
+         // Scrive file binario R:
+         filename = dirOut + "R" + tr.request.trim().slice(4) + "." + tr.request.trim().slice(0, 3);
+         fs.writeFileSync(filename, bin["r"]);
+
+         // Scrive file binario K:
+         filename = dirOut + "K" + tr.request.trim().slice(4) + "." + tr.request.trim().slice(0, 3);
+         fs.writeFileSync(filename, bin["k"]);
+      }
+      catch(e) {
+      }
+      finally {
+         tr = undefined;
+      }
+   }
+
+   /**
     * Costruttore.
     */
    constructor() {
@@ -233,6 +273,7 @@ export default class CRequest extends CBase {
             }] as IField[])[0]["note"] as string;
          }
          catch(e) {
+            this._data.note = "";
          }
       }
    }
@@ -241,7 +282,7 @@ export default class CRequest extends CBase {
     * Restituisce una lista di trasporti che rispondono ai criteri di ricerca.
     * @param where condizione di ricerca.
     */
-   public loadAll(where: SqlGen.IField[]): IRequest[] {
+   public loadAll(where: SqlGen.IField[] = []): IRequest[] {
       return this._select("request", CSqlGen.allField, where) as IRequest[];
    }
 
@@ -456,6 +497,28 @@ export default class CRequest extends CBase {
     * Aggiorna l'indica di ricerca aggiungendo o modificando i dati.
     */
    public search(): void {
+      // Elimina vecchi indici di ricerca:
+      this._delete("search", [{
+         name: "id",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+      }] as IField[]);
+
+      // Genera i nuovi indici di ricerca:
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request}',
+                               '/request/${this.id}', 4)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.description}
+                               ',
+                               '/request/${this.id}', 4)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.owner}',
+                               '/request/${this.id}', 4)`);
+      console.log(this.note.length);
+      if(this.note.length)
+         this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                          VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.note}',
+                                  '/request/${this.id}', 4)`);
    }
 
    /**

@@ -35,6 +35,7 @@ export interface IActivityRequest {
    request: string;
    description: string;
    date: Date;
+   id: number;
 }
 
 export default class CActivity extends CBase {
@@ -320,7 +321,16 @@ export default class CActivity extends CBase {
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
                                '/activity/${this.id}', 3)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.external_ref}',
+                               '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                               '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.functional}',
+                               '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.technical}',
                                '/activity/${this.id}', 3)`);
    }
 }

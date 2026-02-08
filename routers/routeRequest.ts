@@ -5,7 +5,7 @@
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CTool from "../core/CTool";
-import CActivity from "../core/CActivity";
+import CActivity, {IActivityRequest} from "../core/CActivity";
 import CRequest, {IRequestSummarize} from "../core/CRequest";
 
 /**
@@ -230,5 +230,43 @@ router.delete("/:id", (request: Request, response: Response) => {
    }
    finally {
       tr = undefined;
+   }
+});
+
+/**
+ * Effettua la cancellazione fisica della richiesta selezionata.
+ */
+router.get("/export/:id", (request: Request, response: Response) => {
+   let activity: CActivity;
+   let suffix: string;
+   let id: number;
+   let url: string;
+
+   // Scompone l'id per capire da dove arriva la richiesta e quel è la richiesta:
+   suffix = (request.params.id as string).substring(0, 1);
+   id = parseInt((request.params.id as string).substring(1));
+
+   // Gestisce l'export da TR o da attività:
+   try {
+      switch(suffix) {
+         case "T":
+            CRequest.export(id);
+            url = `/request/${id}`;
+            break;
+
+         case "A":
+            activity = new CActivity();
+            activity.load(id);
+            activity.getRequest().forEach(request => {
+               CRequest.export(request.id);
+            });
+            url = `/activity/${id}`;
+            break;
+      }
+   }
+   catch(e) {
+   }
+   finally {
+      response.redirect(url);
    }
 });

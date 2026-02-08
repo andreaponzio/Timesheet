@@ -7,7 +7,7 @@ import CCustomer, {ICustomer} from "../core/CCustomer";
 import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
 import {objectType} from "../core/CBase";
-import CRequest from "../core/CRequest";
+import CRequest, {IRequest} from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
@@ -30,16 +30,20 @@ router.post("/index", (request: Request, response: Response) => {
    let customer: CCustomer;
    let wbs: CWbs;
    let activity: CActivity;
+   let tr: CRequest;
    let customer_data: ICustomer[];
    let wbs_data: IWbs[];
    let activity_data: IActivity[];
+   let tr_data: IRequest[];
 
    customer = new CCustomer();
    wbs = new CWbs();
    activity = new CActivity();
+   tr = new CRequest();
 
    // Aggiornamento clienti:
    if(request.body.customer === "on") {
+      customer.executeRun("DELETE FROM main.search WHERE type = 1;");
       customer_data = customer.loadAll();
       customer_data.forEach(d => {
          customer = new CCustomer();
@@ -51,6 +55,7 @@ router.post("/index", (request: Request, response: Response) => {
 
    // Aggiornamento commesse:
    if(request.body.wbs === "on") {
+      wbs.executeRun("DELETE FROM main.search WHERE type = 2;");
       wbs_data = wbs.loadAll();
       wbs_data.forEach(d => {
          wbs = new CWbs();
@@ -62,12 +67,25 @@ router.post("/index", (request: Request, response: Response) => {
 
    // Aggiornamento attività:
    if(request.body.activity === "on") {
+      activity.executeRun("DELETE FROM main.search WHERE type = 3;");
       activity_data = activity.loadAll();
       activity_data.forEach(d => {
          activity = new CActivity();
          activity.load(d.id);
          activity.search();
          activity = undefined;
+      });
+   }
+
+   // Aggiornamento richiesta di trasporto:
+   if(request.body.request === "on") {
+      tr.executeRun("DELETE FROM main.search WHERE type = 4;");
+      tr_data = tr.loadAll();
+      tr_data.forEach(d => {
+         tr = new CRequest();
+         tr.load(d.id);
+         tr.search();
+         tr = undefined;
       });
    }
 

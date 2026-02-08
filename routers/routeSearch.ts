@@ -31,6 +31,7 @@ router.post("/", (request: Request, response: Response) => {
                          FROM main.search
                          WHERE data LIKE '%${request.body.search}%'
                          GROUP BY url;`) as ISearch[];
+
    // Visualizza dati:
    response.render("app", {
       view: objectType.search,
