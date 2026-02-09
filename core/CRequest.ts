@@ -490,6 +490,10 @@ export default class CRequest extends CBase {
             name: "id",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
+         this._delete("request_note", [{
+            name: "id",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+         }] as IField[]);
       }
    }
 
