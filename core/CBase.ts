@@ -34,7 +34,8 @@ export enum objectType {
    search,
    index,
    prodsys,
-   tr_status
+   tr_status,
+   sendsap
 }
 export enum activityType {
    change_request = 1,

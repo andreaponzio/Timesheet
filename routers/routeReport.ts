@@ -98,6 +98,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
    let week: IWeekWorkday[] = [];
    let data: IExcel[];
    let date: string[];
+   let description: string;
    let counter: number = 0;
    let workbook: any;
    let worksheet: any;
@@ -131,15 +132,14 @@ router.get("/week/:id", (request: Request, response: Response) => {
          {header: "Giorno", key: "day", width: 10},
          {header: "Ore", key: "hour", width: 8},
          {header: "Extrainfo", key: "extrainfo", width: 10},
-         {header: "Note", key: "note", width: 80},
-         {header: "Descrizione", key: "activity_description", width: 80},
-         {header: "Rif. interno", key: "activity_internal_ref", width: 80},
          {header: "WBS", key: "wbs_internal_ref", width: 25},
+         {header: "Descrizione", key: "description", width: 80},
+         {header: "Rif. interno", key: "activity_internal_ref", width: 80},
          {header: "Luogo", key: "place", width: 20},
       ];
 
       // Assegna colore all'intestazione di colonna:
-      for(col = 1; col < 10; col++) {
+      for(col = 1; col < 9; col++) {
          switch(col) {
             case 1:
                cell = worksheet.getCell("A1");
@@ -172,10 +172,6 @@ router.get("/week/:id", (request: Request, response: Response) => {
             case 8:
                cell = worksheet.getCell("H1");
                break;
-
-            case 9:
-               cell = worksheet.getCell("I1");
-               break;
          }
          cell.font = {bold: true};
          cell.fill = {
@@ -187,18 +183,21 @@ router.get("/week/:id", (request: Request, response: Response) => {
       }
 
       // Valorizza righe:
-      for(let r of data)
+      for(let r of data) {
+         description = r.activity_description;
+         if(r.note.length > 0)
+            description = `${r.activity_internal_ref} - ${r.note}`;
          worksheet.addRow({
             date: r.date,
             day: new Date(r.date).getDate(),
             hour: r.hour,
             extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
-            note: r.note,
-            activity_description: r.activity_description,
-            activity_internal_ref: r.activity_internal_ref,
             wbs_internal_ref: r.wbs_internal_ref,
+            description: description,
+            activity_internal_ref: r.activity_internal_ref,
             place: r.place
          });
+      }
    }
 
    // Scrive file Excel e riporta nella pagina principale:

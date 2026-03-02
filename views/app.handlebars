@@ -17,7 +17,7 @@
             </a></li>
             <li><a class="dropdown-item p-2" href="/tools/prodsys">
                <i class="bi bi-server"></i>
-               Imposta sistemi produttivi per TR...
+               Imposta sistemi produttivi per TR
             </a></li>
          </ul>
       </div>
@@ -38,7 +38,10 @@
             <i class="bi bi-gear"></i>
          </button>
          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#"></a></li>
+            <li><a class="dropdown-item p-2" href="/tools/sendsap">
+               <i class="bi bi-upload"></i>
+               Trasferisci dati a SAP
+            </a></li>
          </ul>
       </div>
    </div>
@@ -139,6 +142,7 @@
          {{#eq view 19}} {{> tools/index}} {{/eq}}
          {{#eq view 20}} {{> tools/prodsys}} {{/eq}}
          {{#eq view 21}} {{> request/trstatus}} {{/eq}}
+         {{#eq view 22}} {{> tools/sendsap}} {{/eq}}
       </div>
    </div>
 </div>

@@ -8,6 +8,34 @@ import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
 import {objectType} from "../core/CBase";
 import CRequest, {IRequest} from "../core/CRequest";
+import {sap} from "../public/config.json";
+import {executeHttpRequest, HttpResponse} from '@sap-cloud-sdk/http-client';
+import CWorkday, {IWorkday} from "../core/CWorkday";
+import {buildRequestWithMergedHeadersAndQueryParameters} from "@sap-cloud-sdk/http-client/dist/http-client";
+
+/**
+ * Funzioni locali.
+ */
+let sendData = async(system: object, entrypoint: string, data: any) => {
+   let httpResponse: HttpResponse;
+
+   httpResponse = await executeHttpRequest({
+         type: "HTTP",
+         sapClient: system["client"],
+         url: `${system["server"]}${entrypoint}`,
+         authentication: "BasicAuthentication",
+         username: "DEVELOPER",
+         password: "Skynet"
+      },
+      {
+         method: "POST",
+         dataType: "json",
+         data: data
+      },
+      {
+         fetchCsrfToken: true
+      });
+}
 
 /**
  * Dichiarazioni locali.
@@ -160,4 +188,80 @@ router.delete("/prodsys", (request: Request, response: Response) => {
 
    // Riporta sulla pagina principale:
    response.redirect("/tools/prodsys");
+});
+
+/**
+ * Permette di trasferire a un sistema SAP i dati delle tabelle. I sistemi SAP
+ * sono nel file di configurazione.
+ */
+router.get("/sendsap", (request: Request, response: Response) => {
+   response.render("app", {
+      view: objectType.sendsap,
+      data: sap
+   });
+});
+
+/**
+ * Genera oggetti JSON da inviare al sistema SAP specificato.
+ */
+router.post("/sendsap", async(request: Request, response: Response) => {
+   let system: object;
+   let customer: CCustomer;
+   let wbs: CWbs;
+   let activity: CActivity;
+   let tr: CRequest;
+   let wk: CWorkday;
+
+   let customer_data: ICustomer[];
+   let wbs_data: IWbs[];
+   let activity_data: IActivity[];
+   let tr_data_all: IRequest[];
+   let wk_data: IWorkday[];
+
+   // Se non è stato selezionato un sistema non prosegue:
+   if(request.body.sap.length > 0) {
+      system = sap.find(s => s.id === request.body.sap);
+
+      // Clienti:
+      if(request.body.customer == "on") {
+         customer = new CCustomer();
+         customer_data = customer.loadAll();
+         await sendData(system, "/customer/all", customer_data);
+      }
+
+      // Commesse:
+      if(request.body.wbs == "on") {
+         wbs = new CWbs();
+         wbs_data = wbs.loadAll();
+         await sendData(system, "/wbs/all", wbs_data);
+      }
+
+      // Attività:
+      if(request.body.activity == "on") {
+         activity = new CActivity();
+         activity_data = activity.loadAll();
+         await sendData(system, "/activity/all", activity_data);
+      }
+
+      // Trasporti:
+      if(request.body.request == "on") {
+         tr = new CRequest();
+         tr_data_all = tr.loadAll();
+         for await (let r of tr_data_all) {
+            tr = new CRequest();
+            tr.load(r.id);
+            await sendData(system, "/request/all", [tr.data]);
+         }
+      }
+
+      // Consuntivazione:
+      if(request.body.workday == "on") {
+         wk = new CWorkday();
+         wk_data = wk.loadAll();
+         await sendData(system, "/workday/all", wk_data);
+      }
+   }
+
+   // Riporta alla pagina principale al termine:
+   response.redirect("/");
 });

@@ -2,5 +2,13 @@
    "filename": "./data.sqlite",
    "port": 49152,
    "dirIn": "../import/",
-   "dirOut": "../export/"
+   "dirOut": "../export/",
+   "sap": [
+      {
+         "description": "Sistema locale di sviluppo",
+         "id": "A0D",
+         "server": "http://192.168.0.103:8000/timesheet",
+         "client": 800
+      }
+   ]
 }

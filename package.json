@@ -18,6 +18,7 @@
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "dependencies": {
+      "@sap-cloud-sdk/http-client": "^4.4.0",
       "@types/exceljs": "^0.5.3",
       "@types/express": "^5.0.5",
       "@types/express-handlebars": "^5.3.1",
