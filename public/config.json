@@ -1,7 +1,7 @@
 {
    "filename": "../data/data.sqlite",
    "port": 49152,
-   "dirIn": "../import/",
+   "dirOut": "../import/",
    "dirOut": "../export/",
    "sap": [
       {

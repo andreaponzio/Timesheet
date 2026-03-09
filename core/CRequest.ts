@@ -6,13 +6,12 @@ import CBase, {IBase, numericInterval} from "./CBase";
 import * as fs from "node:fs";
 import {Buffer} from "node:buffer";
 import {SqlGen} from "./CSqlGen";
-import {dirIn, dirOut} from "../public/config.json";
+import {dirOut} from "../public/config.json";
 import CSqlGen = SqlGen.CSqlGen;
 import IOption = SqlGen.IOption;
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import * as assert from "node:assert";
 
 export interface IRequestObject {
    as4pos: number;
@@ -151,15 +150,15 @@ export default class CRequest extends CBase {
             tr.clean();
 
             // Inserisce json:
-            filename = dirIn + r.trim() + ".json";
+            filename = dirOut + r.trim() + ".json";
             data = JSON.parse(fs.readFileSync(filename, "utf8"));
             tr.fillFromJson(activity, data);
             tr.save();
 
             // Inserisce binari per file R e K:
-            filename = dirIn + "R" + r.trim().slice(4) + "." + r.trim().slice(0, 3);
+            filename = `${dirOut}R${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
             rbin = fs.readFileSync(filename);
-            filename = dirIn + "K" + r.trim().slice(4) + "." + r.trim().slice(0, 3);
+            filename = `${dirOut}K${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
             kbin = fs.readFileSync(filename);
             tr.execute("INSERT INTO request_binary (id, r, k) VALUES(?, ?, ?);", tr.id, rbin, kbin);
          }
@@ -186,7 +185,7 @@ export default class CRequest extends CBase {
          tr.load(id);
 
          // Scrive json:
-         filename = dirOut + tr.request.trim() + ".json";
+         filename = `${dirOut}${tr.request.trim()}.json`;
          fs.writeFileSync(filename, JSON.stringify(tr.data));
 
          // Legge le informazioni binarie dalla base dati:
@@ -196,17 +195,16 @@ export default class CRequest extends CBase {
          }] as IField[])[0];
 
          // Scrive file binario R:
-         filename = dirOut + "R" + tr.request.trim().slice(4) + "." + tr.request.trim().slice(0, 3);
+         filename = `${dirOut}R${tr.request.trim().slice(4)}.${tr.request.trim().slice(0, 3)}`;
          fs.writeFileSync(filename, bin["r"]);
 
          // Scrive file binario K:
-         filename = dirOut + "K" + tr.request.trim().slice(4) + "." + tr.request.trim().slice(0, 3);
+         filename = `${dirOut}K${tr.request.trim().slice(4)}.${tr.request.trim().slice(0, 3)}`;
          fs.writeFileSync(filename, bin["k"]);
       }
       catch(e) {
       }
       finally {
-         tr = undefined;
       }
    }
 

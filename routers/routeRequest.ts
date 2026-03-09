@@ -7,6 +7,8 @@ import {objectType} from "../core/CBase";
 import CTool from "../core/CTool";
 import CActivity, {IActivityRequest} from "../core/CActivity";
 import CRequest, {IRequestSummarize} from "../core/CRequest";
+import {dirOut} from "../public/config.json";
+import fs from "node:fs";
 
 /**
  * Funzioni locali.
@@ -237,10 +239,12 @@ router.delete("/:id", (request: Request, response: Response) => {
  * Effettua la cancellazione fisica della richiesta selezionata.
  */
 router.get("/export/:id", (request: Request, response: Response) => {
+   let listOfRequest: string[] = [];
    let activity: CActivity;
    let suffix: string;
    let id: number;
    let url: string;
+   let filename: string;
 
    // Scompone l'id per capire da dove arriva la richiesta e quel è la richiesta:
    suffix = (request.params.id as string).substring(0, 1);
@@ -258,8 +262,13 @@ router.get("/export/:id", (request: Request, response: Response) => {
             activity = new CActivity();
             activity.load(id);
             activity.getRequest().forEach(request => {
+               listOfRequest.push(request.request);
                CRequest.export(request.id);
             });
+
+            filename = `${dirOut}list.txt`;
+            fs.writeFileSync(filename, listOfRequest.reverse().join("\n"));
+
             url = `/activity/${id}`;
             break;
       }
