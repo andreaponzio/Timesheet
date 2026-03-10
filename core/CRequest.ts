@@ -6,7 +6,7 @@ import CBase, {IBase, numericInterval} from "./CBase";
 import * as fs from "node:fs";
 import {Buffer} from "node:buffer";
 import {SqlGen} from "./CSqlGen";
-import {dirOut} from "../public/config.json";
+import {dirIn, dirOut} from "../public/config.json";
 import CSqlGen = SqlGen.CSqlGen;
 import IOption = SqlGen.IOption;
 import IField = SqlGen.IField;
@@ -150,15 +150,15 @@ export default class CRequest extends CBase {
             tr.clean();
 
             // Inserisce json:
-            filename = dirOut + r.trim() + ".json";
+            filename = dirIn + r.trim() + ".json";
             data = JSON.parse(fs.readFileSync(filename, "utf8"));
             tr.fillFromJson(activity, data);
             tr.save();
 
             // Inserisce binari per file R e K:
-            filename = `${dirOut}R${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
+            filename = `${dirIn}R${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
             rbin = fs.readFileSync(filename);
-            filename = `${dirOut}K${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
+            filename = `${dirIn}K${r.trim().slice(4)}.${r.trim().slice(0, 3)}`;
             kbin = fs.readFileSync(filename);
             tr.execute("INSERT INTO request_binary (id, r, k) VALUES(?, ?, ?);", tr.id, rbin, kbin);
          }
