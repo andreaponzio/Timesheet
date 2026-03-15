@@ -2,7 +2,7 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 import CCustomer, {ICustomer} from "../core/CCustomer";
 import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
@@ -11,7 +11,11 @@ import CRequest, {IRequest} from "../core/CRequest";
 import {sap} from "../public/config.json";
 import {executeHttpRequest, HttpResponse} from '@sap-cloud-sdk/http-client';
 import CWorkday, {IWorkday} from "../core/CWorkday";
-import {buildRequestWithMergedHeadersAndQueryParameters} from "@sap-cloud-sdk/http-client/dist/http-client";
+import {SqlGen} from "../core/CSqlGen";
+import IField = SqlGen.IField;
+import Sign = SqlGen.Sign;
+import IOption = SqlGen.IOption;
+import Option = SqlGen.Option;
 
 /**
  * Funzioni locali.
@@ -264,4 +268,68 @@ router.post("/sendsap", async(request: Request, response: Response) => {
 
    // Riporta alla pagina principale al termine:
    response.redirect("/");
+});
+
+/**
+ * Permette di copiare o spostare i dati di un'attività su un'altra.
+ */
+router.get("/copyact", (request: Request, response: Response) => {
+   let activity: CActivity;
+   let activity_list: IActivity[];
+
+   activity = new CActivity();
+   activity_list = activity.loadAll([{
+      name: "status",
+      value: [{sign: Sign.EXCLUDE, option: Option.BETWEEN, low: 4, high: 5}] as IOption[]
+   }] as IField[]);
+
+   response.render("app", {
+      view: objectType.copyact,
+      data: activity_list
+   });
+});
+
+/**
+ * Copia o sposta i dati da un'attività a un'altra.
+ */
+router.post("/copyact", (request: Request, response: Response) => {
+   let source: CActivity;
+   let target: CActivity;
+   let workday: CWorkday;
+   let tr: CRequest;
+   let workday_clone: CWorkday;
+   let tr_clone: CRequest;
+
+   source = new CActivity();
+   target = new CActivity();
+
+   source.load(parseInt(request.body.source));
+   target.load(parseInt(request.body.target));
+
+   // Copia consuntivazioni:
+   source.getWorkday().forEach((w) => {
+      workday = new CWorkday();
+      workday.load(w.id);
+      workday_clone = workday.clone();
+      workday_clone.activity = target.id;
+      workday_clone.save();
+      if(request.body.move === "on")
+         workday.delete();
+      workday = workday_clone = undefined;
+   });
+
+   // Copia richieste di trasporto:
+   source.getRequest().forEach((r) => {
+      tr = new CRequest();
+      tr.load(r.id);
+      tr_clone = tr.clone(target.id);
+      if(tr_clone !== undefined) {
+         tr_clone.save();
+         if(request.body.move === "on")
+            tr.delete();
+      }
+      tr = tr_clone = undefined;
+   });
+
+   response.redirect("/activity");
 });

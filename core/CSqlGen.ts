@@ -152,6 +152,10 @@ export namespace SqlGen {
                         throw new Error();
                   }
 
+                  // Gestisce l'esclusione:
+                  if(c.sign === Sign.EXCLUDE)
+                     conditionPart1 = `NOT ${conditionPart1}`;
+
                   // Aggiunge operatore logico solo se non si tratta dell'ultimo elemento:
                   if(last !== f.value.length) {
                      if(f.operator)

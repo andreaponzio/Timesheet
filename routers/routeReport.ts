@@ -130,16 +130,15 @@ router.get("/week/:id", (request: Request, response: Response) => {
       worksheet.columns = [
          {header: "Data", key: "date", width: 20},
          {header: "Giorno", key: "day", width: 10},
-         {header: "Ore", key: "hour", width: 8},
-         {header: "Extrainfo", key: "extrainfo", width: 10},
          {header: "WBS", key: "wbs_internal_ref", width: 25},
+         {header: "Ore", key: "hour", width: 4},
          {header: "Descrizione", key: "description", width: 80},
-         {header: "Rif. interno", key: "activity_internal_ref", width: 80},
-         {header: "Luogo", key: "place", width: 20},
+         {header: "Luogo", key: "place", width: 10},
+         {header: "Extrainfo", key: "extrainfo", width: 10},
       ];
 
       // Assegna colore all'intestazione di colonna:
-      for(col = 1; col < 9; col++) {
+      for(col = 1; col < 8; col++) {
          switch(col) {
             case 1:
                cell = worksheet.getCell("A1");
@@ -168,10 +167,6 @@ router.get("/week/:id", (request: Request, response: Response) => {
             case 7:
                cell = worksheet.getCell("G1");
                break;
-
-            case 8:
-               cell = worksheet.getCell("H1");
-               break;
          }
          cell.font = {bold: true};
          cell.fill = {
@@ -190,12 +185,11 @@ router.get("/week/:id", (request: Request, response: Response) => {
          worksheet.addRow({
             date: r.date,
             day: new Date(r.date).getDate(),
-            hour: r.hour,
-            extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
             wbs_internal_ref: r.wbs_internal_ref,
+            hour: r.hour,
             description: description,
-            activity_internal_ref: r.activity_internal_ref,
-            place: r.place
+            place: r.place,
+            extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
          });
       }
    }

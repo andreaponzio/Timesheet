@@ -1,0 +1,74 @@
+<h6>Sposta dati attività</h6>
+<ul class="list-group p-2 css-font-size-95">
+   <form id="form" action="/tools/copyact" method="post">
+
+      <div>
+         <label for="source" class="form-label">Attività di partenza</label>
+         <select class="form-select" id="source" name="source" required>
+            <option value="" selected>Seleziona attività</option>
+            {{#each data}}
+               <option value="{{id}}">{{description}} ({{internal_ref}})</option>
+            {{/each}}
+         </select>
+      </div>
+
+      <div class="mt-1">
+         <label for="target" class="form-label">Attività di destinazione</label>
+         <select class="form-select" id="target" name="target" required>
+            <option value="" selected>Seleziona attività</option>
+            {{#each data}}
+               <option value="{{id}}">{{description}} ({{internal_ref}})</option>
+            {{/each}}
+         </select>
+      </div>
+
+      <div class="mt-1">
+         <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="move" name="move">
+            <label class="form-check-label" for="move">
+               Sposta informazioni (elimina dall'attività di partenza)
+            </label>
+         </div>
+      </div>
+
+      <!-- Move or Cancel -->
+      <div class="d-flex d-inline-row mt-2">
+         <div class="spinner-border" role="status" id="wait" hidden></div>
+         <button type="button" class="btn btn-success me-1" id="copy" onclick="moveAct();">
+            <i class="bi bi-copy"></i>
+         </button>
+         <div id="cancel">
+            <a href="/" type="button" class="d-inline-flex btn btn-secondary">
+               <i class="bi bi-x-square"></i>
+            </a>
+         </div>
+      </div>
+   </form>
+</ul>
+
+<script>
+   function moveAct() {
+      let s = document.querySelector("#source").value;
+      let t = document.querySelector("#target").value;
+
+      if(s === "") {
+         document.querySelector(".toast-body").innerText = "Selezionare un'attività di partenza";
+         toast.show();
+      }
+      else if(t === "") {
+         document.querySelector(".toast-body").innerText = "Selezionare un'attività di destinazione";
+         toast.show();
+      }
+      else if(s === t) {
+         document.querySelector(".toast-body").innerText = "Non è possibile selezionare la stessa attività";
+         toast.show();
+      }
+      else
+      {
+         document.querySelector("#copy").hidden = true;
+         document.querySelector("#cancel").hidden = true;
+         document.querySelector("#wait").hidden = false;
+         document.querySelector("#form").submit();
+      }
+   }
+</script>

@@ -19,7 +19,7 @@ export interface IRequestObject {
    object: string;
    obj_name: string;
    objfunc: string;
-   lockfile: string;
+   lockflag: string;
    lang: string;
    activity: string;
 }
@@ -224,6 +224,7 @@ export default class CRequest extends CBase {
       this._data.activity = undefined;
       this._data.request = undefined;
       this._data.type = undefined;
+      this._data.status = undefined;
       this._data.description = undefined;
       this._data.owner = undefined;
       this._data.date = undefined;
@@ -356,7 +357,7 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "lockflag",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.lockfile}] as IOption[]
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.lockflag}] as IOption[]
                   },
                   {
                      name: "lang",
@@ -554,7 +555,7 @@ export default class CRequest extends CBase {
                object: o["OBJECT"],
                obj_name: o["OBJ_NAME"],
                objfunc: o["OBJFUNC"],
-               lockfile: o["LOCKFLAG"],
+               lockflag: o["LOCKFLAG"],
                lang: o["LANG"],
                activity: o["ACTIVITY"]
             } as IRequestObject);
@@ -586,5 +587,29 @@ export default class CRequest extends CBase {
       catch(e) {
          throw e;
       }
+   }
+
+   /**
+    * Permette di clonare tutte le informazioni di una richiesta.
+    */
+   public clone(activity: number): CRequest {
+      let tr: CRequest = undefined
+
+      if(activity !== 0) {
+         tr = new CRequest();
+         tr.data.activity = activity;
+         tr.data.request = this._data.request;
+         tr.data.type = this._data.type;
+         tr.data.status = this._data.status;
+         tr.data.description = this._data.description;
+         tr.data.owner = this._data.owner;
+         tr.data.date = this._data.date;
+         tr.data.object = this._data.object;
+         tr.data.attribute = this._data.attribute;
+         tr.data.cofile = this._data.cofile;
+         tr.data.note = this._data.note;
+      }
+
+      return tr;
    }
 }

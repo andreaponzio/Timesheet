@@ -110,6 +110,9 @@ export default class CDatabase {
     * @return data nel formato SQLite.
     */
    public convertDate(date: Date, notime: number = 0): string {
+      // let dt_tm: String[];
+      // let dt: string[];
+      // let tm: string[];
       let year: string;
       let month: string;
       let day: string;
@@ -119,34 +122,51 @@ export default class CDatabase {
       let result: string = "";
 
       try {
-         year = date.getFullYear().toString().padStart(2, "0");
-         month = (date.getMonth() + 1).toString().padStart(2, "0");
-         day = date.getDate().toString().padStart(2, "0");
-         switch(notime) {
-            case 0:
-               hour = date.getHours().toString().padStart(2, "0");
-               minute = date.getMinutes().toString().padStart(2, "0");
-               second = date.getSeconds().toString().padStart(2, "0");
-               result = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-               break;
+         if(typeof date === "string") {
+            // dt_tm = (date as string).split(" ");
+            // dt = dt_tm[0].split("-");
+            // tm = dt_tm[1].split(":");
+            // year = dt[0];
+            // month = dt[1];
+            // day = dt[2];
+            // hour = tm[0];
+            // minute = tm[1];
+            // second = tm[2];
+            // notime = 4;
+            result = date as string;
+         }
+         else {
+            year = date.getFullYear().toString().padStart(2, "0");
+            month = (date.getMonth() + 1).toString().padStart(2, "0");
+            day = date.getDate().toString().padStart(2, "0");
+            switch(notime) {
+               case 0:
+                  hour = date.getHours().toString().padStart(2, "0");
+                  minute = date.getMinutes().toString().padStart(2, "0");
+                  second = date.getSeconds().toString().padStart(2, "0");
+                  result = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+                  break;
 
-            case 1:
-               hour = "00";
-               minute = "00";
-               second = "00";
-               result = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-               break;
+               case 1:
+                  hour = "00";
+                  minute = "00";
+                  second = "00";
+                  result = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+                  break;
 
-            case 2:
-               result = `${year}-${month}-${day}`;
-               break;
+               case 2:
+                  result = `${year}-${month}-${day}`;
+                  break;
 
-            case 3:
-               hour = date.getHours().toString().padStart(2, "0");
-               minute = date.getMinutes().toString().padStart(2, "0");
-               second = date.getSeconds().toString().padStart(2, "0");
-               result = `${year}-${month}-${day}T${hour}:${minute}:${second}.000`;
-               break;
+               case 3:
+                  hour = date.getHours().toString().padStart(2, "0");
+                  minute = date.getMinutes().toString().padStart(2, "0");
+                  second = date.getSeconds().toString().padStart(2, "0");
+                  result = `${year}-${month}-${day}T${hour}:${minute}:${second}.000`;
+                  break;
+
+               default:
+            }
          }
 
          return result;

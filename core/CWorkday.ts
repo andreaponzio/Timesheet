@@ -244,4 +244,21 @@ export default class CWorkday extends CBase {
     */
    public search(): void {
    }
+
+   /**
+    * Permette di clonare una consuntivazione.
+    */
+   public clone(): CWorkday {
+      let w: CWorkday;
+
+      w = new CWorkday();
+      w.activity = this.activity;
+      w.date = this.date;
+      w.hour = this.hour;
+      w.extrainfo = this.extrainfo;
+      w.place = this.place;
+      w.note = this.note;
+
+      return w;
+   }
 }
