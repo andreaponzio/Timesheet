@@ -16,6 +16,8 @@ import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import IOption = SqlGen.IOption;
 import Option = SqlGen.Option;
+import {dirOut} from "../public/config.json";
+import fs from "node:fs";
 
 /**
  * Funzioni locali.
@@ -332,4 +334,96 @@ router.post("/copyact", (request: Request, response: Response) => {
    });
 
    response.redirect("/activity");
+});
+
+/**
+ * Pagina principale per esportazione DB in JSON.
+ */
+router.get("/backup", (request: Request, response: Response) => {
+   response.render("app", {
+      view: objectType.backup
+   });
+});
+
+/**
+ * Effettua esportazione degli oggetti selezionati.
+ */
+router.post("/backup", (request: Request, response: Response) => {
+   let customer: CCustomer;
+   let wbs: CWbs;
+   let activity: CActivity;
+   let tr: CRequest;
+   let workday: CWorkday;
+   let customer_data: ICustomer[];
+   let wbs_data: IWbs[];
+   let activity_data: IActivity[];
+   let tr_data: IRequest[];
+   let workday_data: IWorkday[];
+   let data: object[] = [];
+   let filename: string;
+
+   customer = new CCustomer();
+   wbs = new CWbs();
+   activity = new CActivity();
+   tr = new CRequest();
+   workday = new CWorkday();
+
+   // Scarico clienti:
+   data = [];
+   if(request.body.customer === "on") {
+      customer_data = customer.loadAll();
+      customer_data.forEach(d => {
+         data.push(d);
+      });
+      filename = `${dirOut}customer.json`;
+      fs.writeFileSync(filename, JSON.stringify(data));
+   }
+
+   // Scarico commesse:
+   data = [];
+   if(request.body.wbs === "on") {
+      wbs_data = wbs.loadAll();
+      wbs_data.forEach(d => {
+         data.push(d);
+      });
+      filename = `${dirOut}wbs.json`;
+      fs.writeFileSync(filename, JSON.stringify(data));
+   }
+
+   // Scarico attività:
+   data = [];
+   if(request.body.activity === "on") {
+      activity_data = activity.loadAll();
+      activity_data.forEach(d => {
+         data.push(d);
+      });
+      filename = `${dirOut}activity.json`;
+      fs.writeFileSync(filename, JSON.stringify(data));
+   }
+
+   // Scarico richiesta di trasporto:
+   data = [];
+   if(request.body.request === "on") {
+      tr_data = tr.loadAll();
+      tr_data.forEach(d => {
+         tr.load(d.id);
+         data.push(tr.data);
+      });
+      filename = `${dirOut}request.json`;
+      fs.writeFileSync(filename, JSON.stringify(data));
+   }
+
+   // Scarico consuntivazioni:
+   data = [];
+   if(request.body.workday === "on") {
+      workday_data = workday.loadAll();
+      workday_data.forEach(d => {
+         data.push(d);
+      });
+      filename = `${dirOut}workday.json`;
+      fs.writeFileSync(filename, JSON.stringify(data));
+   }
+
+   // Riporta sulla pagina principale:
+   response.redirect("/");
 });

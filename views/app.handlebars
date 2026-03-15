@@ -43,8 +43,12 @@
          </button>
          <ul class="dropdown-menu">
             <li><a class="dropdown-item p-2" href="/tools/sendsap">
-               <i class="bi bi-upload"></i>
+               <i class="bi bi-send"></i>
                Trasferisci dati a SAP
+            </a></li>
+            <li><a class="dropdown-item p-2" href="/tools/backup">
+               <i class="bi bi-download"></i>
+               Backup DB in JSON file
             </a></li>
          </ul>
       </div>
@@ -148,6 +152,7 @@
          {{#eq view 21}} {{> request/trstatus}} {{/eq}}
          {{#eq view 22}} {{> tools/sendsap}} {{/eq}}
          {{#eq view 23}} {{> tools/copyact}} {{/eq}}
+         {{#eq view 24}} {{> tools/backup}} {{/eq}}
       </div>
    </div>
 </div>

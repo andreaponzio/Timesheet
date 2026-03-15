@@ -36,7 +36,8 @@ export enum objectType {
    prodsys,
    tr_status,
    sendsap,
-   copyact
+   copyact,
+   backup
 }
 export enum activityType {
    change_request = 1,
