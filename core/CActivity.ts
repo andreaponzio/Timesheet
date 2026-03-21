@@ -317,20 +317,20 @@ export default class CActivity extends CBase {
       }] as IField[]);
 
       // Genera i nuovi indici di ricerca:
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
-                               '/activity/${this.id}', 3)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description}', '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.external_ref}',
-                               '/activity/${this.id}', 3)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description}', '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
-                               '/activity/${this.id}', 3)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description}', '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.functional}',
-                               '/activity/${this.id}', 3)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description}', '/activity/${this.id}', 3)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.technical}',
-                               '/activity/${this.id}', 3)`);
+                               '${this.description}', '/activity/${this.id}', 3)`);
    }
 }

@@ -507,20 +507,20 @@ export default class CRequest extends CBase {
       }] as IField[]);
 
       // Genera i nuovi indici di ricerca:
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request}',
+                               '${this.description}', '/request/${this.id}', 4)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.request} - ${this.description}', '${this.description}', 
                                '/request/${this.id}', 4)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.description}
-                               ',
-                               '/request/${this.id}', 4)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.owner}',
-                               '/request/${this.id}', 4)`);
+                               '${this.description}', '/request/${this.id}', 4)`);
       if(this.note.length)
-         this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+         this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                           VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.note}',
-                                  '/request/${this.id}', 4)`);
+                                  '${this.description}', '/request/${this.id}', 4)`);
    }
 
    /**

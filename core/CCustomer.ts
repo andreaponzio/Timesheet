@@ -153,8 +153,8 @@ export default class CCustomer extends CBase {
       }] as IField[]);
 
       // Genera i nuovi indici di ricerca:
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
-                               '/customer/${this.id}', 1)`);
+                               '${this.description}', '/customer/${this.id}', 1)`);
    }
 }

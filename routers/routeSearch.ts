@@ -27,7 +27,7 @@ router.post("/", (request: Request, response: Response) => {
 
    // Effettua ricerca:
    db = new CDatabase();
-   data = db.executeAll(`SELECT id, data, url, type
+   data = db.executeAll(`SELECT id, data, description, url, type
                          FROM main.search
                          WHERE data LIKE '%${request.body.search}%'
                          GROUP BY url;`) as ISearch[];

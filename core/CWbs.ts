@@ -201,14 +201,14 @@ export default class CWbs extends CBase {
       }] as IField[]);
 
       // Genera i nuovi indici di ricerca:
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
-                               '/wbs/${this.id}', 2)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description1}', '/wbs/${this.id}', 2)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description1}',
-                               '/wbs/${this.id}', 2)`);
-      this.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                               '${this.description1}', '/wbs/${this.id}', 2)`);
+      this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description2}',
-                               '/wbs/${this.id}', 2)`);
+                               '${this.description1}', '/wbs/${this.id}', 2)`);
    }
 }
