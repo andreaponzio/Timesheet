@@ -130,9 +130,9 @@ router.get("/week/:id", (request: Request, response: Response) => {
       worksheet.columns = [
          {header: "Data", key: "date", width: 20},
          {header: "Giorno", key: "day", width: 10},
-         {header: "WBS", key: "wbs_internal_ref", width: 25},
          {header: "Ore", key: "hour", width: 4},
          {header: "Descrizione", key: "description", width: 80},
+         {header: "WBS", key: "wbs_internal_ref", width: 25},
          {header: "Luogo", key: "place", width: 10},
          {header: "Extrainfo", key: "extrainfo", width: 10},
       ];
@@ -185,9 +185,9 @@ router.get("/week/:id", (request: Request, response: Response) => {
          worksheet.addRow({
             date: r.date,
             day: new Date(r.date).getDate(),
-            wbs_internal_ref: r.wbs_internal_ref,
             hour: r.hour,
             description: description,
+            wbs_internal_ref: r.wbs_internal_ref,
             place: r.place,
             extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
          });
