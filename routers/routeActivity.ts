@@ -227,7 +227,7 @@ router.post("/request/:id", (request: Request, response: Response) => {
    error = "";
 
    try {
-      listOfRequest = (request.body.rrequest as string).split(";");
+      listOfRequest = (request.body.rrequest as string).split("\r\n");
       activity = parseInt(request.params.id as string);
       CRequest.import(activity, listOfRequest);
       response.redirect(`/activity/${activity}`);

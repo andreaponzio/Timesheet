@@ -126,7 +126,8 @@ export default class CRequest extends CBase {
       minute = parseInt(time.slice(3, 5));
       second = parseInt(time.slice(6, 8));
 
-      return new Date(year, month, day, hour, minute, second);
+      // Bisogna ricordarsi che i mesi in JS partono da zero (Gennaio):
+      return new Date(year, month - 1, day, hour, minute, second);
    }
 
    /**
@@ -517,7 +518,7 @@ export default class CRequest extends CBase {
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.owner}',
                                '${this.description}', '/request/${this.id}', 4)`);
-      if(this.note.length)
+      if(this.note !== undefined && this.note.length)
          this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                           VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.note}',
                                   '${this.description}', '/request/${this.id}', 4)`);
