@@ -97,7 +97,7 @@ router.post("/:id", (request: Request, response: Response) => {
          o.load(parseInt(request.params.id as string));
       o.activity = parseInt(request.body.activity);
       o.date = new Date(request.body.date);
-      o.hour = parseInt(request.body.hour);
+      o.hour = parseFloat(request.body.hour);
       o.extrainfo = request.body.extrainfo;
       o.place = request.body.place;
       o.note = request.body.note;

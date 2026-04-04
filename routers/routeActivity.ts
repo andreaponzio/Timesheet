@@ -114,7 +114,7 @@ router.post("/:id", (request: Request, response: Response) => {
       o.wbs = parseInt(request.body.wbs);
       o.functional = request.body.functional;
       o.technical = request.body.technical;
-      o.hour = isNaN(parseInt(request.body.hour)) ? 0 : parseInt(request.body.hour);
+      o.hour = isNaN(parseFloat(request.body.hour)) ? 0 : parseFloat(request.body.hour);
       o.status = parseInt(request.body.status);
       o.note = request.body.note;
       o.save();
@@ -206,7 +206,7 @@ router.post("/workday/:id", (request: Request, response: Response) => {
    try {
       o.activity = parseInt(request.params.id as string);
       o.date = new Date(request.body.rwdate);
-      o.hour = parseInt(request.body.rwhour);
+      o.hour = parseFloat(request.body.rwhour);
       o.place = request.body.rwplace;
       o.extrainfo = extraInfo.normale;
       o.note = request.body.rwnote;
