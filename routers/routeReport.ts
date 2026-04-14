@@ -186,7 +186,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
             date: r.date,
             day: new Date(r.date).getDate(),
             hour: r.hour,
-            description: description,
+            description: `${description} (${r.functional})`,
             wbs_internal_ref: r.wbs_internal_ref,
             place: r.place,
             extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),
