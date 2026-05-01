@@ -18,6 +18,7 @@ import CRequest from "../core/CRequest";
 interface IExcel {
    date: string;
    hour: number;
+   mergenote: string,
    extrainfo: string;
    note: string;
    activity_description: string;
@@ -179,14 +180,22 @@ router.get("/week/:id", (request: Request, response: Response) => {
 
       // Valorizza righe:
       for(let r of data) {
-         description = r.activity_description;
-         if(r.note.length > 0)
-            description = `${r.activity_internal_ref} - ${r.note}`;
+
+         if(r.activity_description.length > 0 && r.note.length === 0)
+            description = r.activity_description;
+         else if(r.activity_description.length !== 0 && r.note.length !== 0 && r.mergenote === "0")
+            description = `${r.activity_internal_ref} ${r.note}`;
+         else if(r.activity_description.length !== 0 && r.note.length !== 0 && r.mergenote === "1")
+            description = `${r.activity_description} - ${r.note}`;
+
+         // @ts-ignore
+         description = `${description} ${r.functional}`;
+
          worksheet.addRow({
             date: r.date,
             day: new Date(r.date).getDate(),
             hour: r.hour,
-            description: `${description} (${r.functional})`,
+            description: description,
             wbs_internal_ref: r.wbs_internal_ref,
             place: r.place,
             extrainfo: CTool.convertExtraInfo(parseInt(r.extrainfo)),

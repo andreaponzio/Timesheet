@@ -20,6 +20,7 @@ export interface IActivity extends IBase {
    functional: string;
    technical: string;
    hour: number;
+   mergenote: string;
    status: number;
    note: string
 }
@@ -75,6 +76,9 @@ export default class CActivity extends CBase {
    get status(): number {
       return this._data.status;
    }
+   get mergenote():string {
+      return this._data.mergenote;
+   }
    get note(): string {
       return this._data.note;
    }
@@ -101,6 +105,9 @@ export default class CActivity extends CBase {
    }
    set hour(value: number) {
       this._data.hour = value;
+   }
+   set mergenote(value: string) {
+      this._data.mergenote = value;
    }
    set status(value: number) {
       this._data.status = value;
@@ -246,6 +253,14 @@ export default class CActivity extends CBase {
                   {
                      name: "hour",
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.hour}] as IOption[]
+                  },
+                  {
+                     name: "mergenote",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.mergenote}] as IOption[]
+                  },
+                  {
+                     name: "mergenote",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.mergenote}] as IOption[]
                   },
                   {
                      name: "status",

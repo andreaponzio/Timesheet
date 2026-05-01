@@ -78,6 +78,7 @@ router.get("/:id", (request: Request, response: Response) => {
                functional: o.functional,
                technical: o.technical,
                hour: o.hour,
+               mergenote: o.mergenote,
                status: o.status,
                note: o.note,
                wbs_id: w.id,
@@ -115,6 +116,7 @@ router.post("/:id", (request: Request, response: Response) => {
       o.functional = request.body.functional;
       o.technical = request.body.technical;
       o.hour = isNaN(parseFloat(request.body.hour)) ? 0 : parseFloat(request.body.hour);
+      o.mergenote = request.body.mergenote === "on" ? "1" : "0";
       o.status = parseInt(request.body.status);
       o.note = request.body.note;
       o.save();
