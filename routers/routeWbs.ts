@@ -69,6 +69,7 @@ router.get("/:id", (request: Request, response: Response) => {
                description: c.description,
                description1: o.description1,
                description2: o.description2,
+               status: o.status,
                activity: o.getActivity(),
                customer_list: listOfCustomer(o)
             }
@@ -90,6 +91,7 @@ router.post("/:id", (request: Request, response: Response) => {
       o.customer = parseInt(request.body.customer);
       o.description1 = request.body.description1;
       o.description2 = request.body.description2;
+      o.status = request.body.status;
       o.save();
       response.redirect("/wbs");
    }

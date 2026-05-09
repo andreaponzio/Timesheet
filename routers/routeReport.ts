@@ -180,16 +180,19 @@ router.get("/week/:id", (request: Request, response: Response) => {
 
       // Valorizza righe:
       for(let r of data) {
+         description = "";
 
-         if(r.activity_description.length > 0 && r.note.length === 0)
-            description = r.activity_description;
-         else if(r.activity_description.length !== 0 && r.note.length !== 0 && r.mergenote === "0")
-            description = `${r.activity_internal_ref} ${r.note}`;
-         else if(r.activity_description.length !== 0 && r.note.length !== 0 && r.mergenote === "1")
+         if(r.mergenote === "0" && r.note.length)
+            description = `${r.activity_internal_ref} - ${r.note}`;
+         else if(r.mergenote === "1" && r.note.length)
             description = `${r.activity_description} - ${r.note}`;
+         else
+            description = `${r.activity_description}`;
 
          // @ts-ignore
-         description = `${description} ${r.functional}`;
+         if(r.functional.length)
+            // @ts-ignore
+            description = `${description} (${r.functional})`;
 
          worksheet.addRow({
             date: r.date,

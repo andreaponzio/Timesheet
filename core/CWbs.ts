@@ -15,6 +15,7 @@ export interface IWbs extends IBase {
    internal_ref: string;
    description1: string;
    description2: string;
+   status: number;
 }
 export interface IWbsSummarize {
    id: number;
@@ -47,6 +48,9 @@ export default class CWbs extends CBase {
    get description2(): string {
       return this._data.description2;
    }
+   get status(): number {
+      return this._data.status;
+   }
    set customer(value: number) {
       this._data.customer = value;
    }
@@ -58,6 +62,9 @@ export default class CWbs extends CBase {
    }
    set description2(value: string) {
       this._data.description2 = value;
+   }
+   set status(value: number) {
+      this._data.status = value;
    }
 
    /**
@@ -132,6 +139,10 @@ export default class CWbs extends CBase {
                   {
                      name: "description2",
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description2}] as IOption[]
+                  },
+                  {
+                     name: "status",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
                   }] as IField[]
             );
          }
@@ -149,6 +160,10 @@ export default class CWbs extends CBase {
                   {
                      name: "description2",
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description2}] as IOption[]
+                  },
+                  {
+                     name: "status",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
                   }
                ] as IField[]);
          }

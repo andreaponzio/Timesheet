@@ -14,7 +14,7 @@ import CRequest from "../core/CRequest";
  * Funzioni locali.
  */
 let listOfWbs = (object: CActivity): IWbs[] => {
-   return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs") as IWbs[];
+   return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs WHERE status = 1") as IWbs[];
 }
 
 /**

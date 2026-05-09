@@ -25,16 +25,24 @@
          </select>
       </div>
    </div>
+
    <div class="d-flex d-flex-row mt-1">
-      <div class="css-flex-50">
+      <div class="css-flex-45">
          <label for="description1" class="form-label">Descrizione 1</label>
          <input type="text" class="form-control" id="description1" name="description1" value="{{data.description1}}"
                 maxlength="80">
       </div>
-      <div class="css-flex-50 ms-2">
+      <div class="css-flex-45 ms-2">
          <label for="description2" class="form-label">Descrizione 2</label>
          <input type="text" class="form-control" id="description2" name="description2" value="{{data.description2}}"
                 maxlength="80">
+      </div>
+      <div class="css-flex-8 ms-2">
+         <label for="status" class="form-label">Stato</label>
+         <select class="form-select" id="status" name="status" required>
+            <option value="1" {{#eq 1 data.status}}selected{{/eq}}>Aperta</option>
+            <option value="4" {{#eq 4 data.status}}selected{{/eq}}>Chiusa</option>
+         </select>
       </div>
    </div>
 

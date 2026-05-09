@@ -2,7 +2,7 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import express, {Application} from "express";
+import express, {Application, NextFunction} from "express";
 import {engine} from "express-handlebars";
 import helpers from "handlebars-helpers";
 import * as parser from "body-parser";
@@ -20,6 +20,7 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
+import CRest from "./core/CRest";
 
 /**
  * Inizializza applicazione.
@@ -60,11 +61,12 @@ app.use("/tools", routerTools);
 app.use("/request", routerRequest);
 
 /**
- * Middleware eseguito quando non viene trovata nessuna route valida.
+ * Middleware eseguito quando:
+ *  - non viene trovata nessuna route valida, quindi riporta sulla pagine principale;
  */
-/*app.use("*", (request-old: Request, response: Response, next: NextFunction) => {
+app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
    response.redirect("/");
-});*/
+});
 
 /**
  * Avvia server.
