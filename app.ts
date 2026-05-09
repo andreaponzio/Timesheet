@@ -10,6 +10,7 @@ import methodOverride from "method-override";
 import path from "node:path";
 import {port} from "./public/config.json";
 
+import CRest, {IRest} from "./core/CRest";
 import {router as routerInit} from "./routers/routeInit";
 import {router as routerApp} from "./routers/routeApp";
 import {router as routerCustomer} from "./routers/routeCustomer";
@@ -20,7 +21,6 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
-import CRest from "./core/CRest";
 
 /**
  * Inizializza applicazione.
@@ -62,10 +62,18 @@ app.use("/request", routerRequest);
 
 /**
  * Middleware eseguito quando:
- *  - non viene trovata nessuna route valida, quindi riporta sulla pagine principale;
+ * - interrogazione del database da servizio REST;
+ * - non viene trovata nessuna route valida, quindi riporta sulla pagina principale;
  */
 app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-   response.redirect("/");
+   let rest: IRest;
+
+   if(request.originalUrl.substring(0, 5) === "/rest") {
+      rest = CRest.make(request.originalUrl, request.method, request.body).process();
+      response.status(rest.httpStatus).json(rest.data);
+   }
+   else
+      response.redirect("/");
 });
 
 /**
