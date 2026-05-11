@@ -2,12 +2,17 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
+import CDatabase from "./CDatabase";
 import {StatusCodes} from 'http-status-codes';
 import CCustomer from "./CCustomer";
+import CWbs from "./CWbs";
+import CActivity from "./CActivity";
+import CWorkday from "./CWorkday";
 
 export interface IRest {
    httpStatus: number;
    data: object[];
+   error: string;
 }
 interface IOption {
    name: string;
@@ -17,13 +22,13 @@ interface IService {
    name: string;
    id: number;
    data: object;
-   option: IOption[]
+   option: IOption[];
 }
 
 /**
  * Classe di gestione interazione REST.
  */
-export default class CRest {
+export default class CRest extends CDatabase {
    /**
     * Proprietà private.
     */
@@ -51,14 +56,15 @@ export default class CRest {
       // Inizializza il servizio:
       this._rest = {
          httpStatus: StatusCodes.OK,
-         data: []
+         data: [],
+         error: ""
       };
       this._service = {
          name: "",
          id: 0,
          data: {},
          option: [] as IOption[]
-      }
+      };
    }
 
    /**
@@ -69,30 +75,32 @@ export default class CRest {
       let listToken: string[] = [];
       let token: string = "";
 
-      // Analizza singoli caratteri per costruire i singoli token:
+      // Viene esaminato un carattere alla volta per comporre i singoli token quando viene
+      // incontrato un carattere speciale:
       for(let c of [...this._url]) {
+
+         // Carattere di seprazione tra
          if(c === "/") {
             if(token.length) {
                listToken.push(token);
                token = "";
             }
          }
-         else if(c === "(" || c === ")" || c === "$" || c === "=") {
-            if(token.length)
+         else if(c === "(" || c === ")" || c === "?") {
+            if(token.length) {
                listToken.push(token);
-            token = "";
+               token = "";
+            }
          }
-         else if(c === "'")
-            continue;
          else
             token += c;
       }
 
-      // Aggiunge l'ultimo token:
+      // Aggiunge ultimo token:
       if(token.length)
          listToken.push(token);
 
-      // Restituisce i token;
+      // Restituisce lista dei token:
       return listToken;
    }
 
@@ -122,17 +130,17 @@ export default class CRest {
     * @return indentificativo oppure zero.
     * @private
     */
-   private getId(token: string): number {
-      switch(token) {
-         case "top":
-         case "skip":
-         case "limit":
-         case "filter":
-            return 0;
+   private getObjectId(token: string): number {
+      let id: number;
 
-         default:
-            return token === undefined ? 0 : parseInt(token);
-      }
+      // Converte il secondo token in un identificativo, se non è possibile significa che
+      // l'URL non contiene un id valido e quindi probabilmente delle opzioni:
+      id = parseInt(token);
+      if(isNaN(id))
+         id = 0;
+
+      // restituisce identificativo:
+      return id;
    }
 
    /**
@@ -142,83 +150,347 @@ export default class CRest {
     * @private
     */
    private getOption(token: string[]): IOption[] {
-      let option: IOption[] = [];
-      let index = 0;
+      let listOption: IOption[] = [];
+      let option: string[] = [];
+      let value: string[] = [];
+      let index: number;
 
-      // Analizza le opzioni:
-      do {
-         if(index > 1) {
-            switch(token[index]) {
-               case "top":
-               case "skip":
-               case "limit":
-                  option.push({
-                     name: token[index],
-                     value: token[index + 1]
+      // Indentifica da quale indice iniziare l'analisi delle opzioni:
+      if(this._service.id === 0)
+         index = 2;
+      else
+         index = 3;
+
+      // Le opzioni sono separate dal carattere di "&":
+      if(token[index] !== undefined) {
+         option = token[index].split("&");
+
+         // Le opzioni vengono scomposte così da popolare la lista delle opzioni:
+         option.forEach((o) => {
+            value = o.split("=")
+            switch(value[0]) {
+               case "$top":
+               case "$skip":
+               case "$filter":
+                  listOption.push({
+                     name: value[0],
+                     value: value[1]
                   });
-                  index++;
-                  break;
-
-               case "filter":
                   break;
             }
-         }
-         index++;
-      } while(token[index] !== undefined);
+         });
+      }
 
       // restituisce opzioni:
-      return option;
+      return listOption;
+   }
+
+   /**
+    * Crea l'istruzione SQL SELECT quando sono presenti opzioni.
+    * @param table tabella sulla quale eseguire la SELECT.
+    * @return istruzione SQL SELECT.
+    * @private
+    */
+   private createStatement(table: string): string {
+      let statement: string = "";
+      let top: number = 0;
+      let skip: number = 0;
+      let where: string = "";
+
+      // Scompone le opzioni in valori:
+      if(this._service.option.length) {
+         this._service.option.forEach(o => {
+            switch(o.name) {
+               case "$top":
+                  top = parseInt(o.value);
+                  if(isNaN(top))
+                     top = 0;
+                  break;
+
+               case "$skip":
+                  skip = parseInt(o.value);
+                  if(isNaN(skip))
+                     skip = 0;
+                  break;
+
+               case "$filter":
+                  where = o.value;
+                  break;
+            }
+         });
+
+         // Costruisce l'istruzione SQL:
+         statement = "SELECT * FROM main.customer";
+         if(where.length)
+            statement = `${statement} WHERE ${where}`;
+         if(top !== 0 && skip !== 0)
+            statement = `${statement} LIMIT ${skip}, ${top}`;
+         else if(top !== 0)
+            statement = `${statement} LIMIT ${top}`;
+         else if(skip !== 0)
+            statement = `${statement} LIMIT ${skip}, -1`;
+
+         // Restituisce istruzione SQL:
+         return statement;
+      }
    }
 
    /**
     * Accede alla tabella dei customer.
-    * @return lista oggetti Json.
     * @private
     */
-   private customer(): object[] {
+   private customer(): void {
       let o: CCustomer;
-      let data: object[] = [];
+      let statement: string = "";
 
       o = new CCustomer();
 
-      // Gestisce il metodo:
-      switch(this._method) {
-         case "get":
-            if(this._service.id !== 0) {
+      // Cattura eventuali eccezioni:
+      try {
+
+         // Gestisce il metodo HTTP ricevuto:
+         switch(this._method) {
+            case "get":
+               if(this._service.id !== 0) {
+                  o.load(this._service.id);
+                  this._rest.data = o.data;
+               }
+               else if(this._service.option.length) {
+                  statement = this.createStatement("main.customer");
+                  this._rest.data.push(this.executeAll(statement));
+               }
+               else
+                  this._rest.data.push(o.loadAll());
+               break;
+
+            case "post":
+               o.clean();
+               o.description = this._service.data["description"];
+               o.save();
+               this._rest.data.push({
+                  id: o.id
+               });
+               break;
+
+            case "delete":
                o.load(this._service.id);
-               data.push(o.data);
-            }
-            else {
-               data = o.loadAll();
-            }
-            break;
-
-         case "post":
-            o.clean()
-            o.description = this._service.data["description"];
-            o.save();
-            data.push({
-               id: o.id
-            });
-            break;
-
-         case "delete":
-            o.load(this._service.id);
-            o.delete();
-            break;
+               o.delete();
+               break;
+         }
       }
+      catch(e) {
+         this._rest.error = e.message;
+      }
+      finally {
+         o = undefined;
+      }
+   }
 
-      // Rilascia risorse:
-      o = undefined;
+   /**
+    * Accede alla tabella delle commesse.
+    * @private
+    */
+   private wbs(): void {
+      let o: CWbs;
+      let statement: string = "";
 
-      // Restituisce oggetto:
-      return data;
+      o = new CWbs();
+
+      // Cattura eventuali eccezioni:
+      try {
+
+         // Gestisce il metodo HTTP ricevuto:
+         switch(this._method) {
+            case "get":
+               if(this._service.id !== 0) {
+                  o.load(this._service.id);
+                  this._rest.data.push(o.data);
+               }
+               else if(this._service.option.length) {
+                  statement = this.createStatement("main.wbs");
+                  this._rest.data.push(this.executeAll(statement));
+               }
+               else
+                  this._rest.data.push(o.loadAll());
+               break;
+
+            case "post":
+               o.clean();
+               o.internal_ref = this._service.data["internal_ref"];
+               o.customer = this._service.data["customer"];
+               o.description1 = this._service.data["description1"];
+               o.description2 = this._service.data["description2"];
+               o.status = this._service.data["status"];
+               o.save();
+               this._rest.data.push({
+                  id: o.id
+               });
+               break;
+
+            case "delete":
+               o.load(this._service.id);
+               o.delete();
+               break;
+         }
+      }
+      catch(e) {
+         this._rest.error = e.message;
+      }
+      finally {
+         o = undefined;
+      }
+   }
+
+   /**
+    * Accede alla tabella delle attività.
+    * @private
+    */
+   private activity(): void {
+      let o: CActivity;
+      let statement: string = "";
+
+      o = new CActivity();
+
+      // Cattura eventuali eccezioni:
+      try {
+
+         // Gestisce il metodo HTTP ricevuto:
+         switch(this._method) {
+            case "get":
+               if(this._service.id !== 0) {
+                  o.load(this._service.id);
+                  this._rest.data.push(o.data);
+               }
+               else if(this._service.option.length) {
+                  statement = this.createStatement("main.activity");
+                  this._rest.data.push(this.executeAll(statement));
+               }
+               else
+                  this._rest.data.push(o.loadAll());
+               break;
+
+            case "post":
+               o.clean();
+               o.internal_ref = this._service.data["internal_ref"];
+               o.external_ref = this._service.data["external_ref"];
+               o.type = this._service.data["type"];
+               o.description = this._service.data["description"];
+               o.wbs = this._service.data["wbs"];
+               o.functional = this._service.data["functional"];
+               o.technical = this._service.data["technical"];
+               o.hour = this._service.data[".hour"];
+               o.mergenote = this._service.data["mergenote"];
+               o.status = this._service.data["status"];
+               o.note = this._service.data["note"];
+               o.save();
+               this._rest.data.push({
+                  id: o.id
+               });
+               break;
+
+            case "delete":
+               o.load(this._service.id);
+               o.delete();
+               break;
+         }
+      }
+      catch(e) {
+         this._rest.error = e.message;
+      }
+      finally {
+         o = undefined;
+      }
+   }
+
+   /**
+    * Accede alla tabella delle consuntivazioni.
+    * @private
+    */
+   private workday(): void {
+      let o: CWorkday;
+      let statement: string = "";
+
+      o = new CWorkday();
+
+      // Cattura eventuali eccezioni:
+      try {
+
+         // Gestisce il metodo HTTP ricevuto:
+         switch(this._method) {
+            case "get":
+               if(this._service.id !== 0) {
+                  o.load(this._service.id);
+                  this._rest.data.push(o.data);
+               }
+               else if(this._service.option.length) {
+                  statement = this.createStatement("main.activity");
+                  this._rest.data.push(this.executeAll(statement));
+               }
+               else
+                  this._rest.data.push(o.loadAll());
+               break;
+
+            case "post":
+               o.clean();
+               o.activity = this._service.data["activity"];
+               o.date = new Date(this._service.data["date"]);
+               o.hour = this._service.data["hour"];
+               o.extrainfo = this._service.data["extrainfo"];
+               o.place = this._service.data["place"];
+               o.note = this._service.data["note"];
+               o.save();
+               this._rest.data.push({
+                  id: o.id
+               });
+               break;
+
+            case "delete":
+               o.load(this._service.id);
+               o.delete();
+               break;
+         }
+      }
+      catch(e) {
+         this._rest.error = e.message;
+      }
+      finally {
+         o = undefined;
+      }
+   }
+
+   /**
+    * Accede alla tabella delle richieste di trasporto.
+    * @private
+    */
+   private request(): void {
+   }
+
+   /**
+    * Accede alla tabella degli indici di ricerca. Questo metodo di aspetta solo
+    * l'uso di $filter.
+    * @private
+    */
+   private search(): void {
+      let statement: string = "";
+
+      // Perchè il metodo funzioni correttamente, nelle opzioni il primo elemento
+      // dove essere $filter, altrimenti non restituisce nulla:
+      if(this._service.option.length === 1 && this._service.option[0].name === "$filter") {
+         statement = `SELECT id, data, description, url, type
+                      FROM main.search
+                      WHERE data LIKE '%${this._service.option[0].value}%'
+                      GROUP BY url;`
+         this._rest.data.push(this.executeAll(statement));
+      }
+      else
+         throw new Error("Search accept only $filter option");
    }
 
    /**
     * Costruttore.
     */
    constructor(url: string, method: string, data: object) {
+      super();
       this._url = url;
       this._method = method.toLowerCase();
       this.clean();
@@ -238,20 +510,33 @@ export default class CRest {
       try {
          token = this.parse();
          this._service.name = token[1];
-         this._service.id = this.getId(token[2]);
+         this._service.id = this.getObjectId(token[2]);
          this._service.option = this.getOption(token);
          if(!this.validName())
             this._rest.httpStatus = StatusCodes.SERVICE_UNAVAILABLE;
          else {
             switch(this._service.name) {
                case "customer":
-                  this._rest.data = this.customer();
+                  this.customer();
                   break;
 
                case "wbs":
+                  this.wbs();
+                  break;
+
                case "activity":
+                  this.activity();
+                  break;
+
                case "workday":
+                  this.workday();
+                  break;
+
+               case "request":
+                  break;
+
                case "search":
+                  this.search();
                   break;
             }
 

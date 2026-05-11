@@ -69,7 +69,7 @@ export default class CDatabase {
       // Legge ultimo identificativo:
       CDatabase._statement = CDatabase._db.prepare(
          `SELECT last_number
-          FROM numberid
+          FROM main.numberid
           WHERE id = '${key}';`
       );
       id = CDatabase._statement.get()["last_number"] as number;
@@ -79,7 +79,7 @@ export default class CDatabase {
 
       // Aggiorna tabella:
       CDatabase._statement = CDatabase._db.prepare(
-         `UPDATE numberid
+         `UPDATE main.numberid
           SET last_number = ${id}
           WHERE id = '${key}';`
       );
@@ -110,9 +110,6 @@ export default class CDatabase {
     * @return data nel formato SQLite.
     */
    public convertDate(date: Date, notime: number = 0): string {
-      // let dt_tm: String[];
-      // let dt: string[];
-      // let tm: string[];
       let year: string;
       let month: string;
       let day: string;
@@ -123,16 +120,6 @@ export default class CDatabase {
 
       try {
          if(typeof date === "string") {
-            // dt_tm = (date as string).split(" ");
-            // dt = dt_tm[0].split("-");
-            // tm = dt_tm[1].split(":");
-            // year = dt[0];
-            // month = dt[1];
-            // day = dt[2];
-            // hour = tm[0];
-            // minute = tm[1];
-            // second = tm[2];
-            // notime = 4;
             result = date as string;
          }
          else {

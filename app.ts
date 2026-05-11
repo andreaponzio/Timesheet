@@ -70,7 +70,7 @@ app.use((request: express.Request, response: express.Response, next: express.Nex
 
    if(request.originalUrl.substring(0, 5) === "/rest") {
       rest = CRest.make(request.originalUrl, request.method, request.body).process();
-      response.status(rest.httpStatus).json(rest.data);
+      response.status(rest.httpStatus).json({"data": rest.data, "error": rest.error});
    }
    else
       response.redirect("/");

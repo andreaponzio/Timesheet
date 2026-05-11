@@ -513,7 +513,7 @@ export default class CRequest extends CBase {
                                '${this.description}', '/request/${this.id}', 4)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)},
-                               '${this.request} - ${this.description}', '${this.description}', 
+                               '${this.request} - ${this.description}', '${this.description}',
                                '/request/${this.id}', 4)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.owner}',
