@@ -24,6 +24,10 @@ interface IService {
    data: object;
    option: IOption[];
 }
+interface IStatement {
+   sql: string;
+   single: boolean;
+}
 
 /**
  * Classe di gestione interazione REST.
@@ -79,7 +83,7 @@ export default class CRest extends CDatabase {
       // incontrato un carattere speciale:
       for(let c of [...this._url]) {
 
-         // Carattere di seprazione tra
+         // Carattere di separazione tra
          if(c === "/") {
             if(token.length) {
                listToken.push(token);
@@ -171,6 +175,7 @@ export default class CRest extends CDatabase {
             switch(value[0]) {
                case "$top":
                case "$skip":
+               case "$count":
                case "$filter":
                   listOption.push({
                      name: value[0],
@@ -191,11 +196,15 @@ export default class CRest extends CDatabase {
     * @return istruzione SQL SELECT.
     * @private
     */
-   private createStatement(table: string): string {
-      let statement: string = "";
+   private createStatement(table: string): IStatement {
+      let statement: IStatement = {
+         sql: "",
+         single: false
+      };
       let top: number = 0;
       let skip: number = 0;
       let where: string = "";
+      let single: string = "";
 
       // Scompone le opzioni in valori:
       if(this._service.option.length) {
@@ -213,22 +222,42 @@ export default class CRest extends CDatabase {
                      skip = 0;
                   break;
 
+               case "$count":
+                  top = skip = 0;
+                  single = o.name;
+                  break;
+
                case "$filter":
                   where = o.value;
                   break;
             }
          });
 
-         // Costruisce l'istruzione SQL:
-         statement = "SELECT * FROM main.customer";
-         if(where.length)
-            statement = `${statement} WHERE ${where}`;
-         if(top !== 0 && skip !== 0)
-            statement = `${statement} LIMIT ${skip}, ${top}`;
-         else if(top !== 0)
-            statement = `${statement} LIMIT ${top}`;
-         else if(skip !== 0)
-            statement = `${statement} LIMIT ${skip}, -1`;
+         // Costruisce l'istruzione SQL. Alcuni comandi ignorano il resto e
+         // preparano una propria SELECT:
+         if(single) {
+            switch(single) {
+               case "$count":
+                  statement = {
+                     sql: `SELECT COUNT(*) AS rows
+                           FROM main.${table}`,
+                     single: true
+                  };
+                  break;
+            }
+         }
+         else {
+            statement.sql = `SELECT *
+                             FROM main.${table}`;
+            if(where.length)
+               statement.sql = `${statement} WHERE ${where}`;
+            if(top !== 0 && skip !== 0)
+               statement.sql = `${statement} LIMIT ${skip}, ${top}`;
+            else if(top !== 0)
+               statement.sql = `${statement} LIMIT ${top}`;
+            else if(skip !== 0)
+               statement.sql = `${statement} LIMIT ${skip}, -1`;
+         }
 
          // Restituisce istruzione SQL:
          return statement;
@@ -241,7 +270,7 @@ export default class CRest extends CDatabase {
     */
    private customer(): void {
       let o: CCustomer;
-      let statement: string = "";
+      let statement: IStatement;
 
       o = new CCustomer();
 
@@ -256,8 +285,11 @@ export default class CRest extends CDatabase {
                   this._rest.data = o.data;
                }
                else if(this._service.option.length) {
-                  statement = this.createStatement("main.customer");
-                  this._rest.data.push(this.executeAll(statement));
+                  statement = this.createStatement("customer");
+                  if(statement.single)
+                     this._rest.data.push({"rows": this.executeGet(statement.sql)["rows"]});
+                  else
+                     this._rest.data.push(this.executeAll(statement.sql));
                }
                else
                   this._rest.data.push(o.loadAll());
@@ -292,7 +324,7 @@ export default class CRest extends CDatabase {
     */
    private wbs(): void {
       let o: CWbs;
-      let statement: string = "";
+      let statement: IStatement;
 
       o = new CWbs();
 
@@ -307,8 +339,11 @@ export default class CRest extends CDatabase {
                   this._rest.data.push(o.data);
                }
                else if(this._service.option.length) {
-                  statement = this.createStatement("main.wbs");
-                  this._rest.data.push(this.executeAll(statement));
+                  statement = this.createStatement("wbs");
+                  if(statement.single)
+                     this._rest.data.push({"rows": this.executeGet(statement.sql)["rows"]});
+                  else
+                     this._rest.data.push(this.executeAll(statement.sql));
                }
                else
                   this._rest.data.push(o.loadAll());
@@ -347,7 +382,7 @@ export default class CRest extends CDatabase {
     */
    private activity(): void {
       let o: CActivity;
-      let statement: string = "";
+      let statement: IStatement;
 
       o = new CActivity();
 
@@ -362,8 +397,11 @@ export default class CRest extends CDatabase {
                   this._rest.data.push(o.data);
                }
                else if(this._service.option.length) {
-                  statement = this.createStatement("main.activity");
-                  this._rest.data.push(this.executeAll(statement));
+                  statement = this.createStatement("activity");
+                  if(statement.single)
+                     this._rest.data.push({"rows": this.executeGet(statement.sql)["rows"]});
+                  else
+                     this._rest.data.push(this.executeAll(statement.sql));
                }
                else
                   this._rest.data.push(o.loadAll());
@@ -408,7 +446,7 @@ export default class CRest extends CDatabase {
     */
    private workday(): void {
       let o: CWorkday;
-      let statement: string = "";
+      let statement: IStatement;
 
       o = new CWorkday();
 
@@ -423,8 +461,11 @@ export default class CRest extends CDatabase {
                   this._rest.data.push(o.data);
                }
                else if(this._service.option.length) {
-                  statement = this.createStatement("main.activity");
-                  this._rest.data.push(this.executeAll(statement));
+                  statement = this.createStatement("workday");
+                  if(statement.single)
+                     this._rest.data.push({"rows": this.executeGet(statement.sql)["rows"]});
+                  else
+                     this._rest.data.push(this.executeAll(statement.sql));
                }
                else
                   this._rest.data.push(o.loadAll());
