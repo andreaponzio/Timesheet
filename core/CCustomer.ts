@@ -157,4 +157,15 @@ export default class CCustomer extends CBase {
                        VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
                                '${this.description}', '/customer/${this.id}', 1)`);
    }
+
+   /**
+    * Verifica che non esista già un cliente con la stessa descrizione.
+    * @param description descrizione cliente.
+    * @return numero di clienti trovati (sempre 1 al massimo).
+    */
+   public checkDuplicate(description: string): number {
+      return this.executeGet(`SELECT COUNT(*) AS rows
+                              FROM main.customer
+                              WHERE description = '${description}'`)["rows"];
+   }
 }
