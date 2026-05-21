@@ -8,9 +8,9 @@ import helpers from "handlebars-helpers";
 import * as parser from "body-parser";
 import methodOverride from "method-override";
 import path from "node:path";
-import {port} from "./public/config.json";
+import cors from 'cors';
+import {port, odata} from "./public/config.json";
 
-import CRest, {IRest} from "./core/CRest";
 import {router as routerInit} from "./routers/routeInit";
 import {router as routerApp} from "./routers/routeApp";
 import {router as routerCustomer} from "./routers/routeCustomer";
@@ -47,18 +47,22 @@ app.use(methodOverride((request: express.Request, response: express.Response) =>
 }));
 
 /**
- * Middleware.
+ * Middleware dipendenti dal tipo di esecuzione.
  */
-app.use("/init", routerInit);
-app.use("/", routerApp);
-app.use("/customer", routerCustomer);
-app.use("/wbs", routerWbs);
-app.use("/activity", routerActivity);
-app.use("/workday", routerWorkday);
-app.use("/report", routerReport);
-app.use("/search", routerSearch);
-app.use("/tools", routerTools);
-app.use("/request", routerRequest);
+if(process.argv[2] === undefined) {
+   app.use("/init", routerInit);
+   app.use("/", routerApp);
+   app.use("/customer", routerCustomer);
+   app.use("/wbs", routerWbs);
+   app.use("/activity", routerActivity);
+   app.use("/workday", routerWorkday);
+   app.use("/report", routerReport);
+   app.use("/search", routerSearch);
+   app.use("/tools", routerTools);
+   app.use("/request", routerRequest);
+}
+else
+   app.use(cors());
 
 /**
  * Middleware eseguito quando:
@@ -66,17 +70,16 @@ app.use("/request", routerRequest);
  * - non viene trovata nessuna route valida, quindi riporta sulla pagina principale;
  */
 app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-   let rest: IRest;
-
-   if(request.originalUrl.substring(0, 5) === "/rest") {
-      rest = CRest.make(request.originalUrl, request.method, request.body).process();
-      response.status(rest.httpStatus).json({"data": rest.data, "error": rest.error});
-   }
-   else
+   if(process.argv[2] === undefined)
       response.redirect("/");
 });
 
 /**
- * Avvia server.
+ * Avvia server in modalità:
+ * - utente se non è presente parametro --odata;
+ * - servizio REST quando --odata è presente;
  */
-app.listen(port);
+if(process.argv[2] === undefined)
+   app.listen(port);
+else if(process.argv[2] === "--odata") {
+}

@@ -1,100 +1,204 @@
-
-
-interface IWeek {
-   first: Date;
-   last: Date;
+/**
+ * Classe di gestione interazione REST per la tabella di testata richieste di trasporto.
+ */
+class CRequestEntity {
+   @Edm.Key @Edm.String request;
+   @Edm.Int32 activity;
+   @Edm.Int32 type;
+   @Edm.Int32 status;
+   @Edm.String description;
+   @Edm.String owner;
+   @Edm.DateTimeOffset date;
+   @Edm.Int32 id;
+   @Edm.DateTimeOffset changed_on;
 }
 
-let week: IWeek[] = [];
-let month: number;
-let year: number;
-let lastDay: number;
-let dayOfWeek: number;
-let first: Date;
-let day: number;
-let nextMonth: number;
+/**
+ * Classe di gestione interazione REST per la tabella Consuntivazione.
+ */
+class CWorkdayEntity {
+   @Edm.Key @Edm.Int32 id;
+   @Edm.Int32 activity;
+   @Edm.DateTimeOffset date;
+   @Edm.Int32 idgroup;
+   @Edm.Decimal hour;
+   @Edm.String extrainfo;
+   @Edm.String place;
+   @Edm.String note;
+   @Edm.DateTimeOffset changed_on;
+}
 
-month = 0; //new Date().getMonth();
-year = new Date().getFullYear();
-lastDay = new Date(year, month, 0).getDate();
+/**
+ * Classe di gestione interazione REST per la tabella Attività.
+ */
+class CActivityEntity {
+   @Edm.Key @Edm.Int32 wbs;
+   @Edm.Key @Edm.String internal_ref;
+   @Edm.String external_ref;
+   @Edm.Int32 type;
+   @Edm.String desription;
+   @Edm.String functional;
+   @Edm.String technical;
+   @Edm.Decimal hour;
+   @Edm.Int32 status
+   @Edm.String note;
+   @Edm.Int32 id;
+   @Edm.DateTimeOffset changed_on;
+   // @ts-ignore
+   @Edm.Collection(Edm.EntityType(CWorkdayEntity)) CWorkdayEntity;
+   // @ts-ignore
+   @Edm.Collection(Edm.EntityType(CRequestEntity)) CRequestEntity;
+}
 
-let xx: number = new Date(year, month, lastDay).getDay();
-nextMonth = 7 - new Date(year, month, lastDay).getDay();
+/**
+ * Classe di gestione interazione REST per la tabella Commesse.
+ */
+class CWbsEntity {
+   @Edm.Key @Edm.String internal_ref;
+   @Edm.Int32 customer;
+   @Edm.String desription1;
+   @Edm.String desription2;
+   @Edm.Int16 mergenote;
+   @Edm.Int32 status
+   @Edm.Int32 id;
+   @Edm.DateTimeOffset changed_on;
+   // @ts-ignore
+   @Edm.Collection(Edm.EntityType(CActivityEntity)) CActivityEntity;
+}
 
-for(day = 1; day <= lastDay; day++) {
-   dayOfWeek = new Date(year, month, day).getDay();
-   if(week.length === 0 && first === undefined)
-      first = new Date(year, month, day, 0, 0, 0);
-   else if(dayOfWeek === 1)
-      first = new Date(year, month, day, 0, 0, 0);
-   else if(dayOfWeek === 0) {
-      week.push({
-         first: first,
-         last: new Date(year, month, day, 23, 59, 59)
-      });
-      first = undefined;
+
+
+/**
+ * Classe controller per tabella Commesse.
+ */
+class CWbsController extends ODataController {
+   // @ts-ignore
+   @Edm.EntityType(CWbsEntity) find() {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CWbsEntity) findOne(@Edm.String internal_ref: string): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CWbsEntity) insert(@odata.body data: CWbsEntity): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CWbsEntity) update(@Edm.Key("internal_ref") internal_ref: string, @odata.body data: data): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CWbsEntity) remove(@Edm.Int32 id: number): any {
+      return undefined;
    }
 }
 
-if(first !== undefined) {
-   week.push({
-      first: first,
-      last: new Date(year, month, lastDay, 23, 59, 59)
-   });
+/**
+ * Classe controller per tabella Attività.
+ */
+class CActivityController extends ODataController {
+   // @ts-ignore
+   @Edm.EntityType(CActivityEntity) find() {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CActivityEntity) findOne(@Edm.Int32 wbs: number, @Edm.String internal_ref: string): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CActivityEntity) insert(@odata.body data: CActivityEntity): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CActivityEntity) update(@Emd.Key("wbs") id: number, @Edm.Key("internal_ref") internal_ref: string, @odata.body data: data): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @Edm.EntityType(CActivityEntity) remove(@Edm.Int32 id: number): any {
+      return undefined;
+   }
 }
 
-/*if(nextMonth !== 0 && first !== undefined) {
-   month++;
-   for(day = 1; day <= nextMonth; day++) {
-      dayOfWeek = new Date(year, month, day).getDay();
-      if(dayOfWeek === 0) {
-         week.push({
-            first: first,
-            last: new Date(year, month, day, 23, 59, 59)
-         });
-         first = undefined;
-      }
+/**
+ * Classe controller per tabella Consuntivazione.
+ */
+class CWorkdayController extends ODataController {
+   // @ts-ignore
+   @Edm.EntityType(CWorkdayEntity) find() {
+      return undefined;
    }
-}*/
 
-for(let w of week)
-   console.log(w.first + "/" + w.last);
+   // @ts-ignore
+   @Edm.EntityType(CWorkdayEntity) findOne(@Edm.Int32 id: number): any {
+      return undefined;
+   }
 
+   // @ts-ignore
+   @Edm.EntityType(CWorkdayEntity) insert(@odata.body data: CWorkdayEntity): any {
+      return undefined;
+   }
 
-   import {CInit} from "./core/CInit";
-   let i: CInit = new CInit();
-   i.search();
+   // @ts-ignore
+   @Edm.EntityType(CWorkdayEntity) update(@Emd.Key("id") id: number, @odata.body data: data): any {
+      return undefined;
+   }
 
-with
-   activity_cte as (
-      select main.activity.id,
-             main.activity.description,
-             main.activity.internal_ref,
-             main.activity.external_ref,
-             main.activity.hour,
-             main.activity.wbs
-      from main.activity ),
-   workday_cte as (
-      select main.workday.activity, sum(main.workday.hour) as total
-      from main.workday
-      group by main.workday.activity),
-   request_cte as (
-      select main.request.activity, count(main.request.id) as request
-      from main.request
-      GROUP BY main.request.activity),
-   wbs_cte as (
-      select main.wbs.id, main.wbs.description1
-      from main.wbs )
-select activity_cte.id,
-       activity_cte.description,
-       activity_cte.internal_ref,
-       activity_cte.external_ref,
-       activity_cte.hour,
-       wbs_cte.id as wbs,
-       wbs_cte.description1 as dwbs,
-       request_cte.request,
-       workday_cte.total
-from activity_cte
-        CROSS JOIN workday_cte on workday_cte.activity = activity_cte.id
-        CROSS JOIN request_cte on request_cte.activity = activity_cte.id
-        CROSS JOIN wbs_cte on wbs_cte.id = activity_cte.wbs
+   // @ts-ignore
+   @Edm.EntityType(CWorkdayEntity) remove(@Edm.Int32 id: number): any {
+      return undefined;
+   }
+}
+
+/**
+ * Classe controller per tabella di testata richieste di trasporto.
+ */
+class CRequestController extends ODataController {
+   // @ts-ignore
+   @ODataController.GET @Edm.EntityType(CRequestEntity) find() {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @ODataController.GET @Edm.EntityType(CRequestEntity) findOne(@Edm.String request: string): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @ODataController.POST @Edm.EntityType(CRequestEntity) insert(@odata.body data: CRequestEntity): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @ODataController.PATCH @Edm.EntityType(CRequestEntity) update(@Emd.Key("request") request: string, @odata.body data: data): any {
+      return undefined;
+   }
+
+   // @ts-ignore
+   @ODataController.DELETE @Edm.EntityType(CWorkdayEntity) remove(@Edm.Int32 id: number): any {
+      return undefined;
+   }
+}
+
+// @ts-ignore
+@ODataServer.cors
+// @ts-ignore
+@ODataServer.controller(CCustomerController, true)
+// @ts-ignore
+@ODataServer.controller(CWbsController, true)
+// @ts-ignore
+@ODataServer.controller(CActivityController, true)
+// @ts-ignore
+@ODataServer.controller(CWorkdayController, true)
+// @ts-ignore
+@ODataServer.controller(CRequestController, true)
+
+export class CTimesheet extends ODataServer {}

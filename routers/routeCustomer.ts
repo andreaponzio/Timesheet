@@ -65,12 +65,6 @@ router.post("/:id", (request: Request, response: Response) => {
       o = new CCustomer();
       if(parseInt(request.params.id as string))
          o.load(parseInt(request.params.id as string));
-      else {
-         if(o.checkDuplicate(request.body.description.toUpperCase()) === 1) {
-            o.description = request.body.description.toUpperCase();
-            throw new Error("Esiste già un cliente con la stessa descrizione");
-         }
-      }
       o.description = request.body.description.toUpperCase();
       o.save();
       response.redirect("/customer");
