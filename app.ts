@@ -8,7 +8,6 @@ import helpers from "handlebars-helpers";
 import * as parser from "body-parser";
 import methodOverride from "method-override";
 import path from "node:path";
-import cors from 'cors';
 import {port, odata} from "./public/config.json";
 
 import {router as routerInit} from "./routers/routeInit";
@@ -21,6 +20,7 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
+import {router as routerRest} from "./routers/routeRest";
 
 /**
  * Inizializza applicazione.
@@ -61,8 +61,15 @@ if(process.argv[2] === undefined) {
    app.use("/tools", routerTools);
    app.use("/request", routerRequest);
 }
-else
-   app.use(cors());
+else {
+   app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+      response.setHeader("Access-Control-Allow-Origin", "*");
+      response.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
+      response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      next();
+   });
+   app.get("/odata", routerRest);
+}
 
 /**
  * Middleware eseguito quando:
