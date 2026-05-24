@@ -20,7 +20,8 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
-import {router as routerRest} from "./routers/routeRest";
+import {router as routerRestv2} from "./routers/routeRestv2";
+import {router as routerRestv4} from "./routers/routeRestv4";
 
 /**
  * Inizializza applicazione.
@@ -68,7 +69,10 @@ else {
       response.setHeader("Access-Control-Allow-Headers", "Content-Type");
       next();
    });
-   app.get("/odata", routerRest);
+   if(process.argv[2] === "--odatav2")
+      app.use("/odata", routerRestv2);
+   else
+      app.use("/odata", routerRestv4);
 }
 
 /**
@@ -88,5 +92,5 @@ app.use((request: express.Request, response: express.Response, next: express.Nex
  */
 if(process.argv[2] === undefined)
    app.listen(port);
-else if(process.argv[2] === "--odata") {
-}
+else if(process.argv[2] === "--odatav2" || process.argv[2] === "--odatav4")
+   app.listen(odata.port);

@@ -12,6 +12,7 @@ import IOption = SqlGen.IOption;
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import {ICustomer} from "./CCustomer";
 
 export interface IRequestObject {
    as4pos: number;
@@ -282,8 +283,11 @@ export default class CRequest extends CBase {
     * Restituisce una lista di trasporti che rispondono ai criteri di ricerca.
     * @param where condizione di ricerca.
     */
-   public loadAll(where: SqlGen.IField[] = []): IRequest[] {
-      return this._select("request", CSqlGen.allField, where) as IRequest[];
+   public loadAll(where: SqlGen.IField[] | string): IRequest[] {
+      if(typeof where === "string")
+         return this._select("request", CSqlGen.allField, [], where, true) as IRequest[];
+      else
+         return this._select("request", CSqlGen.allField, where) as IRequest[];
    }
 
    /**

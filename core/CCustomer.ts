@@ -10,6 +10,7 @@ import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import {IActivity} from "./CActivity";
 
 export interface ICustomer extends IBase {
    description: string;
@@ -78,8 +79,11 @@ export default class CCustomer extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[] = []): ICustomer[] {
-      return this._select("customer", CSqlGen.allField, where) as ICustomer[];
+   public loadAll(where: IField[] | string): ICustomer[] {
+      if(typeof where === "string")
+         return this._select("customer", CSqlGen.allField, [], where, true) as ICustomer[];
+      else
+         return this._select("customer", CSqlGen.allField, where) as ICustomer[];
    }
 
    /**

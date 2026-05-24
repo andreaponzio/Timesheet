@@ -30,7 +30,7 @@ export class CInit {
       o.executeRun("DELETE FROM main.customer;");
       o.executeRun("DELETE FROM main.wbs;");
       o.executeRun("DELETE FROM main.activity;");
-      o.executeRun("DELETE FROM main.request-old;");
+      o.executeRun("DELETE FROM main.request;");
       o.executeRun("DELETE FROM main.request_binary;");
       o.executeRun("DELETE FROM main.workday;");
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
@@ -135,24 +135,6 @@ export class CInit {
          console.log(e.message);
       }
    }
-   public requestenv(): void {
-      try {
-         requestenv_data.forEach(d => {
-            if(this.debug)
-               console.log(d);
-            this.db.executeRun(
-               `INSERT INTO requestenv
-                VALUES (${d.id},
-                        ${d.env},
-                        '${this.db.convertDate(new Date(d.date))}',
-                        '${this.db.convertDate(new Date())}');`
-            );
-         });
-      }
-      catch(e) {
-         console.log(e.message);
-      }
-   }
    public workday(): void {
       try {
          workday_data.forEach(d => {
@@ -199,7 +181,7 @@ export class CInit {
       }
 
       customer = new CCustomer();
-      customer_data = customer.loadAll();
+      customer_data = customer.loadAll([]);
       customer_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
@@ -207,7 +189,7 @@ export class CInit {
       });
 
       wbs = new CWbs();
-      wbs_data = wbs.loadAll();
+      wbs_data = wbs.loadAll([]);
       wbs_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',
@@ -221,7 +203,7 @@ export class CInit {
       });
 
       activity = new CActivity();
-      activity_data = activity.loadAll();
+      activity_data = activity.loadAll([]);
       activity_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',

@@ -274,13 +274,21 @@ export namespace SqlGen {
        * @param output campi da esportare.
        * @param condition condizione da applicare alla selezione.
        * @param extension aggiunta all'istruzione SQL generata.
+       * @param manualWhere indica che il parametro extension è la condizione di WHERE.
        */
-      public select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = [], extension: string = ""): void {
-         this._statement = `SELECT ${output.join(", ")}
-                            FROM ${tablename}
-                            WHERE ${this._generateWhere(condition, extension.length === 0)}`;
-         if(extension.length > 0)
-            this._statement = `${this._statement} ${extension};`;
+      public select(tablename: string, output: string[] = CSqlGen.allField,
+                    condition: IField[] = [], extension: string = "", manualWhere: boolean = false): void {
+         if(manualWhere)
+            this._statement = `SELECT ${output.join(", ")}
+                               FROM ${tablename}
+                               WHERE ${extension}`;
+         else {
+            this._statement = `SELECT ${output.join(", ")}
+                               FROM ${tablename}
+                               WHERE ${this._generateWhere(condition, extension.length === 0)}`;
+            if(extension.length > 0)
+               this._statement = `${this._statement} ${extension};`;
+         }
       }
 
       /**

@@ -4,7 +4,7 @@
  */
 import express, {Request, Response, Router} from "express";
 import exceljs from "exceljs";
-import CBase, {objectType} from "../core/CBase";
+import {objectType} from "../core/CBase";
 import CTool, {IDate} from "../core/CTool";
 import {SqlGen} from "../core/CSqlGen";
 import CWorkday, {IWeekWorkday} from "../core/CWorkday";
@@ -13,7 +13,6 @@ import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
 import {dirOut} from "../public/config.json";
 import CDatabase from "../core/CDatabase";
-import CRequest from "../core/CRequest";
 
 interface IExcel {
    date: string;

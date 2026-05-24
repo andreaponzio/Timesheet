@@ -9,6 +9,7 @@ import IOption = SqlGen.IOption;
 import CSqlGen = SqlGen.CSqlGen;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import {ICustomer} from "./CCustomer";
 
 export interface IWorkday extends IBase {
    activity: number;
@@ -152,8 +153,11 @@ export default class CWorkday extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[] = []): IWorkday[] {
-      return this._select("workday", CSqlGen.allField, where) as IWorkday[];
+   public loadAll(where: IField[] | string): IWorkday[] {
+      if(typeof where === "string")
+         return this._select("workday", CSqlGen.allField, [], where, true) as IWorkday[];
+      else
+         return this._select("workday", CSqlGen.allField, where) as IWorkday[];
    }
 
    /**

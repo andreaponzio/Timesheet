@@ -78,7 +78,7 @@ router.post("/index", (request: Request, response: Response) => {
    // Aggiornamento clienti:
    if(request.body.customer === "on") {
       customer.executeRun("DELETE FROM main.search WHERE type = 1;");
-      customer_data = customer.loadAll();
+      customer_data = customer.loadAll([]);
       customer_data.forEach(d => {
          customer = new CCustomer();
          customer.load(d.id);
@@ -90,7 +90,7 @@ router.post("/index", (request: Request, response: Response) => {
    // Aggiornamento commesse:
    if(request.body.wbs === "on") {
       wbs.executeRun("DELETE FROM main.search WHERE type = 2;");
-      wbs_data = wbs.loadAll();
+      wbs_data = wbs.loadAll([]);
       wbs_data.forEach(d => {
          wbs = new CWbs();
          wbs.load(d.id);
@@ -102,7 +102,7 @@ router.post("/index", (request: Request, response: Response) => {
    // Aggiornamento attività:
    if(request.body.activity === "on") {
       activity.executeRun("DELETE FROM main.search WHERE type = 3;");
-      activity_data = activity.loadAll();
+      activity_data = activity.loadAll([]);
       activity_data.forEach(d => {
          activity = new CActivity();
          activity.load(d.id);
@@ -114,7 +114,7 @@ router.post("/index", (request: Request, response: Response) => {
    // Aggiornamento richiesta di trasporto:
    if(request.body.request === "on") {
       tr.executeRun("DELETE FROM main.search WHERE type = 4;");
-      tr_data = tr.loadAll();
+      tr_data = tr.loadAll([]);
       tr_data.forEach(d => {
          tr = new CRequest();
          tr.load(d.id);
@@ -231,28 +231,28 @@ router.post("/sendsap", async(request: Request, response: Response) => {
       // Clienti:
       if(request.body.customer == "on") {
          customer = new CCustomer();
-         customer_data = customer.loadAll();
+         customer_data = customer.loadAll([]);
          await sendData(system, "/customer/all", customer_data);
       }
 
       // Commesse:
       if(request.body.wbs == "on") {
          wbs = new CWbs();
-         wbs_data = wbs.loadAll();
+         wbs_data = wbs.loadAll([]);
          await sendData(system, "/wbs/all", wbs_data);
       }
 
       // Attività:
       if(request.body.activity == "on") {
          activity = new CActivity();
-         activity_data = activity.loadAll();
+         activity_data = activity.loadAll([]);
          await sendData(system, "/activity/all", activity_data);
       }
 
       // Trasporti:
       if(request.body.request == "on") {
          tr = new CRequest();
-         tr_data_all = tr.loadAll();
+         tr_data_all = tr.loadAll([]);
          for await (let r of tr_data_all) {
             tr = new CRequest();
             tr.load(r.id);
@@ -263,7 +263,7 @@ router.post("/sendsap", async(request: Request, response: Response) => {
       // Consuntivazione:
       if(request.body.workday == "on") {
          wk = new CWorkday();
-         wk_data = wk.loadAll();
+         wk_data = wk.loadAll([]);
          await sendData(system, "/workday/all", wk_data);
       }
    }
@@ -371,7 +371,7 @@ router.post("/backup", (request: Request, response: Response) => {
    // Scarico clienti:
    data = [];
    if(request.body.customer === "on") {
-      customer_data = customer.loadAll();
+      customer_data = customer.loadAll([]);
       customer_data.forEach(d => {
          data.push(d);
       });
@@ -382,7 +382,7 @@ router.post("/backup", (request: Request, response: Response) => {
    // Scarico commesse:
    data = [];
    if(request.body.wbs === "on") {
-      wbs_data = wbs.loadAll();
+      wbs_data = wbs.loadAll([]);
       wbs_data.forEach(d => {
          data.push(d);
       });
@@ -393,7 +393,7 @@ router.post("/backup", (request: Request, response: Response) => {
    // Scarico attività:
    data = [];
    if(request.body.activity === "on") {
-      activity_data = activity.loadAll();
+      activity_data = activity.loadAll([]);
       activity_data.forEach(d => {
          data.push(d);
       });
@@ -404,7 +404,7 @@ router.post("/backup", (request: Request, response: Response) => {
    // Scarico richiesta di trasporto:
    data = [];
    if(request.body.request === "on") {
-      tr_data = tr.loadAll();
+      tr_data = tr.loadAll([]);
       tr_data.forEach(d => {
          tr.load(d.id);
          data.push(tr.data);
@@ -416,7 +416,7 @@ router.post("/backup", (request: Request, response: Response) => {
    // Scarico consuntivazioni:
    data = [];
    if(request.body.workday === "on") {
-      workday_data = workday.loadAll();
+      workday_data = workday.loadAll([]);
       workday_data.forEach(d => {
          data.push(d);
       });

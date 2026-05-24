@@ -96,6 +96,7 @@ export default abstract class CBase extends CDatabase {
    public abstract clean(): void;
    public abstract load(id: string | number | Date): void;
    public abstract loadAll(where: IField[]): unknown[];
+   public abstract loadAll(where: string): unknown[];
    public abstract save(): void;
    public abstract delete(): void;
    public abstract summarize(): unknown[];
@@ -150,10 +151,12 @@ export default abstract class CBase extends CDatabase {
     * @param output campi da esportare.
     * @param condition condizione di selezione.
     * @param extension aggiunta all'istruzione SQL generata.
+    * @param manualWhere indica che il parametro extension è la condizione di WHERE.
     * @protected
     */
-   protected _select(tablename: string, output: string[] = CSqlGen.allField, condition: IField[] = [], extension: string = ""): unknown[] {
-      this.sqlGen.select("main." + tablename, output, condition, extension);
+   protected _select(tablename: string, output: string[] = CSqlGen.allField,
+                     condition: IField[] = [], extension: string = "", manualWhere: boolean = false): unknown[] {
+      this.sqlGen.select("main." + tablename, output, condition, extension, manualWhere);
       return this.executeAll(this.sqlGen.statement);
    }
 
@@ -165,7 +168,8 @@ export default abstract class CBase extends CDatabase {
     * @param nochangeon non aggiunge campi CHENDE_ON.
     * @protected
     */
-   protected _insert(tablename: string, values: IField[], noid: boolean = false, nochangeon: boolean = false): unknown {
+   protected _insert(tablename: string, values: IField[], noid: boolean = false,
+                     nochangeon: boolean = false): unknown {
       // Se richiesto viene aggiunto il tag sia per l'ID sia per la data di ultima modifica:
       if(!noid)
          values.unshift({

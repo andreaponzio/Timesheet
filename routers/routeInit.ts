@@ -22,7 +22,6 @@ router.get("/", (request: Request, response: Response) => {
       i.wbs();
       i.activity();
       i.request();
-      i.requestenv();
       i.workday();
    }
    catch(error) {

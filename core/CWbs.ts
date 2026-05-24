@@ -9,6 +9,7 @@ import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import {ICustomer} from "./CCustomer";
 
 export interface IWbs extends IBase {
    customer: number;
@@ -110,8 +111,11 @@ export default class CWbs extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[] = []): IWbs[] {
-      return this._select("wbs", CSqlGen.allField, where) as IWbs[];
+   public loadAll(where: IField[] | string): IWbs[] {
+      if(typeof where === "string")
+         return this._select("wbs", CSqlGen.allField, [], where, true) as IWbs[];
+      else
+         return this._select("wbs", CSqlGen.allField, where) as IWbs[];
    }
 
    /**

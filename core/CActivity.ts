@@ -10,6 +10,8 @@ import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import * as string_decoder from "node:string_decoder";
+import {ICustomer} from "./CCustomer";
 
 export interface IActivity extends IBase {
    wbs: number;
@@ -76,7 +78,7 @@ export default class CActivity extends CBase {
    get status(): number {
       return this._data.status;
    }
-   get mergenote():string {
+   get mergenote(): string {
       return this._data.mergenote;
    }
    get note(): string {
@@ -166,8 +168,11 @@ export default class CActivity extends CBase {
     * @param where condizione di filtro.
     * @public
     */
-   public loadAll(where: IField[] = []): IActivity[] {
-      return this._select("activity", CSqlGen.allField, where) as IActivity[];
+   public loadAll(where: IField[] | string): IActivity[] {
+      if(typeof where === "string")
+         return this._select("activity", CSqlGen.allField, [], where, true) as IActivity[];
+      else
+         return this._select("activity", CSqlGen.allField, where) as IActivity[];
    }
 
    /**
