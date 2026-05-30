@@ -91,7 +91,10 @@ router.post("/:id", (request: Request, response: Response) => {
       o.customer = parseInt(request.body.customer);
       o.description1 = request.body.description1;
       o.description2 = request.body.description2;
-      o.status = request.body.status;
+      if(isNaN(parseInt(request.body.status)))
+         o.status = 1;
+      else
+         o.status = request.body.status;
       o.save();
       response.redirect("/wbs");
    }
