@@ -37,7 +37,7 @@
    "devDependencies": {
       "@types/node": "^25.9.1",
       "express-handlebars": "^9.0.1",
-      "node": "^24.16.0",
+      "node": "^26.3.0",
       "typescript": "^6.0.3"
    }
 }

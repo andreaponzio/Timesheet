@@ -5,12 +5,49 @@
 import express, {Router, Request, Response} from "express";
 import fs from "node:fs";
 import CCustomer, {ICustomer} from "../core/CCustomer";
-import CRest, {IRest} from "../core/CRest";
+import CWbs, {IWbs} from "../core/CWbs";
+import CActivity, {IActivity} from "../core/CActivity";
+import CWorkday, {IWorkday} from "../core/CWorkday";
+import CRequest, {IRequest} from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
+
+/**
+ * Funzioni locali di utilità.
+ */
+let convFilterToWhere = (request: Request): string => {
+   let listToken: string[] = [];
+   let token: string;
+
+   // Generazione condizione di WHERE:
+   if(request.query["$filter"] !== undefined) {
+      token = "";
+      for(let c of request.query["$filter"] as string) {
+         switch(c) {
+            case " ":
+               listToken.push(token);
+               token = "";
+               break;
+
+            default:
+               token += c;
+         }
+      }
+      if(token.length)
+         listToken.push(token);
+   }
+
+   // Genera condizione:
+   listToken.forEach((token: string) => {
+   })
+
+   // restituisce condizione:
+   console.log(listToken);
+   return "";
+};
 
 /**
  * Restituisce $metadata del servizio di accesso a SQLite.
@@ -20,52 +57,59 @@ router.get("/$metadata", (request: Request, response: Response) => {
 });
 
 /**
- * Restituisce tutti i clienti oppure i cliente che soddisfano l'eventuale filtro.
+ *
  */
-router.get("/customer", (request: Request, response: Response) => {
+router.get(/customer/i, (request: Request, response: Response) => {
+   // Converte opzione $filter in condizione di Where:
+   //convFilterToWhere(request);
    let o: CCustomer = new CCustomer();
-   let rest: IRest = undefined;
-   let data: ICustomer[] = [];
-
-   // Se è presente un filtro, prepara condizione:
-   rest = CRest.convertFilter(request.query);
-
-   // Legge i clienti applicando un filtro (se necessario):
-   if(rest.where.length)
-      data = o.loadAll(rest.where);
-   else
-      data = o.loadAll([]);
-
-   // Restituisce stato HTTP, tipo dato e dati al chiamante:
+   let data: ICustomer[];
+   data = o.loadAll("1 = 1");
    response.status(200).type("application/json").json({d: {results: data}});
 });
 
 /**
- * Restituisce il cliente con l'identificativo specificato.
+ *
  */
-router.get("/customer\\(:id\\)", (request: Request, response: Response) => {
-   let o: CCustomer = new CCustomer();
-   o.load(parseInt(request.params.id as string));
-   response.status(200).type("application/json").json({d: {results: o.data}});
+router.get(/wbs/i, (request: Request, response: Response) => {
+   let o: CWbs = new CWbs();
+   let data: IWbs[];
+   data = o.loadAll("1 = 1");
+   response.status(200).type("application/json").json({d: {results: data}});
 });
 
 /**
- * .
+ *
  */
-router.get("/wbs", (request: Request, response: Response) => {
-   response.send({value: []});
+router.get(/activity/i, (request: Request, response: Response) => {
+   let o: CActivity = new CActivity();
+   let data: IActivity[];
+   data = o.loadAll("1 = 1");
+   response.status(200).type("application/json").json({d: {results: data}});
 });
 
 /**
- * .
+ *
  */
-router.get("/activity", (request: Request, response: Response) => {
-   response.send({value: []});
+router.get(/workday/i, (request: Request, response: Response) => {
+   let o: CWorkday = new CWorkday();
+   let data: IWorkday[];
+   data = o.loadAll("1 = 1");
+   response.status(200).type("application/json").json({d: {results: data}});
 });
 
 /**
- * .
+ *
  */
-router.get("/workday", (request: Request, response: Response) => {
-   response.send({value: []});
+router.get(/request/i, (request: Request, response: Response) => {
+   let o: CRequest = new CRequest();
+   let data: IRequest[];
+   data = o.loadAll("1 = 1");
+   response.status(200).type("application/json").json({d: {results: data}});
+});
+
+/**
+ *
+ */
+router.get(/search/i, (request: Request, response: Response) => {
 });

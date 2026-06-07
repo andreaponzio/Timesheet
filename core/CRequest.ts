@@ -284,10 +284,22 @@ export default class CRequest extends CBase {
     * @param where condizione di ricerca.
     */
    public loadAll(where: SqlGen.IField[] | string): IRequest[] {
+      let req: CRequest;
+      let allRequest: IRequest[] = [];
+      let completeReq:IRequest[] = [];
+
       if(typeof where === "string")
-         return this._select("request", CSqlGen.allField, [], where, true) as IRequest[];
+         allRequest = this._select("request", CSqlGen.allField, [], where, true) as IRequest[];
       else
-         return this._select("request", CSqlGen.allField, where) as IRequest[];
+         allRequest = this._select("request", CSqlGen.allField, where) as IRequest[];
+
+      allRequest.forEach((r: IRequest) => {
+         req = new CRequest();
+         req.load(r.id);
+         completeReq.push(req.data);
+      });
+
+      return completeReq;
    }
 
    /**
