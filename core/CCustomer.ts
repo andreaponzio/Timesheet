@@ -93,7 +93,7 @@ export default class CCustomer extends CBase {
    public save(): void {
       try {
          if(this.id === 0) {
-            super._save(numericInterval.workday);
+            super._save(numericInterval.customer);
             this._insert("customer",
                [{
                   name: "description",
