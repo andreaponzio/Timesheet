@@ -286,7 +286,7 @@ export default class CRequest extends CBase {
    public loadAll(where: SqlGen.IField[] | string): IRequest[] {
       let req: CRequest;
       let allRequest: IRequest[] = [];
-      let completeReq:IRequest[] = [];
+      let completeReq: IRequest[] = [];
 
       if(typeof where === "string")
          allRequest = this._select("request", CSqlGen.allField, [], where, true) as IRequest[];

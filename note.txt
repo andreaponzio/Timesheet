@@ -202,3 +202,14 @@ class CRequestController extends ODataController {
 @ODataServer.controller(CRequestController, true)
 
 export class CTimesheet extends ODataServer {}
+
+
+
+      this._insert("activity_group_id",
+         [{
+            name: "idgroup",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+         }, {
+            name: "idactivity",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: idactivity}] as IOption[]
+         }] as IField[]);

@@ -15,6 +15,7 @@ import {router as routerApp} from "./routers/routeApp";
 import {router as routerCustomer} from "./routers/routeCustomer";
 import {router as routerWbs} from "./routers/routeWbs";
 import {router as routerActivity} from "./routers/routeActivity";
+import {router as routerActivityGroup} from "./routers/routeActivityGroup";
 import {router as routerWorkday} from "./routers/routeWorkday";
 import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
@@ -56,6 +57,7 @@ if(process.argv[2] === undefined) {
    app.use("/customer", routerCustomer);
    app.use("/wbs", routerWbs);
    app.use("/activity", routerActivity);
+   app.use("/activitygroup", routerActivityGroup);
    app.use("/workday", routerWorkday);
    app.use("/report", routerReport);
    app.use("/search", routerSearch);
@@ -77,12 +79,11 @@ else {
 
 /**
  * Middleware eseguito quando:
- * - interrogazione del database da servizio REST;
  * - non viene trovata nessuna route valida, quindi riporta sulla pagina principale;
  */
 app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-   if(process.argv[2] === undefined)
-      response.redirect("/");
+   //if(process.argv[2] === undefined)
+   //   response.redirect("/");
 });
 
 /**

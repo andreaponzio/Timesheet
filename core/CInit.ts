@@ -14,6 +14,7 @@ import {numericInterval} from "./CBase";
 import CActivity, {IActivity} from "./CActivity";
 import CCustomer, {ICustomer} from "./CCustomer";
 import CWbs, {IWbs} from "./CWbs";
+import CActivityGroup, {IActivityGroup} from "./CActivityGroup";
 
 export class CInit {
    private db: CDatabase;
@@ -30,6 +31,7 @@ export class CInit {
       o.executeRun("DELETE FROM main.customer;");
       o.executeRun("DELETE FROM main.wbs;");
       o.executeRun("DELETE FROM main.activity;");
+      o.executeRun("DELETE FROM main.activity_group;");
       o.executeRun("DELETE FROM main.request;");
       o.executeRun("DELETE FROM main.request_binary;");
       o.executeRun("DELETE FROM main.workday;");
@@ -39,6 +41,8 @@ export class CInit {
                     VALUES ('${numericInterval.wbs}', 200000);`);
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
                     VALUES ('${numericInterval.activity}', 300000);`);
+      o.executeRun(`INSERT INTO main.numberid (id, last_number)
+                    VALUES ('${numericInterval.activitygroup}', 700000);`);
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
                     VALUES ('${numericInterval.workday}', 400000);`);
       o.executeRun(`INSERT INTO main.numberid (id, last_number)
@@ -164,10 +168,12 @@ export class CInit {
       let customer: CCustomer;
       let wbs: CWbs;
       let activity: CActivity;
+      let activitygroup: CActivityGroup;
 
       let customer_data: ICustomer[];
       let wbs_data: IWbs[];
       let activity_data: IActivity[];
+      let activitygroup_data: IActivityGroup[];
 
       this.db.executeRun("DELETE FROM main.search;");
       try {
@@ -211,6 +217,14 @@ export class CInit {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
                                      '/activity/${d.id}', 3)`);
+      });
+
+      activitygroup = new CActivityGroup();
+      activitygroup_data = activity.loadAll([]);
+      activitygroup_data.forEach(d => {
+         this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                                     '/activitygroup/${d.id}', 5)`);
       });
    }
 }

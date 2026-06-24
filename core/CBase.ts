@@ -37,7 +37,11 @@ export enum objectType {
    tr_status,
    sendsap,
    copyact,
-   backup
+   backup,
+
+   activitygroup_list,
+   activitygroup_details,
+   activitygroup_create
 }
 export enum activityType {
    change_request = 1,
@@ -65,7 +69,8 @@ export enum numericInterval {
    workday = "WORKDAY",
    change_request = "REQUEST",
    workday_group = "WORKDAYGRP",
-   search = "SEARCH"
+   search = "SEARCH",
+   activitygroup = "ACTIVITYGROUP"
 }
 export enum extraInfo {
    normale = 1,

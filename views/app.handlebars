@@ -64,6 +64,7 @@
          <li><a class="dropdown-item active" href="/customer/0">Cliente</a></li>
          <li><a class="dropdown-item" href="/wbs/0">Commessa</a></li>
          <li><a class="dropdown-item" href="/activity/0">Attività</a></li>
+         <li><a class="dropdown-item" href="/activitygroup/0">Gruppo attività</a></li>
          <li><a class="dropdown-item" href="/request/import/0">Trasporto</a></li>
          <li><a class="dropdown-item" href="/workday/0">Consuntivazione</a></li>
       </ul>
@@ -90,6 +91,10 @@
             <a href="/activity"
                class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
                <i class="bi bi-activity mx-1"></i>Attività
+            </a>
+            <a href="/activitygroup"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-collection mx-1"></i>Gruppo attività
             </a>
             <a href="/request"
                class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
@@ -129,18 +134,21 @@
          {{#eq view 1}} {{> customer/list}} {{/eq}}
          {{#eq view 2}} {{> wbs/list}} {{/eq}}
          {{#eq view 3}} {{> activity/list}} {{/eq}}
+         {{#eq view 25}} {{> activitygroup/list}} {{/eq}}
          {{#eq view 4}} {{> request/list}} {{/eq}}
          {{#eq view 5}} {{> workday/list}} {{/eq}}
 
          {{#eq view 6}} {{> customer/details}} {{/eq}}
          {{#eq view 7}} {{> wbs/details}} {{/eq}}
          {{#eq view 8}} {{> activity/details}} {{/eq}}
+         {{#eq view 26}} {{> activitygroup/details}} {{/eq}}
          {{#eq view 9}} {{> request/details}} {{/eq}}
          {{#eq view 10}} {{> workday/details}} {{/eq}}
 
          {{#eq view 11}} {{> customer/create}} {{/eq}}
          {{#eq view 12}} {{> wbs/create}} {{/eq}}
          {{#eq view 13}} {{> activity/create}} {{/eq}}
+         {{#eq view 27}} {{> activitygroup/create}} {{/eq}}
          {{#eq view 14}} {{> request/create}} {{/eq}}
          {{#eq view 15}} {{> workday/create}} {{/eq}}
 

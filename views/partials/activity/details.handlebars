@@ -134,6 +134,13 @@
                <a href="/request/export/A{{data.id}}" type="button" class="dropdown-item">Esporta richieste di trasporto
                </a>
             </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+               <button type="button" class="dropdown-item" onclick="addGroup();">Aggiungi a un gruppo...</button>
+            </li>
+            <li>
+               <button type="button" class="dropdown-item" onclick="delGroup();">Rimuovi da un gruppo</button>
+            </li>
          </ul>
       </div>
    </div>
@@ -199,6 +206,7 @@
    {{> Error}}
    {{> RapidWorkday}}
    {{> RapidRequest}}
+   {{> AddGroup}}
 </form>
 
 <script>
@@ -217,6 +225,15 @@
    function rapidRequest() {
       let modal = new bootstrap.Modal("#RapidRequest");
       modal.show();
+   }
+   function addGroup() {
+      let modal = new bootstrap.Modal("#AddGroup");
+      modal.show();
+   }
+   function delGroup(id) {
+      document.querySelector("#_method").value = "delete";
+      document.querySelector("#form").action = "/activitygroup/group/{{data.id}}";
+      document.querySelector("#form").submit();
    }
    function modalRapidSubmit(flow) {
       switch(flow) {
@@ -248,6 +265,20 @@
             }
             else {
                document.querySelector("#form").action = "/activity/request/{{data.id}}";
+               document.querySelector("#import").hidden = true;
+               document.querySelector("#cancel").hidden = true;
+               document.querySelector("#wait").hidden = false;
+               document.querySelector("#form").submit();
+            }
+            break;
+
+         case 3:
+            if(document.querySelector("#group").value.length === 0) {
+               document.querySelector(".toast-body").innerText = "Selezionare un gruppo";
+               toast.show();
+            }
+            else {
+               document.querySelector("#form").action = "/activitygroup/group/{{data.id}}";
                document.querySelector("#import").hidden = true;
                document.querySelector("#cancel").hidden = true;
                document.querySelector("#wait").hidden = false;

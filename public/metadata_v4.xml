@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:DataServices>
+        <Schema Namespace="Timesheet" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+
+            <!-- ============================
+           ENTITY: CUSTOMER
+           ============================ -->
+            <EntityType Name="Customer">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
+
+                <!-- Navigation: Customer → WBS (1:N) -->
+                <NavigationProperty Name="Wbs"
+                                    Type="Collection(Timesheet.Wbs)"/>
+            </EntityType>
+
+            <!-- ============================
+           ENTITY: WBS
+           ============================ -->
+            <EntityType Name="Wbs">
+                <Key>
+                    <PropertyRef Name="internal_ref"/>
+                </Key>
+
+                <Property Name="internal_ref" Type="Edm.String" Nullable="false"/>
+                <Property Name="customer" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description1" Type="Edm.String" Nullable="false"/>
+                <Property Name="description2" Type="Edm.String"/>
+                <Property Name="status" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
+
+                <!-- Navigation: WBS → Activity (1:N) -->
+                <NavigationProperty Name="Activity"
+                                    Type="Collection(Timesheet.Activity)"/>
+            </EntityType>
+
+            <!-- ============================
+           ENTITY: ACTIVITY
+           ============================ -->
+            <EntityType Name="Activity">
+                <Key>
+                    <PropertyRef Name="wbs"/>
+                    <PropertyRef Name="internal_ref"/>
+                </Key>
+
+                <Property Name="wbs" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="internal_ref" Type="Edm.String" Nullable="false"/>
+                <Property Name="external_ref" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String" Nullable="false"/>
+                <Property Name="functional" Type="Edm.String"/>
+                <Property Name="technical" Type="Edm.String"/>
+                <Property Name="hour" Type="Edm.Decimal"/>
+                <Property Name="mergenote" Type="Edm.String"/>
+                <Property Name="status" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="note" Type="Edm.String"/>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
+
+                <!-- Activity → Request (1:N) -->
+                <NavigationProperty Name="Request"
+                                    Type="Collection(Timesheet.Request)"/>
+
+                <!-- Activity → Workday (1:N) -->
+                <NavigationProperty Name="Workday"
+                                    Type="Collection(Timesheet.Workday)"/>
+            </EntityType>
+
+            <!-- ============================
+           ENTITY: WORKDAY
+           ============================ -->
+            <EntityType Name="Workday">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="activity" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="date" Type="Edm.DateTimeOffset" Nullable="false"/>
+                <Property Name="idgroup" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="hour" Type="Edm.Decimal"/>
+                <Property Name="extrainfo" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="place" Type="Edm.String"/>
+                <Property Name="note" Type="Edm.String"/>
+                <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
+            </EntityType>
+
+            <!-- ============================
+           ENTITY: REQUEST
+           ============================ -->
+            <EntityType Name="Request">
+                <Key>
+                    <PropertyRef Name="activity"/>
+                    <PropertyRef Name="request"/>
+                </Key>
+
+                <Property Name="activity" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="request" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="status" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String" Nullable="false"/>
+                <Property Name="owner" Type="Edm.String"/>
+                <Property Name="date" Type="Edm.DateTimeOffset" Nullable="false"/>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
+            </EntityType>
+
+            <!-- ============================
+            ENTITY CONTAINER
+            ============================ -->
+            <EntityContainer Name="Container">
+
+                <EntitySet Name="Customer" EntityType="Timesheet.Customer">
+                    <NavigationPropertyBinding Path="Wbs" Target="Wbs"/>
+                </EntitySet>
+
+                <EntitySet Name="Wbs" EntityType="Timesheet.Wbs">
+                    <NavigationPropertyBinding Path="Activity" Target="Activity"/>
+                </EntitySet>
+
+                <EntitySet Name="Activity" EntityType="Timesheet.Activity">
+                    <NavigationPropertyBinding Path="Workday" Target="Workday"/>
+                    <NavigationPropertyBinding Path="Request" Target="Request"/>
+                </EntitySet>
+
+                <EntitySet Name="Workday" EntityType="Timesheet.Workday"/>
+
+                <EntitySet Name="Request" EntityType="Timesheet.Request"/>
+
+            </EntityContainer>
+
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

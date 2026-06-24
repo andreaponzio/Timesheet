@@ -9,45 +9,12 @@ import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
 import CWorkday, {IWorkday} from "../core/CWorkday";
 import CRequest, {IRequest} from "../core/CRequest";
+import COData from "../core/COData";
 
 /**
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
-
-/**
- * Funzioni locali di utilità.
- */
-let convFilterToWhere = (request: Request): string => {
-   let listToken: string[] = [];
-   let token: string;
-
-   // Generazione condizione di WHERE:
-   if(request.query["$filter"] !== undefined) {
-      token = "";
-      for(let c of request.query["$filter"] as string) {
-         switch(c) {
-            case " ":
-               listToken.push(token);
-               token = "";
-               break;
-
-            default:
-               token += c;
-         }
-      }
-      if(token.length)
-         listToken.push(token);
-   }
-
-   // Genera condizione:
-   listToken.forEach((token: string) => {
-   })
-
-   // restituisce condizione:
-   console.log(listToken);
-   return "";
-};
 
 /**
  * Restituisce $metadata del servizio di accesso a SQLite.
@@ -60,8 +27,10 @@ router.get("/$metadata", (request: Request, response: Response) => {
  *
  */
 router.get(/customer/i, (request: Request, response: Response) => {
-   // Converte opzione $filter in condizione di Where:
-   //convFilterToWhere(request);
+
+   let x:COData;
+   x = new COData(request);
+
    let o: CCustomer = new CCustomer();
    let data: ICustomer[];
    data = o.loadAll("1 = 1");

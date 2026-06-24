@@ -9,12 +9,16 @@ import CCustomer from "../core/CCustomer";
 import CWorkday from "../core/CWorkday";
 import {extraInfo, objectType} from "../core/CBase";
 import CRequest from "../core/CRequest";
+import CActivityGroup, {IActivityGroup} from "../core/CActivityGroup";
 
 /**
  * Funzioni locali.
  */
 let listOfWbs = (object: CActivity): IWbs[] => {
    return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs WHERE status = 1") as IWbs[];
+}
+let listOfGroup = (object: CActivity): IActivityGroup[] => {
+   return object.executeAll("SELECT id, description FROM main.activity_group") as IActivityGroup[];
 }
 
 /**
@@ -47,10 +51,12 @@ router.get("/:id", (request: Request, response: Response) => {
    let o: CActivity;
    let w: CWbs;
    let c: CCustomer;
+   let g: CActivityGroup;
 
    o = new CActivity();
    w = new CWbs();
    c = new CCustomer();
+   g = new CActivityGroup();
 
    switch(parseInt(request.params.id as string)) {
       case 0:
@@ -86,6 +92,7 @@ router.get("/:id", (request: Request, response: Response) => {
                customer_description: c.description,
                workday: o.getWorkday(),
                wbs_list: listOfWbs(o),
+               group_list: listOfGroup(o),
                request_list: o.getRequest(),
                rdate: o.convertDate(new Date(), 3),
             }
