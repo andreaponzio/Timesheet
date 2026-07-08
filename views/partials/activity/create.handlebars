@@ -21,10 +21,10 @@
          <label for="type" class="form-label">Tipo</label>
          <select class="form-select" id="type" name="type" required>
             <option value="" selected>Seleziona tipo</option>
-            <option value="1">Change request</option>
-            <option value="2">AMS</option>
-            <option value="3">Altro</option>
-            <option value="4">Interna</option>
+            <option value="1" {{#eq data.type 1}}selected{{/eq}}>Change request</option>
+            <option value="2" {{#eq data.type 2}}selected{{/eq}}>AMS</option>
+            <option value="3" {{#eq data.type 3}}selected{{/eq}}>Altro</option>
+            <option value="4" {{#eq data.type 4}}selected{{/eq}}>Interna</option>
          </select>
       </div>
       <div class="flex-grow-1 ms-2">

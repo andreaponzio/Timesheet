@@ -3,14 +3,13 @@
    <!-- Customer data -->
    <div class="d-flex d-flex-row">
       <div class="css-flex-8">
-         <label for="id" class="form-label">Gruppo attività</label>
+         <label for="id" class="form-label">Gruppo</label>
          <input type="number" class="form-control" id="id" value="0" disabled>
       </div>
       <div class="flex-grow-1 ms-2">
          <label for="description" class="form-label">Descrizione</label>
          <input type="text" class="form-control css-uppercase" id="description" name="description"
-                value="{{data.description}}"
-                maxlength="40" required>
+                value="{{data.description}}" maxlength="80" required>
       </div>
    </div>
 

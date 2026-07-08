@@ -1,0 +1,52 @@
+<form id="form" action="/access/edit/{{data.id}}/{{data.valueid}}" method="post">
+   <input type="text" id="_method" name="_method" value="post" hidden>
+
+   <!-- Value data -->
+   <div class="d-flex d-flex-row">
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Descrizione</label>
+         <input type="text" class="form-control" id="description" name="description" value="{{data.description}}"
+                maxlength="80" required>
+      </div>
+   </div>
+
+   <div class="d-flex d-flex-row">
+      <div class="flex-grow-1 ms-2">
+         <label for="description" class="form-label">Valore</label>
+         <input type="text" class="form-control" id="value" name="value" value="{{data.value}}" maxlength="80" required>
+      </div>
+   </div>
+
+   <div class="m-2">
+      <input class="form-check-input" type="checkbox" id="secure" name="secure" {{#eq data.secure "1"}}checked{{/eq}}>
+      <label class="form-check-label" for="secure">
+         Valore protetto
+      </label>
+   </div>
+
+   <!-- Save  & Cancel operation -->
+   <div class="d-flex d-inline-row justify-content-center mt-2">
+      <button type="submit" class="btn btn-success me-1">
+         <i class="bi bi-floppy"></i>
+      </button>
+      <button type="button" class="btn btn-danger me-1" onclick="deleteObject({{data.customer.id}});">
+         <i class="bi bi-trash"></i>
+      </button>
+      <a href="/access/{{data.id}}" type="button" class="d-inline-flex btn btn-secondary">
+         <i class="bi bi-x-square"></i>
+      </a>
+   </div>
+   {{> Error}}
+   {{> YesOrNo}}
+</form>
+
+<script>
+   function modalSubmit() {
+      document.querySelector("#form").submit();
+   }
+   function deleteObject(id) {
+      document.querySelector("#_method").value = "delete";
+      let modal = new bootstrap.Modal("#YesOrNo");
+      modal.show();
+   }
+</script>

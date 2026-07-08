@@ -21,6 +21,7 @@ import {router as routerReport} from "./routers/routeReport";
 import {router as routerSearch} from "./routers/routeSearch";
 import {router as routerTools} from "./routers/routeTools";
 import {router as routerRequest} from "./routers/routeRequest";
+import {router as routerAccess} from "./routers/routeAccess";
 import {router as routerRestv2} from "./routers/routeRestv2";
 import {router as routerRestv4} from "./routers/routeRestv4";
 
@@ -63,6 +64,7 @@ if(process.argv[2] === undefined) {
    app.use("/search", routerSearch);
    app.use("/tools", routerTools);
    app.use("/request", routerRequest);
+   app.use("/access", routerAccess);
 }
 else {
    app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {

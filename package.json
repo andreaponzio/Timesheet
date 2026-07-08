@@ -41,6 +41,8 @@
    },
    "allowScripts": {
       "@types/node@14.18.63": true,
-      "@types/node@25.9.4": true
+      "@types/node@25.9.4": true,
+      "node@26.4.0": true,
+      "highlight.js@9.18.5": true
    }
 }

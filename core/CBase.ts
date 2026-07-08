@@ -41,7 +41,12 @@ export enum objectType {
 
    activitygroup_list,
    activitygroup_details,
-   activitygroup_create
+   activitygroup_create,
+
+   access_list,
+   access_details,
+   access_create
+
 }
 export enum activityType {
    change_request = 1,
@@ -70,7 +75,8 @@ export enum numericInterval {
    change_request = "REQUEST",
    workday_group = "WORKDAYGRP",
    search = "SEARCH",
-   activitygroup = "ACTIVITYGROUP"
+   activitygroup = "ACTIVITYGROUP",
+   access = "ACCESS"
 }
 export enum extraInfo {
    normale = 1,

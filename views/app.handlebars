@@ -104,6 +104,10 @@
                class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
                <i class="bi bi-stopwatch mx-1"></i>Consuntivazione
             </a>
+            <a href="/access"
+               class="list-group-item list-group-item-action border-0 css-listgroup-item css-font-size-90">
+               <i class="bi bi-safe2 mx-1"></i>Controllo accessi
+            </a>
          </ul>
 
          <!-- Reporting menu -->
@@ -161,6 +165,10 @@
          {{#eq view 22}} {{> tools/sendsap}} {{/eq}}
          {{#eq view 23}} {{> tools/copyact}} {{/eq}}
          {{#eq view 24}} {{> tools/backup}} {{/eq}}
+
+         {{#eq view 28}} {{> access/list}} {{/eq}}
+         {{#eq view 29}} {{> access/details}} {{/eq}}
+         {{#eq view 30}} {{> access/create}} {{/eq}}
       </div>
    </div>
 </div>
