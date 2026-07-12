@@ -19,6 +19,7 @@
    },
    "dependencies": {
       "@sap-cloud-sdk/http-client": "^4.4.0",
+      "@types/clipboardy": "^1.1.0",
       "@types/cors": "^2.8.19",
       "@types/exceljs": "^0.5.3",
       "@types/express": "^5.0.5",
@@ -26,6 +27,7 @@
       "@types/handlebars-helpers": "^0.5.6",
       "@types/http-status-codes": "^1.2.0",
       "@types/method-override": "^3.0.0",
+      "clipboardy": "^5.3.1",
       "exceljs": "^4.4.0",
       "express": "^5.1.0",
       "handlebars-helpers": "^0.10.0",
@@ -43,6 +45,8 @@
       "@types/node@14.18.63": true,
       "@types/node@25.9.4": true,
       "node@26.4.0": true,
-      "highlight.js@9.18.5": true
+      "highlight.js@9.18.5": true,
+      "npm@11.18.0": true,
+      "typescript@6.0.3": true
    }
 }

@@ -28,13 +28,20 @@ export default class CAccess extends CBase {
    /**
     * Proprietà private.
     */
-   private customerid: number;
+   private _customerid: number;
 
    /**
     * Proprietà protette.
     * @protected
     */
    protected _data: IAccess[];
+
+   /**
+    * Get & Set.
+    */
+   get customerid(): number {
+      return this._customerid;
+   }
 
    /**
     * Restituisce l'indice dell'elemento cercato.
@@ -54,7 +61,7 @@ export default class CAccess extends CBase {
       super();
       this.clean();
       this.load(customerid);
-      this.customerid = customerid;
+      this._customerid = customerid;
    }
 
    /**
@@ -62,7 +69,7 @@ export default class CAccess extends CBase {
     */
    public clean(): void {
       super._clean();
-      this.customerid = 0;
+      this._customerid = 0;
       this._data = undefined;
    }
 
@@ -144,7 +151,7 @@ export default class CAccess extends CBase {
          this._delete("access", [
             {
                name: "id",
-               value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.customerid}] as IOption[]
+               value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this._customerid}] as IOption[]
             }
          ] as IField[]);
    }
@@ -174,7 +181,7 @@ export default class CAccess extends CBase {
       if(description.length) {
          if(valueid === 0) {
             this._data.push({
-               id: this.customerid,
+               id: this._customerid,
                valueid: this._data.length + 1,
                description: description,
                value: value,

@@ -30,21 +30,22 @@
    <!-- List of values -->
    <div class="mt-2">
       {{#each data.value}}
-         <a href="/access/edit/{{id}}/{{valueid}}"
-            class="list-group-item list-group-item-action css-listgroup-item">
-            <div class="d-flex flex-row align-items-center">
-               <div class="css-flex-95">
+         <div class="d-flex flex-row align-items-center">
+            <a href="/access/edit/{{id}}/{{valueid}}" class="css-flex-95 css-disabled-link">
+               <div class="list-group-item list-group-item-action css-listgroup-item">
                   <span>{{description}}</span><br>
                   <span class="css-summarize fst-italic">Modificato il {{changed_on}}</span>
                </div>
-               <div class="border-start css-flex-3 text-center di">
-                  <i class="bi bi-copy" onclick="alert(1)"></i>
-               </div>
-            </div>
-         </a>
+            </a>
+            <a href="/access/copy/{{id}}/{{valueid}}" type="button" class="d-inline-flex btn btn-primary ms-1">
+               <i class="bi bi-copy"></i>
+            </a>
+         </div>
       {{/each}}
    </div>
 </ul>
+
+{{> Success}}
 
 <form id="form" action="/access/edit/{{data.customer.id}}" method="post">
    <input type="text" id="_method" name="_method" value="delete" hidden>
@@ -56,8 +57,14 @@
       document.querySelector("#_method").value = "delete";
       document.querySelector("#form").submit();
    }
-   function deleteObject(id) {
+   function deleteObject(customerid, valueid) {
       let modal = new bootstrap.Modal("#YesOrNo");
       modal.show();
+   }
+   function copyValue(customerid, valueid) {
+      let e = document.querySelector("#link");
+      document.querySelector("#link").href = "/access/copy/" + customerid + "/" + valueid;
+      document.querySelector("#_method").value = "post";
+      document.querySelector("#form").submit();
    }
 </script>
