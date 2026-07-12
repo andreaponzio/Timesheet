@@ -2,9 +2,10 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-
+import crypto from "node:crypto";
 import {extraInfo} from "./CBase";
 import CActivity, {IActivity} from "./CActivity";
+import {security} from "../public/config.json";
 
 /**
  * @author Andrea Ponzio
@@ -153,5 +154,65 @@ export default class CTool {
     * */
    public static getActivity(object: CActivity): IActivity[] {
       return object.executeAll("SELECT id, internal_ref, description FROM main.activity WHERE status in (1, 2, 3) ORDER BY description;") as IActivity[];
+   }
+
+   /**
+    * Protegge valore.
+    * @param data valore da proteggere.
+    * @return valor protetto.
+    * @public
+    * @static
+    */
+   public static encrypt(data: string): string {
+      let salt: Buffer<ArrayBuffer>;
+      let iv: Buffer<ArrayBuffer>;
+      let key: any;
+      let cipher: crypto.Cipheriv;
+      let encrypt: string;
+
+      // Codifica SALT e IV:
+      salt = Buffer.from(security.salt, 'hex');
+      iv = Buffer.from(security.iv, 'hex');
+
+      // Codifica password:
+      key = crypto.scryptSync(crypto.scryptSync(security.password as string, salt, 16), salt, 32);
+
+      // Protegge valore:
+      cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+      encrypt = cipher.update(data, "utf8", "hex");
+      encrypt += cipher.final("hex");
+
+      // Restituisce valore protetto:
+      return encrypt;
+   }
+
+   /**
+    * Sprotegge valore.
+    * @param data valore da sproteggere.
+    * @return valor sprotetto.
+    * @public
+    * @static
+    */
+   public static decrypt(data: string): string {
+      let salt: Buffer<ArrayBuffer>;
+      let iv: Buffer<ArrayBuffer>;
+      let key: any;
+      let decipher: crypto.Decipheriv;
+      let decrypt: string;
+
+      // Codifica SALT e IV:
+      salt = Buffer.from(security.salt, 'hex');
+      iv = Buffer.from(security.iv, 'hex');
+
+      // Codifica password:
+      key = crypto.scryptSync(crypto.scryptSync(security.password as string, salt, 16), salt, 32);
+
+      // Protegge valore:
+      decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+      decrypt = decipher.update(data, "hex", "utf8");
+      decrypt += decipher.final("utf8");
+
+      // Restituisce valore protetto:
+      return decrypt;
    }
 }

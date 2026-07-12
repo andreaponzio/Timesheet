@@ -7,6 +7,7 @@ import {objectType} from "../core/CBase";
 import CCustomer, {ICustomer} from "../core/CCustomer";
 import CAccess, {IAccess} from "../core/CAccess";
 import clipboard from 'clipboardy';
+import CTool from "../core/CTool";
 
 /**
  * Dichiarazioni locali.
@@ -86,7 +87,7 @@ router.get("/edit/:customerid/:valueid", (request: Request, response: Response) 
             id: parseInt(request.params.customerid as string),
             valueid: v.valueid,
             description: v.description,
-            value: v.value,
+            value: v.secure === "1" ? CTool.decrypt(v.value) : v.value,
             secure: v.secure
          }
       });
@@ -108,6 +109,8 @@ router.post("/edit/:customerid/:valueid", (request: Request, response: Response)
    let a: CAccess;
 
    a = new CAccess(parseInt(request.params.customerid as string));
+   if(request.body.secure === "on")
+      request.body.value = CTool.encrypt(request.body.value);
    a.add(parseInt(request.params.valueid as string), request.body.description, request.body.value, request.body.secure === "on" ? "1" : "0");
    a.save();
 
@@ -142,7 +145,7 @@ router.delete("/edit/:customerid/:valueid", (request: Request, response: Respons
 /**
  * Permette di copiare il valore negli appunti.
  */
-router.get("/copy/:customerid/:valueid", async (request: Request, response: Response) => {
+router.get("/copy/:customerid/:valueid", async(request: Request, response: Response) => {
    let a: CAccess;
    let c: CCustomer;
    let v: IAccess;

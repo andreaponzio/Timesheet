@@ -13,5 +13,10 @@
    ],
    "odata": {
       "port": 53280
+   },
+   "security": {
+      "salt": "a3f8c2d1e4b7a091f3c2d1e4b7a091f3",
+      "iv": "9b2e4f1a7c3d8e6f0a1b2c3d4e5f6a7b",
+      "password": "Subnautica$27$Alfacentauri"
    }
 }
