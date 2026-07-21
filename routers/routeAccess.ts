@@ -13,6 +13,7 @@ import CTool from "../core/CTool";
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
+let copied: boolean = false;
 
 /**
  * Pagina principale.
@@ -36,11 +37,16 @@ router.get("/", (request: Request, response: Response) => {
 router.get("/:id", (request: Request, response: Response) => {
    let a: CAccess;
    let c: CCustomer;
+   let copied_text: string = "";
 
    a = new CAccess(parseInt(request.params.id as string));
    c = new CCustomer();
 
    c.load(parseInt(request.params.id as string));
+
+   if(copied)
+      copied_text = "Valore copiato negli appunti";
+   copied = false;
 
    response.render("app", {
       view: objectType.access_details,
@@ -49,16 +55,10 @@ router.get("/:id", (request: Request, response: Response) => {
             id: c.id,
             description: c.description
          },
-         value: a.data
+         value: a.data,
+         success: copied_text
       }
    });
-});
-
-/**
- * Copia il valore negli appunti.
- */
-router.get("/copy/:id", (request: Request, response: Response) => {
-   console.log("copy");
 });
 
 /**
@@ -155,17 +155,11 @@ router.get("/copy/:customerid/:valueid", async(request: Request, response: Respo
    v = a.get(parseInt(request.params.valueid as string));
 
    c.load(a.customerid);
+   if(v.secure === "1")
+      v.value = CTool.decrypt(v.value);
    await clipboard.write(v.value);
 
-   response.render("app", {
-      view: objectType.access_details,
-      data: {
-         customer: {
-            id: c.id,
-            description: c.description
-         },
-         value: a.data,
-         success: "Valore copiato negli appunti"
-      }
-   });
+   copied = true;
+
+   response.redirect(`/access/${request.params.customerid}`);
 });
