@@ -3,7 +3,7 @@
     <edmx:DataServices>
         <Schema Namespace="Timesheet" xmlns="http://docs.oasis-open.org/odata/ns/edm">
 
-            <!-- ============================
+           <!-- ============================
            ENTITY: CUSTOMER
            ============================ -->
             <EntityType Name="Customer">
@@ -20,7 +20,7 @@
                                     Type="Collection(Timesheet.Wbs)"/>
             </EntityType>
 
-            <!-- ============================
+           <!-- ============================
            ENTITY: WBS
            ============================ -->
             <EntityType Name="Wbs">
@@ -41,7 +41,7 @@
                                     Type="Collection(Timesheet.Activity)"/>
             </EntityType>
 
-            <!-- ============================
+           <!-- ============================
            ENTITY: ACTIVITY
            ============================ -->
             <EntityType Name="Activity">
@@ -73,7 +73,7 @@
                                     Type="Collection(Timesheet.Workday)"/>
             </EntityType>
 
-            <!-- ============================
+           <!-- ============================
            ENTITY: WORKDAY
            ============================ -->
             <EntityType Name="Workday">
@@ -92,7 +92,7 @@
                 <Property Name="changed_on" Type="Edm.DateTimeOffset" Nullable="false"/>
             </EntityType>
 
-            <!-- ============================
+           <!-- ============================
            ENTITY: REQUEST
            ============================ -->
             <EntityType Name="Request">

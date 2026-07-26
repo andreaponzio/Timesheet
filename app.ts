@@ -2,13 +2,13 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import express, {Application, NextFunction} from "express";
+import express, {Application} from "express";
 import {engine} from "express-handlebars";
 import helpers from "handlebars-helpers";
 import * as parser from "body-parser";
 import methodOverride from "method-override";
 import path from "node:path";
-import {port, odata} from "./public/config.json";
+import {odata, port} from "./public/config.json";
 
 import {router as routerInit} from "./routers/routeInit";
 import {router as routerApp} from "./routers/routeApp";

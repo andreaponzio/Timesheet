@@ -5,7 +5,7 @@
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CWorkday from "../core/CWorkday";
-import CActivity, {IActivity} from "../core/CActivity";
+import CActivity from "../core/CActivity";
 import CTool from "../core/CTool";
 
 /**

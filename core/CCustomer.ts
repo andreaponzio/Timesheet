@@ -2,7 +2,7 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import CBase, {IBase, numericInterval, objectType} from "./CBase";
+import CBase, {IBase, numericInterval} from "./CBase";
 import {SqlGen} from "./CSqlGen";
 import {IWbs} from "./CWbs";
 import CSqlGen = SqlGen.CSqlGen;
@@ -10,7 +10,6 @@ import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import {IActivity} from "./CActivity";
 
 export interface ICustomer extends IBase {
    description: string;

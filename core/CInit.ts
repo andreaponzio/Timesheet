@@ -8,7 +8,6 @@ import {data as customer_data} from "../public/datadb_customer.json";
 import {data as wbs_data} from "../public/datadb_wbs.json";
 import {data as activity_data} from "../public/datadb_activity.json";
 import {data as request_data} from "../public/datadb_request.json";
-import {data as requestenv_data} from "../public/datadb_requestenv.json";
 import {data as workday_data} from "../public/datadb_workday.json";
 import {numericInterval} from "./CBase";
 import CActivity, {IActivity} from "./CActivity";

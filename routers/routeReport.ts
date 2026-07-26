@@ -8,11 +8,11 @@ import {objectType} from "../core/CBase";
 import CTool, {IDate} from "../core/CTool";
 import {SqlGen} from "../core/CSqlGen";
 import CWorkday, {IWeekWorkday} from "../core/CWorkday";
+import {dirOut} from "../public/config.json";
+import CDatabase from "../core/CDatabase";
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import {dirOut} from "../public/config.json";
-import CDatabase from "../core/CDatabase";
 
 interface IExcel {
    date: string;

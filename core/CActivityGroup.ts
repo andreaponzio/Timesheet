@@ -9,7 +9,6 @@ import Sign = SqlGen.Sign;
 import IOption = SqlGen.IOption;
 import Option = SqlGen.Option;
 import CSqlGen = SqlGen.CSqlGen;
-import {IActivitySummarize} from "./CActivity";
 
 export interface IActivityGroupId {
    id: number;

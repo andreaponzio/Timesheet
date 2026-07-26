@@ -2,9 +2,8 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 import fs from "node:fs";
-import CCustomer, {ICustomer} from "../core/CCustomer";
 
 /**
  * Dichiarazioni locali.

@@ -2,14 +2,13 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import CBase, {IBase, numericInterval, objectType} from "./CBase";
+import CBase, {IBase, numericInterval} from "./CBase";
 import {SqlGen} from "./CSqlGen";
 import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import CSqlGen = SqlGen.CSqlGen;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import {ICustomer} from "./CCustomer";
 
 export interface IWorkday extends IBase {
    activity: number;

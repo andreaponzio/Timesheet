@@ -5,7 +5,7 @@
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CActivityGroup, {IActivityGroupId} from "../core/CActivityGroup";
-import {IActivity, IActivitySummarize} from "../core/CActivity";
+import {IActivitySummarize} from "../core/CActivity";
 
 /**
  * Dichiarazioni locali.

@@ -2,7 +2,7 @@
  * @author Andrea Ponzio
  * @version 1.0.0
  */
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 import CDatabase from "../core/CDatabase";
 import {objectType} from "../core/CBase";
 

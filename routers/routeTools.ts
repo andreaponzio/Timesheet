@@ -8,16 +8,15 @@ import CWbs, {IWbs} from "../core/CWbs";
 import CActivity, {IActivity} from "../core/CActivity";
 import {objectType} from "../core/CBase";
 import CRequest, {IRequest} from "../core/CRequest";
-import {sap} from "../public/config.json";
+import {dirOut, sap} from "../public/config.json";
 import {executeHttpRequest, HttpResponse} from '@sap-cloud-sdk/http-client';
 import CWorkday, {IWorkday} from "../core/CWorkday";
 import {SqlGen} from "../core/CSqlGen";
+import fs from "node:fs";
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import IOption = SqlGen.IOption;
 import Option = SqlGen.Option;
-import {dirOut} from "../public/config.json";
-import fs from "node:fs";
 
 /**
  * Funzioni locali.

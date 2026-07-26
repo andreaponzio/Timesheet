@@ -5,7 +5,7 @@
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CTool from "../core/CTool";
-import CActivity, {IActivityRequest} from "../core/CActivity";
+import CActivity from "../core/CActivity";
 import CRequest, {IRequestSummarize} from "../core/CRequest";
 import {dirOut} from "../public/config.json";
 import fs from "node:fs";

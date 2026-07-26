@@ -12,7 +12,6 @@ import IOption = SqlGen.IOption;
 import IField = SqlGen.IField;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
-import {ICustomer} from "./CCustomer";
 
 export interface IRequestObject {
    as4pos: number;
