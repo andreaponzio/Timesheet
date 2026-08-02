@@ -218,12 +218,12 @@ export class CInit {
                                      '/activity/${d.id}', 3)`);
       });
 
-      activitygroup = new CActivityGroup();
+      /*activitygroup = new CActivityGroup();
       activitygroup_data = activity.loadAll([]);
       activitygroup_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
                                      '/activitygroup/${d.id}', 5)`);
-      });
+      });*/
    }
 }

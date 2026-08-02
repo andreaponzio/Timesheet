@@ -28,7 +28,7 @@ router.get("/$metadata", (request: Request, response: Response) => {
  */
 router.get(/customer/i, (request: Request, response: Response) => {
 
-   let x:COData;
+   let x: COData;
    x = new COData(request);
 
    let o: CCustomer = new CCustomer();
