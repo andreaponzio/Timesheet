@@ -23,62 +23,7 @@ router.get("/$metadata", (request: Request, response: Response) => {
    response.send(fs.readFileSync("./public/metadata_v2.xml").toString());
 });
 
-/**
- *
- */
-router.get(/customer/i, (request: Request, response: Response) => {
-
-   let x: COData;
-   x = new COData(request);
-
-   let o: CCustomer = new CCustomer();
-   let data: ICustomer[];
-   data = o.loadAll("1 = 1");
-   response.status(200).type("application/json").json({d: {results: data}});
+router.post("/customer", (request: Request, response: Response) => {
+   console.log(request.body);
 });
 
-/**
- *
- */
-router.get(/wbs/i, (request: Request, response: Response) => {
-   let o: CWbs = new CWbs();
-   let data: IWbs[];
-   data = o.loadAll("1 = 1");
-   response.status(200).type("application/json").json({d: {results: data}});
-});
-
-/**
- *
- */
-router.get(/activity/i, (request: Request, response: Response) => {
-   let o: CActivity = new CActivity();
-   let data: IActivity[];
-   data = o.loadAll("1 = 1");
-   response.status(200).type("application/json").json({d: {results: data}});
-});
-
-/**
- *
- */
-router.get(/workday/i, (request: Request, response: Response) => {
-   let o: CWorkday = new CWorkday();
-   let data: IWorkday[];
-   data = o.loadAll("1 = 1");
-   response.status(200).type("application/json").json({d: {results: data}});
-});
-
-/**
- *
- */
-router.get(/request/i, (request: Request, response: Response) => {
-   let o: CRequest = new CRequest();
-   let data: IRequest[];
-   data = o.loadAll("1 = 1");
-   response.status(200).type("application/json").json({d: {results: data}});
-});
-
-/**
- *
- */
-router.get(/search/i, (request: Request, response: Response) => {
-});

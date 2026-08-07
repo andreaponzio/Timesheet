@@ -176,7 +176,7 @@ export default class CActivityGroup extends CBase {
     * @public
     */
    public summarize(): IActivityGroupSummarize[] {
-      return this.executeAll("SELECT * FROM main.group_list_summarize") as IActivityGroupSummarize[];
+      return this.executeAll("SELECT * FROM main.activity_group_summarize") as IActivityGroupSummarize[];
    }
 
    /**

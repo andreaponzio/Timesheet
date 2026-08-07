@@ -14,8 +14,14 @@ import CActivityGroup, {IActivityGroup} from "../core/CActivityGroup";
 /**
  * Funzioni locali.
  */
-let listOfWbs = (object: CActivity): IWbs[] => {
-   return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs WHERE status = 1") as IWbs[];
+let listOfWbs = (object: CActivity, status: boolean): IWbs[] => {
+   switch(status) {
+      case true:
+         return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs WHERE status = '1'") as IWbs[];
+
+      default:
+         return object.executeAll("SELECT id, internal_ref, description1 FROM main.wbs") as IWbs[];
+   }
 }
 let listOfGroup = (object: CActivity): IActivityGroup[] => {
    return object.executeAll("SELECT id, description FROM main.activity_group") as IActivityGroup[];
@@ -64,7 +70,7 @@ router.get("/:id", (request: Request, response: Response) => {
             view: objectType.activity_create,
             data: {
                id: 0,
-               wbs_list: listOfWbs(o)
+               wbs_list: listOfWbs(o, true)
             }
          });
          break;
@@ -91,7 +97,7 @@ router.get("/:id", (request: Request, response: Response) => {
                customer_id: c.id,
                customer_description: c.description,
                workday: o.getWorkday(),
-               wbs_list: listOfWbs(o),
+               wbs_list: listOfWbs(o, false),
                group_list: listOfGroup(o),
                request_list: o.getRequest(),
                rdate: o.convertDate(new Date(), 3),
@@ -148,7 +154,7 @@ router.post("/:id", (request: Request, response: Response) => {
             wbs_id: w.id,
             customer_id: c.id,
             customer_description: c.description,
-            wbs_list: listOfWbs(o),
+            wbs_list: o.id === undefined ? listOfWbs(o, true) : listOfWbs(o, false),
             error: e.message
          }
       });
@@ -193,7 +199,7 @@ router.delete("/:id", (request: Request, response: Response) => {
                customer_id: c.id,
                customer_description: c.description,
                workday: o.getWorkday(),
-               wbs_list: listOfWbs(o),
+               wbs_list: listOfWbs(o, false),
                request_list: o.getRequest(),
                rdate: o.convertDate(new Date(), 3),
                error: "L'attività ha ancora oggetti assegnati."

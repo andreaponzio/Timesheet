@@ -84,8 +84,8 @@ else {
  * - non viene trovata nessuna route valida, quindi riporta sulla pagina principale;
  */
 app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-   if(process.argv[2] === undefined)
-      response.redirect("/");
+   //if(process.argv[2] === undefined)
+   //   response.redirect("/");
 });
 
 /**
