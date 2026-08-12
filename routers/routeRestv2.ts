@@ -67,3 +67,85 @@ router.get("/customer", (request: Request, response: Response) => {
    });
 });
 
+/**
+ * Permette di aggiungere un customer.
+ */
+router.post("/customer", (request: Request, response: Response) => {
+   let o: CCustomer;
+
+   try {
+      o = new CCustomer();
+      o.description = request.body["data"]["description"];
+      o.save();
+      response.status(200).send({
+         return: {
+            type: "S",
+            message: "",
+         },
+         data: [o.data]
+      });
+   }
+   catch(e) {
+      response.status(500).send({
+         return: {
+            type: "E",
+            message: e.message,
+         }
+      });
+   }
+});
+
+/**
+ * Permette di aggiornare un customer.
+ */
+router.put("/customer", (request: Request, response: Response) => {
+   let o: CCustomer;
+
+   try {
+      o = new CCustomer();
+      o.load(parseInt(request.body["data"]["id"]));
+      o.description = request.body["data"]["description"];
+      o.save();
+      response.status(200).send({
+         return: {
+            type: "S",
+            message: "",
+         }
+      });
+   }
+   catch(e) {
+      response.status(500).send({
+         return: {
+            type: "E",
+            message: e.message,
+         }
+      });
+   }
+});
+
+/**
+ * Permette di cancellare fisicamente un customer.
+ */
+router.delete("/customer", (request: Request, response: Response) => {
+   let o: CCustomer;
+
+   try {
+      o = new CCustomer();
+      o.load(parseInt(request.body["parameter"]["key"][0]["value"]));
+      o.delete();
+      response.status(200).send({
+         return: {
+            type: "S",
+            message: ""
+         }
+      });
+   }
+   catch(e) {
+      response.status(500).send({
+         return: {
+            type: "E",
+            message: e.message,
+         }
+      });
+   }
+});
