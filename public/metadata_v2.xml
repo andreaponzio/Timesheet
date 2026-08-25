@@ -18,7 +18,7 @@
 
                 <Property Name="id" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="description" Type="Edm.String" Nullable="false"/>
-                <Property Name="changed_on" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
 
                 <NavigationProperty Name="Wbs"
                                     Relationship="Timesheet.Customer_Wbs"
@@ -31,16 +31,16 @@
             ============================ -->
             <EntityType Name="Wbs">
                 <Key>
-                    <PropertyRef Name="internal_ref"/>
+                    <PropertyRef Name="id"/>
                 </Key>
 
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="internal_ref" Type="Edm.String" Nullable="false"/>
                 <Property Name="customer" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="description1" Type="Edm.String" Nullable="false"/>
                 <Property Name="description2" Type="Edm.String"/>
                 <Property Name="status" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="changed_on" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
 
                 <NavigationProperty Name="Activity"
                                     Relationship="Timesheet.Wbs_Activity"
@@ -53,10 +53,10 @@
             ============================ -->
             <EntityType Name="Activity">
                 <Key>
-                    <PropertyRef Name="wbs"/>
-                    <PropertyRef Name="internal_ref"/>
+                    <PropertyRef Name="id"/>
                 </Key>
 
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="wbs" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="internal_ref" Type="Edm.String" Nullable="false"/>
                 <Property Name="external_ref" Type="Edm.String" Nullable="false"/>
@@ -64,12 +64,11 @@
                 <Property Name="description" Type="Edm.String" Nullable="false"/>
                 <Property Name="functional" Type="Edm.String"/>
                 <Property Name="technical" Type="Edm.String"/>
-                <Property Name="hour" Type="Edm.Decimal"/>
+                <Property Name="hour" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="2"/>
                 <Property Name="mergenote" Type="Edm.String"/>
                 <Property Name="status" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="note" Type="Edm.String"/>
-                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="changed_on" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
 
                 <NavigationProperty Name="Request"
                                     Relationship="Timesheet.Activity_Request"
@@ -92,13 +91,13 @@
 
                 <Property Name="id" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="activity" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="date" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="date" Type="Edm.String" Nullable="false"/>
                 <Property Name="idgroup" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="hour" Type="Edm.Decimal"/>
+                <Property Name="hour" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="2"/>
                 <Property Name="extrainfo" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="place" Type="Edm.String"/>
                 <Property Name="note" Type="Edm.String"/>
-                <Property Name="changed_on" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
             </EntityType>
 
             <!-- ============================
@@ -106,19 +105,18 @@
             ============================ -->
             <EntityType Name="Request">
                 <Key>
-                    <PropertyRef Name="activity"/>
-                    <PropertyRef Name="request"/>
+                    <PropertyRef Name="id"/>
                 </Key>
 
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="activity" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="request" Type="Edm.String" Nullable="false"/>
                 <Property Name="type" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="status" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="description" Type="Edm.String" Nullable="false"/>
                 <Property Name="owner" Type="Edm.String"/>
-                <Property Name="date" Type="Edm.DateTime" Nullable="false"/>
-                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="changed_on" Type="Edm.DateTime" Nullable="false"/>
+                <Property Name="date" Type="Edm.String" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
             </EntityType>
 
             <!-- ============================

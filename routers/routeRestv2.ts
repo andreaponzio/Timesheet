@@ -6,6 +6,10 @@ import express, {Request, Response, Router} from "express";
 import fs from "node:fs";
 import COData from "../core/COData";
 import CCustomer from "../core/CCustomer";
+import CWbs from "../core/CWbs";
+import CAccess from "../core/CAccess";
+import CActivity from "../core/CActivity";
+import CWorkday from "../core/CWorkday";
 
 /**
  * Dichiarazioni locali.
@@ -42,6 +46,11 @@ router.get("/customer", (request: Request, response: Response) => {
 
    // Il filtro contiene comandi speciali:
    where = COData.specialStatement(where);
+
+   // Se presente un SOURCE_NAME significa che siamo all'interno di
+   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   if(COData.whereAssociation(request).length)
+      where = COData.whereAssociation(request);
 
    // Condizione di filtro di default:
    if(!where.length)
@@ -148,4 +157,217 @@ router.delete("/customer", (request: Request, response: Response) => {
          }
       });
    }
+});
+
+/**
+ * Estrae le commesse in accordo ai parametri passati dal chiamate OData.
+ */
+router.get("/wbs", (request: Request, response: Response) => {
+   let o: CWbs;
+   let data: Object;
+   let limit: string;
+   let where: string;
+   let orderBy: string;
+   let sqlStatement: string;
+
+   // Prepara istruzione LIMIT insieme ad OFFSET:
+   limit = COData.limit(request);
+
+   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
+   where = COData.whereEntitySet(request);
+
+   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
+   if(!where.length)
+      where = COData.whereEntity(request);
+
+   // Se presente un SOURCE_NAME significa che siamo all'interno di
+   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   if(COData.whereAssociation(request).length)
+      where = COData.whereAssociation(request);
+
+   // Il filtro contiene comandi speciali:
+   where = COData.specialStatement(where);
+
+   // Condizione di filtro di default:
+   if(!where.length)
+      where = "1 = 1";
+
+   // Prepara ordinamento:
+   orderBy = COData.orderBy(request);
+
+   // Completa l'istruzione SQL:
+   sqlStatement = `SELECT *
+                   FROM main.wbs
+                   WHERE ${where} ${limit} ${orderBy}`;
+
+   // Esegue l'istruzione SQL e restituisce il risultato:
+   o = new CWbs();
+   data = o.executeAll(sqlStatement);
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: data
+   });
+});
+
+/**
+ * Permette di aggiungere una commessa.
+ */
+router.post("/wbs", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di aggiornare una commessa.
+ */
+router.put("/wbs", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di cancellare fisicamente una commessa.
+ */
+router.delete("/wbs", (request: Request, response: Response) => {
+});
+
+/**
+ * Estrae le attività in accordo ai parametri passati dal chiamate OData.
+ */
+router.get("/activity", (request: Request, response: Response) => {
+   let o: CActivity;
+   let data: Object;
+   let limit: string;
+   let where: string;
+   let orderBy: string;
+   let sqlStatement: string;
+
+   // Prepara istruzione LIMIT insieme ad OFFSET:
+   limit = COData.limit(request);
+
+   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
+   where = COData.whereEntitySet(request);
+
+   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
+   if(!where.length)
+      where = COData.whereEntity(request);
+
+   // Il filtro contiene comandi speciali:
+   where = COData.specialStatement(where);
+
+   // Se presente un SOURCE_NAME significa che siamo all'interno di
+   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   if(COData.whereAssociation(request).length)
+      where = COData.whereAssociation(request);
+
+   // Condizione di filtro di default:
+   if(!where.length)
+      where = "1 = 1";
+
+   // Prepara ordinamento:
+   orderBy = COData.orderBy(request);
+
+   // Completa l'istruzione SQL:
+   sqlStatement = `SELECT *
+                   FROM main.activity
+                   WHERE ${where} ${limit} ${orderBy}`;
+
+   // Esegue l'istruzione SQL e restituisce il risultato:
+   o = new CActivity();
+   data = o.executeAll(sqlStatement);
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: data
+   });
+});
+
+/**
+ * Permette di aggiungere una attività.
+ */
+router.post("/attività", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di aggiornare una attività.
+ */
+router.put("/activity", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di cancellare fisicamente una attività.
+ */
+router.delete("/activity", (request: Request, response: Response) => {
+});
+
+/**
+ * Estrae le consuntivazioni in accordo ai parametri passati dal chiamate OData.
+ */
+router.get("/workday", (request: Request, response: Response) => {
+   let o: CWorkday;
+   let data: Object;
+   let limit: string;
+   let where: string;
+   let orderBy: string;
+   let sqlStatement: string;
+
+   // Prepara istruzione LIMIT insieme ad OFFSET:
+   limit = COData.limit(request);
+
+   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
+   where = COData.whereEntitySet(request);
+
+   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
+   if(!where.length)
+      where = COData.whereEntity(request);
+
+   // Il filtro contiene comandi speciali:
+   where = COData.specialStatement(where);
+
+   // Se presente un SOURCE_NAME significa che siamo all'interno di
+   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   if(COData.whereAssociation(request).length)
+      where = COData.whereAssociation(request);
+
+   // Condizione di filtro di default:
+   if(!where.length)
+      where = "1 = 1";
+
+   // Prepara ordinamento:
+   orderBy = COData.orderBy(request);
+
+   // Completa l'istruzione SQL:
+   sqlStatement = `SELECT *
+                   FROM main.workday
+                   WHERE ${where} ${limit} ${orderBy}`;
+
+   // Esegue l'istruzione SQL e restituisce il risultato:
+   o = new CWorkday();
+   data = o.executeAll(sqlStatement);
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: data
+   });
+});
+
+/**
+ * Permette di aggiungere una consuntivazioni.
+ */
+router.post("/workday", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di aggiornare una consuntivazioni.
+ */
+router.put("/workday", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di cancellare fisicamente una consuntivazioni.
+ */
+router.delete("/workday", (request: Request, response: Response) => {
 });

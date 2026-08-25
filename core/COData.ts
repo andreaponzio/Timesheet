@@ -18,8 +18,8 @@ export default class COData {
       let skip: number;
 
       // Prepara l'istruzione LIMIT:
-      top = parseInt(request.body["parameter"]["paging"]["top"]);
-      skip = parseInt(request.body["parameter"]["paging"]["skip"]);
+      top = parseInt(request.body["paging"]["top"]);
+      skip = parseInt(request.body["paging"]["skip"]);
       if(top === 0)
          top = -1;
       if(skip === 0)
@@ -44,7 +44,7 @@ export default class COData {
 
       // Compone l'istruzione WHERE effettuando al sostituzione degli operatori logici:
       // Condizione di filtro:
-      where = request.body["parameter"]["filter"];
+      where = request.body["filter"];
       where = where.split(" eq ").join(" = ");
       where = where.split(" ne ").join(" <> ");
       where = where.split(" gt ").join(" > ");
@@ -69,7 +69,7 @@ export default class COData {
       // Compone l'istruzione WHERE effettuando al sostituzione degli operatori logici:
       // Condizione di filtro:
       try {
-         where = `id = ${request.body["parameter"]["key"][0]["value"]}`;
+         where = `id = ${request.body["key"][0]["value"]}`;
       }
       catch(e) {
       }
@@ -94,7 +94,6 @@ export default class COData {
       let result: string;
       let start: number;
       let end: number;
-      let stop: boolean = false;
 
       // Copia l'istruzione WHERE:
       result = where;
@@ -153,7 +152,7 @@ export default class COData {
       let result: string;
 
       // Copia la lista degli elementi di ordinamento in un array:
-      property = request.body["parameter"]["order"];
+      property = request.body["order"];
 
       // Concatena le single proprietà nella stringa finale:
       for(let p of property) {
@@ -164,5 +163,55 @@ export default class COData {
 
       // Risultato:
       return result === undefined ? "" : result;
+   }
+
+   /**
+    * Compone la condizioni di WHERE quando siamo all'interno di un'Associazione OData.
+    * Questo metodo gestisce un solo livello.
+    * @public
+    * @static
+    * @param request request express.Request.
+    */
+   public static whereAssociation(request: Request): string {
+      let entityName: string;
+      let sourceName: string;
+      let ownerKey: number;
+      let childKey: number;
+      let where: string;
+
+      // Ottiene il nome dell'entità insieme al nome del padre:
+      entityName = request.body["entity_name"];
+      sourceName = request.body["source_name"];
+      if(sourceName.toLowerCase() !== entityName.toLowerCase()) {
+         ownerKey = request.body["key"][0];
+         childKey = request.body["navigation_path"][0]["key_tab"][0];
+
+         // Associazione Customer/Wbs:
+         if(request.url === "/wbs") {
+            if(ownerKey && !childKey)
+               where = `customer = ${ownerKey["value"]}`;
+            else
+               where = `id = ${childKey["value"]} AND customer = ${ownerKey["value"]}`;
+         }
+
+         // Associazione Wbs/Activity:
+         else if(request.url === "/activity") {
+            if(ownerKey && !childKey)
+               where = `wbs = ${ownerKey["value"]}`;
+            else
+               where = `id = ${childKey["value"]} AND wbs = ${ownerKey["value"]}`;
+         }
+
+         // Associazione Activity/Workday:
+         else if(request.url === "/workday") {
+            if(ownerKey && !childKey)
+               where = `activity = ${ownerKey["value"]}`;
+            else
+               where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
+         }
+      }
+
+      // Risultato:
+      return where === undefined ? "" : where;
    }
 }
