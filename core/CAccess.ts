@@ -9,6 +9,7 @@ import IField = SqlGen.IField;
 import IOption = SqlGen.IOption;
 import Sign = SqlGen.Sign;
 import Option = SqlGen.Option;
+import {ICustomer} from "./CCustomer";
 
 export interface IAccess extends IBase {
    id: number;
@@ -84,12 +85,15 @@ export default class CAccess extends CBase {
    }
 
    /**
-    * Non usato.
+    * Restituisce tutti gli accessi memorizzati (usato per la gestione OData).
     * @param where condizione di filtro.
     * @public
     */
    public loadAll(where: IField[] | string): IAccess[] {
-      return [];
+      if(typeof where === "string")
+         return this._select("access", CSqlGen.allField, [], where, true) as IAccess[];
+      else
+         return this._select("access", CSqlGen.allField, where) as IAccess[];
    }
 
    /**

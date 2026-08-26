@@ -209,6 +209,14 @@ export default class COData {
             else
                where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
          }
+
+         // Associazione Activity/Request:
+         else if(request.url === "/request") {
+            if(ownerKey && !childKey)
+               where = `activity = ${ownerKey["value"]}`;
+            else
+               where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
+         }
       }
 
       // Risultato:

@@ -10,6 +10,7 @@ import CWbs from "../core/CWbs";
 import CAccess from "../core/CAccess";
 import CActivity from "../core/CActivity";
 import CWorkday from "../core/CWorkday";
+import CRequest from "../core/CRequest";
 
 /**
  * Dichiarazioni locali.
@@ -286,7 +287,7 @@ router.get("/activity", (request: Request, response: Response) => {
 /**
  * Permette di aggiungere una attività.
  */
-router.post("/attività", (request: Request, response: Response) => {
+router.post("/activity", (request: Request, response: Response) => {
 });
 
 /**
@@ -370,4 +371,141 @@ router.put("/workday", (request: Request, response: Response) => {
  * Permette di cancellare fisicamente una consuntivazioni.
  */
 router.delete("/workday", (request: Request, response: Response) => {
+});
+
+/**
+ * Estrae le richieste di trasporto in accordo ai parametri passati dal chiamate OData.
+ */
+router.get("/request", (request: Request, response: Response) => {
+   let o: CRequest;
+   let data: Object;
+   let limit: string;
+   let where: string;
+   let orderBy: string;
+   let sqlStatement: string;
+
+   // Prepara istruzione LIMIT insieme ad OFFSET:
+   limit = COData.limit(request);
+
+   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
+   where = COData.whereEntitySet(request);
+
+   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
+   if(!where.length)
+      where = COData.whereEntity(request);
+
+   // Il filtro contiene comandi speciali:
+   where = COData.specialStatement(where);
+
+   // Se presente un SOURCE_NAME significa che siamo all'interno di
+   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   if(COData.whereAssociation(request).length)
+      where = COData.whereAssociation(request);
+
+   // Condizione di filtro di default:
+   if(!where.length)
+      where = "1 = 1";
+
+   // Prepara ordinamento:
+   orderBy = COData.orderBy(request);
+
+   // Completa l'istruzione SQL:
+   sqlStatement = `SELECT *
+                   FROM main.request
+                   WHERE ${where} ${limit} ${orderBy}`;
+
+   // Esegue l'istruzione SQL e restituisce il risultato:
+   o = new CRequest();
+   data = o.executeAll(sqlStatement);
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: data
+   });
+});
+
+/**
+ * Permette di aggiungere una richiesta di trasporto.
+ */
+router.post("/request", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di aggiornare una richiesta di trasporto.
+ */
+router.put("/request", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di cancellare fisicamente una richiesta di trasporto.
+ */
+router.delete("/request", (request: Request, response: Response) => {
+});
+
+/**
+ * Estrae le informazioni di accesso in accordo ai parametri passati dal chiamate OData.
+ */
+router.get("/access", (request: Request, response: Response) => {
+   let o: CAccess;
+   let data: Object;
+   let limit: string;
+   let where: string;
+   let orderBy: string;
+   let sqlStatement: string;
+
+   // Prepara istruzione LIMIT insieme ad OFFSET:
+   limit = COData.limit(request);
+
+   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
+   where = COData.whereEntitySet(request);
+
+   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
+   if(!where.length)
+      where = COData.whereEntity(request);
+
+   // Il filtro contiene comandi speciali:
+   where = COData.specialStatement(where);
+
+   // Condizione di filtro di default:
+   if(!where.length)
+      where = "1 = 1";
+
+   // Prepara ordinamento:
+   orderBy = COData.orderBy(request);
+
+   // Completa l'istruzione SQL:
+   sqlStatement = `SELECT *
+                   FROM main.access
+                   WHERE ${where} ${limit} ${orderBy}`;
+
+   // Esegue l'istruzione SQL e restituisce il risultato:
+   o = new CAccess(0);
+   data = o.executeAll(sqlStatement);
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: data
+   });
+});
+
+/**
+ * Permette di aggiungere un'informazioni di accesso.
+ */
+router.post("/access", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di aggiornare un'informazioni di accesso.
+ */
+router.put("/access", (request: Request, response: Response) => {
+});
+
+/**
+ * Permette di cancellare fisicamente un'informazioni di accesso'.
+ */
+router.delete("/access", (request: Request, response: Response) => {
 });

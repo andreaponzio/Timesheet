@@ -120,6 +120,24 @@
             </EntityType>
 
             <!-- ============================
+                 ENTITY: ACCESS
+            ============================ -->
+            <EntityType Name="Access">
+                <Key>
+                    <PropertyRef Name="id"/>
+                    <PropertyRef Name="valueid"/>
+                </Key>
+
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="valueid" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String" Nullable="false"/>
+                <Property Name="value" Type="Edm.String"/>
+                <Property Name="secure" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="changed_on" Type="Edm.String" Nullable="false"/>
+
+            </EntityType>
+
+            <!-- ============================
                  ASSOCIATIONS (OData V2)
             ============================ -->
 
