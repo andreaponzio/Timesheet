@@ -5,7 +5,12 @@
 import express, {Request, Response, Router} from "express";
 import {objectType} from "../core/CBase";
 import CActivityGroup, {IActivityGroupId} from "../core/CActivityGroup";
-import {IActivitySummarize} from "../core/CActivity";
+import CActivity, {IActivity, IActivitySummarize} from "../core/CActivity";
+import {SqlGen} from "../core/CSqlGen";
+import IField = SqlGen.IField;
+import Sign = SqlGen.Sign;
+import IOption = SqlGen.IOption;
+import Option = SqlGen.Option;
 
 /**
  * Dichiarazioni locali.
@@ -102,13 +107,13 @@ router.post("/:id", (request: Request, response: Response) => {
  * Aggiunge un'attività ad un gruppo.
  */
 router.post("/group/:id", (request: Request, response: Response) => {
-   let g: CActivityGroup;
+   let a: CActivity;
 
    try {
-      g = new CActivityGroup();
-      g.load(parseInt(request.body.group));
-      g.addActivity(parseInt(request.params.id as string));
-      g.save();
+      a = new CActivity();
+      a.load(parseInt(request.params.id as string));
+      a.groupid = parseInt(request.body.group);
+      a.save();
       response.redirect("/activitygroup");
    }
    catch(e) {
@@ -123,16 +128,14 @@ router.post("/group/:id", (request: Request, response: Response) => {
  * Rimuove l'attività dal gruppo..
  */
 router.delete("/group/:id", (request: Request, response: Response) => {
-   let g: CActivityGroup;
-   let id: number;
+   let a: CActivity;
 
    try {
-      g = new CActivityGroup();
-      id = g.getActivityGroup(parseInt(request.params.id as string));
-      g.load(id);
-      g.delActivity(parseInt(request.params.id as string));
-      g.save();
-      response.redirect(`/activity/${request.params.id}`);
+      a = new CActivity();
+      a.load(parseInt(request.params.id as string));
+      a.groupid = 0;
+      a.save();
+      response.redirect("/activity");
    }
    catch(e) {
       response.render("app", {
@@ -146,12 +149,29 @@ router.delete("/group/:id", (request: Request, response: Response) => {
  * Elimina un intero gruppo.
  */
 router.delete("/:id", (request: Request, response: Response) => {
-   let o: CActivityGroup;
+   let o: CActivity;
+   let g: CActivityGroup;
+   let listOfActivity: IActivity[];
 
    try {
-      o = new CActivityGroup();
-      o.load(parseInt(request.params.id as string));
-      o.delete();
+      g = new CActivityGroup();
+      g.load(parseInt(request.params.id as string));
+
+      o = new CActivity();
+      listOfActivity = o.loadAll([{
+         name: "groupid",
+         value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: parseInt(request.params.id as string)}] as IOption[]
+      }] as IField[]);
+
+      listOfActivity.forEach((a: IActivity) => {
+         o = new CActivity();
+         o.load(a.id);
+         o.groupid = 0;
+         o.save();
+      });
+
+      g.delete();
+
       response.redirect("/activitygroup");
    }
    catch(e) {

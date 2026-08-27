@@ -9,6 +9,7 @@ import Sign = SqlGen.Sign;
 import IOption = SqlGen.IOption;
 import Option = SqlGen.Option;
 import CSqlGen = SqlGen.CSqlGen;
+import {IActivity} from "./CActivity";
 
 export interface IActivityGroupId {
    id: number;
@@ -79,6 +80,8 @@ export default class CActivityGroup extends CBase {
     * @public
     */
    public load(id: string | number): void {
+      let listOfActivity: IActivity[] = [];
+
       if(typeof id === "number")
          this._data = (this._select("activity_group", CSqlGen.allField, [{
             name: "id",
@@ -93,10 +96,18 @@ export default class CActivityGroup extends CBase {
          throw new Error();
 
       if(this._data !== undefined)
-         this._data.activity = this._select("activity_group_id", CSqlGen.allField, [{
-            name: "id",
+         listOfActivity = this._select("activity", CSqlGen.allField, [{
+            name: "groupid",
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
-         }] as IField[]) as IActivityGroupId[];
+         }] as IField[]) as IActivity[];
+
+      this._data.activity = [];
+      listOfActivity.forEach((a: IActivity) => {
+         this._data.activity.push({
+            id: id as number,
+            activity: a.id
+         });
+      });
    }
 
    /**

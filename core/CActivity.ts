@@ -22,7 +22,8 @@ export interface IActivity extends IBase {
    hour: number;
    mergenote: string;
    status: number;
-   note: string
+   note: string;
+   groupid: number
 }
 export interface IActivitySummarize {
    id: number;
@@ -82,6 +83,9 @@ export default class CActivity extends CBase {
    get note(): string {
       return this._data.note;
    }
+   get groupid(): number {
+      return this._data.groupid;
+   }
    set wbs(value: number) {
       this._data.wbs = value;
    }
@@ -115,6 +119,9 @@ export default class CActivity extends CBase {
    set note(value: string) {
       this._data.note = value;
    }
+   set groupid(value: number) {
+      this._data.groupid = value;
+   }
 
    /**
     * Costruttore.
@@ -139,6 +146,7 @@ export default class CActivity extends CBase {
       this.hour = undefined;
       this.status = undefined;
       this.note = undefined;
+      this.groupid = 0;
    }
 
    /**
@@ -222,6 +230,10 @@ export default class CActivity extends CBase {
                   {
                      name: "note",
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+                  },
+                  {
+                     name: "groupid",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.groupid}] as IOption[]
                   }
                ] as IField[]
             );
@@ -272,6 +284,10 @@ export default class CActivity extends CBase {
                   {
                      name: "note",
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+                  },
+                  {
+                     name: "groupid",
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.groupid}] as IOption[]
                   }
                ] as IField[]);
          }
