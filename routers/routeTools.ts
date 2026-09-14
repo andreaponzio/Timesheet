@@ -74,52 +74,59 @@ router.post("/index", (request: Request, response: Response) => {
    activity = new CActivity();
    tr = new CRequest();
 
-   // Aggiornamento clienti:
-   if(request.body.customer === "on") {
-      customer.executeRun("DELETE FROM main.search WHERE type = 1;");
-      customer_data = customer.loadAll([]);
-      customer_data.forEach(d => {
-         customer = new CCustomer();
-         customer.load(d.id);
-         customer.search();
-         customer = undefined;
-      });
-   }
+   // Cattura eventuali eccezioni:
+   try {
 
-   // Aggiornamento commesse:
-   if(request.body.wbs === "on") {
-      wbs.executeRun("DELETE FROM main.search WHERE type = 2;");
-      wbs_data = wbs.loadAll([]);
-      wbs_data.forEach(d => {
-         wbs = new CWbs();
-         wbs.load(d.id);
-         wbs.search();
-         wbs = undefined;
-      });
-   }
+      // Aggiornamento clienti:
+      if(request.body.customer === "on") {
+         customer.executeRun("DELETE FROM main.search WHERE type = 1;");
+         customer_data = customer.loadAll([]);
+         customer_data.forEach(d => {
+            customer = new CCustomer();
+            customer.load(d.id);
+            customer.search();
+            customer = undefined;
+         });
+      }
 
-   // Aggiornamento attività:
-   if(request.body.activity === "on") {
-      activity.executeRun("DELETE FROM main.search WHERE type = 3;");
-      activity_data = activity.loadAll([]);
-      activity_data.forEach(d => {
-         activity = new CActivity();
-         activity.load(d.id);
-         activity.search();
-         activity = undefined;
-      });
-   }
+      // Aggiornamento commesse:
+      if(request.body.wbs === "on") {
+         wbs.executeRun("DELETE FROM main.search WHERE type = 2;");
+         wbs_data = wbs.loadAll([]);
+         wbs_data.forEach(d => {
+            wbs = new CWbs();
+            wbs.load(d.id);
+            wbs.search();
+            wbs = undefined;
+         });
+      }
 
-   // Aggiornamento richiesta di trasporto:
-   if(request.body.request === "on") {
-      tr.executeRun("DELETE FROM main.search WHERE type = 4;");
-      tr_data = tr.loadAll([]);
-      tr_data.forEach(d => {
-         tr = new CRequest();
-         tr.load(d.id);
-         tr.search();
-         tr = undefined;
-      });
+      // Aggiornamento attività:
+      if(request.body.activity === "on") {
+         activity.executeRun("DELETE FROM main.search WHERE type = 3;");
+         activity_data = activity.loadAll([]);
+         activity_data.forEach(d => {
+            activity = new CActivity();
+            activity.load(d.id);
+            activity.search();
+            activity = undefined;
+         });
+      }
+
+      // Aggiornamento richiesta di trasporto:
+      if(request.body.request === "on") {
+         tr.executeRun("DELETE FROM main.search WHERE type = 4;");
+         tr_data = tr.loadAll([]);
+         tr_data.forEach(d => {
+            tr = new CRequest();
+            tr.load(d.id);
+            tr.search();
+            tr = undefined;
+         });
+      }
+   }
+   catch(e) {
+      console.error(e);
    }
 
    // Riporta sulla pagina principale:
