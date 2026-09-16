@@ -242,10 +242,10 @@
             break;
 
          case 1:
-            let h = parseInt(document.querySelector("#rwhour").value);
+            let h = parseFloat(document.querySelector("#rwhour").value);
             let p = document.querySelector("#rwplace").value.trim().length;
-            if(isNaN(h) || h < 1 || h > 8) {
-               document.querySelector(".toast-body").innerText = "Inserire un valore compreso tra 1 e 8 ore";
+            if(isNaN(h) || h < 0.5 || h > 8) {
+               document.querySelector(".toast-body").innerText = "Inserire un valore compreso tra 0.5 e 8 ore";
                toast.show();
             }
             else if(!p) {
