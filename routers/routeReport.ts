@@ -186,7 +186,7 @@ router.get("/week/:id", (request: Request, response: Response) => {
          else if(r.mergenote === "1" && r.note.length)
             description = `${r.activity_description} - ${r.note}`;
          else
-            description = `${r.activity_description} - ${r.note}`;
+            description = `${r.activity_description}`;
 
          // @ts-ignore
          if(r.functional.length)

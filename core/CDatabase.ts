@@ -60,7 +60,7 @@ export default class CDatabase {
 
    /**
     * Genera un identificativo numerico.
-    * @protected
+    * @public
     * @return identificativo numerico.
     */
    public getId(key: string): number {
@@ -90,12 +90,19 @@ export default class CDatabase {
    }
 
    /**
-    * Restituisce data e ora generate dq SQLITE.
-    * @protected
+    * Restituisce data e ora nel formato YYYY-MM-DDTHH:MM:SS.000Z.
+    * @public
     */
    public getDatetime(): string {
-      CDatabase._statement = CDatabase._db.prepare("SELECT datetime(CURRENT_TIMESTAMP, 'localtime') as datetime;");
-      return (CDatabase._statement.get())["datetime"] as string;
+      let date:Date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      let day = date.getDate();
+      let hour = date.getHours();
+      let min = date.getMinutes();
+      let sec = date.getSeconds();
+
+      return new Date(Date.UTC(year, month, day, hour, min, sec)).toISOString();
    }
 
    /**
@@ -108,6 +115,7 @@ export default class CDatabase {
     * @param date data da convertire.
     * @param notime imposta l'ora a "00:00:00".
     * @return data nel formato SQLite.
+    * @public
     */
    public convertDate(date: Date, notime: number = 0): string {
       let year: string;

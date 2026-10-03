@@ -24,6 +24,7 @@ import {router as routerRequest} from "./routers/routeRequest";
 import {router as routerAccess} from "./routers/routeAccess";
 import {router as routerRestv2} from "./routers/routeRestv2";
 import {router as routerRestv4} from "./routers/routeRestv4";
+import CDatabase from "./core/CDatabase";
 
 /**
  * Inizializza applicazione.
@@ -97,3 +98,5 @@ if(process.argv[2] === undefined)
    app.listen(port);
 else if(process.argv[2] === "--odatav2" || process.argv[2] === "--odatav4")
    app.listen(odata.port);
+
+
