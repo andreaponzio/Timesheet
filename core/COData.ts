@@ -18,12 +18,24 @@ export default class COData {
       let skip: number;
 
       // Prepara l'istruzione LIMIT:
-      top = parseInt(request.body["paging"]["top"]);
-      skip = parseInt(request.body["paging"]["skip"]);
-      if(top === 0)
-         top = -1;
-      if(skip === 0)
-         skip = -1;
+      try {
+         top = parseInt(request.body["paging"]["top"]);
+      }
+      catch(e) {
+      }
+      finally {
+         if(top === undefined || top === 0)
+            top = -1;
+      }
+      try {
+         skip = parseInt(request.body["paging"]["skip"]);
+      }
+      catch(e) {
+      }
+      finally {
+         if(skip === undefined || skip === 0)
+            skip = -1;
+      }
 
       // Prepara l'istruzione LIMIT:
       result = `LIMIT ${top} OFFSET ${skip}`;
@@ -44,13 +56,17 @@ export default class COData {
 
       // Compone l'istruzione WHERE effettuando al sostituzione degli operatori logici:
       // Condizione di filtro:
-      where = request.body["filter"];
-      where = where.split(" eq ").join(" = ");
-      where = where.split(" ne ").join(" <> ");
-      where = where.split(" gt ").join(" > ");
-      where = where.split(" ge ").join(" >= ");
-      where = where.split(" lt ").join(" < ");
-      where = where.split(" le ").join(" =< ");
+      try {
+         where = request.body["filter"];
+         where = where.split(" eq ").join(" = ");
+         where = where.split(" ne ").join(" <> ");
+         where = where.split(" gt ").join(" > ");
+         where = where.split(" ge ").join(" >= ");
+         where = where.split(" lt ").join(" < ");
+         where = where.split(" le ").join(" =< ");
+      }
+      catch(e) {
+      }
 
       // Risultato:
       return where === undefined ? "" : where;
@@ -152,13 +168,17 @@ export default class COData {
       let result: string;
 
       // Copia la lista degli elementi di ordinamento in un array:
-      property = request.body["order"];
+      try {
+         property = request.body["order"];
 
-      // Concatena le single proprietà nella stringa finale:
-      for(let p of property) {
-         if(!result.length)
-            result = "ORDER BY ";
-         result += `${p["property"]} ${p["order"]}`;
+         // Concatena le single proprietà nella stringa finale:
+         for(let p of property) {
+            if(!result.length)
+               result = "ORDER BY ";
+            result += `${p["property"]} ${p["order"]}`;
+         }
+      }
+      catch(e) {
       }
 
       // Risultato:
@@ -180,43 +200,47 @@ export default class COData {
       let where: string;
 
       // Ottiene il nome dell'entità insieme al nome del padre:
-      entityName = request.body["entity_name"];
-      sourceName = request.body["source_name"];
-      if(sourceName.toLowerCase() !== entityName.toLowerCase()) {
-         ownerKey = request.body["key"][0];
-         childKey = request.body["navigation_path"][0]["key_tab"][0];
+      try {
+         entityName = request.body["entity_name"];
+         sourceName = request.body["source_name"];
+         if(sourceName.toLowerCase() !== entityName.toLowerCase()) {
+            ownerKey = request.body["key"][0];
+            childKey = request.body["navigation_path"][0]["key_tab"][0];
 
-         // Associazione Customer/Wbs:
-         if(request.url === "/wbs") {
-            if(ownerKey && !childKey)
-               where = `customer = ${ownerKey["value"]}`;
-            else
-               where = `id = ${childKey["value"]} AND customer = ${ownerKey["value"]}`;
-         }
+            // Associazione Customer/Wbs:
+            if(request.url === "/wbs") {
+               if(ownerKey && !childKey)
+                  where = `customer = ${ownerKey["value"]}`;
+               else
+                  where = `id = ${childKey["value"]} AND customer = ${ownerKey["value"]}`;
+            }
 
-         // Associazione Wbs/Activity:
-         else if(request.url === "/activity") {
-            if(ownerKey && !childKey)
-               where = `wbs = ${ownerKey["value"]}`;
-            else
-               where = `id = ${childKey["value"]} AND wbs = ${ownerKey["value"]}`;
-         }
+            // Associazione Wbs/Activity:
+            else if(request.url === "/activity") {
+               if(ownerKey && !childKey)
+                  where = `wbs = ${ownerKey["value"]}`;
+               else
+                  where = `id = ${childKey["value"]} AND wbs = ${ownerKey["value"]}`;
+            }
 
-         // Associazione Activity/Workday:
-         else if(request.url === "/workday") {
-            if(ownerKey && !childKey)
-               where = `activity = ${ownerKey["value"]}`;
-            else
-               where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
-         }
+            // Associazione Activity/Workday:
+            else if(request.url === "/workday") {
+               if(ownerKey && !childKey)
+                  where = `activity = ${ownerKey["value"]}`;
+               else
+                  where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
+            }
 
-         // Associazione Activity/Request:
-         else if(request.url === "/request") {
-            if(ownerKey && !childKey)
-               where = `activity = ${ownerKey["value"]}`;
-            else
-               where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
+            // Associazione Activity/Request:
+            else if(request.url === "/request") {
+               if(ownerKey && !childKey)
+                  where = `activity = ${ownerKey["value"]}`;
+               else
+                  where = `id = ${childKey["value"]} AND activity = ${ownerKey["value"]}`;
+            }
          }
+      }
+      catch(e) {
       }
 
       // Risultato:

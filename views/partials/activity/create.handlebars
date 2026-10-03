@@ -9,13 +9,13 @@
       <div class="css-flex-15 ms-2">
          <label for="internal_ref" class="form-label">Rif. interno</label>
          <input type="text" class="form-control" id="internal_ref" name="internal_ref" value="{{data.internal_ref}}"
-                maxlength="25"
+                maxlength="30"
                 required>
       </div>
       <div class="css-flex-15 ms-2">
          <label for="external_ref" class="form-label">Rif. esterno</label>
          <input type="text" class="form-control" id="external_ref" name="external_ref" value="{{data.external_ref}}"
-                maxlength="25">
+                maxlength="30">
       </div>
       <div class="css-flex-15 ms-2">
          <label for="type" class="form-label">Tipo</label>
@@ -51,12 +51,12 @@
       <div class="css-flex-30">
          <label for="functional" class="form-label">Funzionale</label>
          <input type="text" class="form-control" id="functional" name="functional" value="{{data.functional}}"
-                maxlength="30">
+                maxlength="60">
       </div>
       <div class="css-flex-30 ms-2">
          <label for="technical" class="form-label">Tecnico</label>
          <input type="text" class="form-control" id="technical" name="technical" value="{{data.technical}}"
-                maxlength="30">
+                maxlength="60">
       </div>
       <div class="css-flex-15 ms-2">
          <label for="hour" class="form-label">Ore</label>
@@ -77,7 +77,7 @@
    <div class="d-flex d-flex-row mt-1">
       <div class="flex-grow-1">
          <label for="note" class="form-label">Note</label>
-         <textarea class="form-control" id="note" name="note">{{data.note}}</textarea>
+         <textarea class="form-control" id="note" name="note" maxlength="5000">{{data.note}}</textarea>
       </div>
    </div>
 

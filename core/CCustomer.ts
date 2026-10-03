@@ -96,14 +96,22 @@ export default class CCustomer extends CBase {
             this._insert("customer",
                [{
                   name: "description",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.description
+                  }] as IOption[]
                }] as IField[]);
          }
          else {
             this._update("customer",
                [{
                   name: "description",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.description
+                  }] as IOption[]
                }] as IField[]);
          }
 
@@ -157,7 +165,8 @@ export default class CCustomer extends CBase {
 
       // Genera i nuovi indici di ricerca:
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.description}',
                                '${this.description}', '/customer/${this.id}', 1)`);
    }
 

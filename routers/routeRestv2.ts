@@ -25,9 +25,9 @@ router.get("/$metadata", (request: Request, response: Response) => {
 });
 
 /**
- * Estrae i customer in accordo ai parametri passati dal chiamate OData.
+ * Estrae i customer in accordo ai parametri passati dalla chiamate OData.
  */
-router.get("/customer", (request: Request, response: Response) => {
+router.get(/customer/, (request: Request, response: Response) => {
    let o: CCustomer;
    let data: Object;
    let limit: string;
@@ -49,7 +49,7 @@ router.get("/customer", (request: Request, response: Response) => {
    where = COData.specialStatement(where);
 
    // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la codizione di WHERE deve essere rivista:
+   // un'associazione, quindi la condizione di WHERE deve essere rivista:
    if(COData.whereAssociation(request).length)
       where = COData.whereAssociation(request);
 

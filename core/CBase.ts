@@ -191,7 +191,11 @@ export default abstract class CBase extends CDatabase {
       if(!nochangeon)
          values.push({
             name: "changed_on",
-            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.getDatetime()}] as IOption[]
+            value: [{
+               sign: Sign.INCLUDE,
+               option: Option.EQUAL,
+               low: this.getDatetime()
+            }] as IOption[]
          } as IField);
 
       // Genera ed esegue istruzione INSERT:
