@@ -22,6 +22,7 @@ interface IExcel {
    note: string;
    activity_description: string;
    activity_internal_ref: string;
+   activity_note: string;
    wbs_internal_ref: string;
    place: string;
 }
@@ -181,12 +182,15 @@ router.get("/week/:id", (request: Request, response: Response) => {
       for(let r of data) {
          description = "";
 
-         if(r.mergenote === "0" && r.note.length)
-            description = `${r.activity_internal_ref} - ${r.note}`;
-         else if(r.mergenote === "1" && r.note.length)
-            description = `${r.activity_description} - ${r.note}`;
-         else
-            description = `${r.activity_description}`;
+         // La prima parte della descrizione nella cell è composta dalla descrizione dell'attività:
+         description = r.activity_description;
+
+         // Seguita dall'eventuale nota presente nell'attività (se richiesta):
+         if(r.mergenote === "1")
+            description = `${description}|${r.activity_note}`;
+
+         // Infine, se presente una nota di consuntivazione, questa viene aggiunta:
+         description = `${description}|${r.note}`;
 
          // @ts-ignore
          if(r.functional.length)

@@ -129,23 +129,43 @@ export default class CWbs extends CBase {
                [
                   {
                      name: "internal_ref",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.internal_ref}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.internal_ref
+                     }] as IOption[]
                   },
                   {
                      name: "customer",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.customer}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.customer
+                     }] as IOption[]
                   },
                   {
                      name: "description1",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description1}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description1
+                     }] as IOption[]
                   },
                   {
                      name: "description2",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description2}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description2
+                     }] as IOption[]
                   },
                   {
                      name: "status",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.status
+                     }] as IOption[]
                   }] as IField[]
             );
          }
@@ -154,19 +174,35 @@ export default class CWbs extends CBase {
                [
                   {
                      name: "customer",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.customer}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.customer
+                     }] as IOption[]
                   },
                   {
                      name: "description1",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description1}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description1
+                     }] as IOption[]
                   },
                   {
                      name: "description2",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description2}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description2
+                     }] as IOption[]
                   },
                   {
                      name: "status",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.status
+                     }] as IOption[]
                   }
                ] as IField[]);
          }
@@ -220,13 +256,16 @@ export default class CWbs extends CBase {
 
       // Genera i nuovi indici di ricerca:
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.internal_ref}',
                                '${this.description1}', '/wbs/${this.id}', 2)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description1}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.description1}',
                                '${this.description1}', '/wbs/${this.id}', 2)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description2}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.description2}',
                                '${this.description1}', '/wbs/${this.id}', 2)`);
    }
 }

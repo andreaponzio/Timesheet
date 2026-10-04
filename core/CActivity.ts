@@ -197,43 +197,83 @@ export default class CActivity extends CBase {
                   },
                   {
                      name: "internal_ref",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.internal_ref}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.internal_ref
+                     }] as IOption[]
                   },
                   {
                      name: "external_ref",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.external_ref}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.external_ref
+                     }] as IOption[]
                   },
                   {
                      name: "type",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.type}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.type
+                     }] as IOption[]
                   },
                   {
                      name: "description",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description
+                     }] as IOption[]
                   },
                   {
                      name: "functional",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.functional}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.functional
+                     }] as IOption[]
                   },
                   {
                      name: "technical",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.technical}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.technical
+                     }] as IOption[]
                   },
                   {
                      name: "hour",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.hour}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.hour
+                     }] as IOption[]
                   },
                   {
                      name: "status",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.status
+                     }] as IOption[]
                   },
                   {
                      name: "note",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.note
+                     }] as IOption[]
                   },
                   {
                      name: "groupid",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.groupid}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.groupid
+                     }] as IOption[]
                   }
                ] as IField[]
             );
@@ -247,47 +287,91 @@ export default class CActivity extends CBase {
                   },
                   {
                      name: "external_ref",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.external_ref}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.external_ref
+                     }] as IOption[]
                   },
                   {
                      name: "type",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.type}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.type
+                     }] as IOption[]
                   },
                   {
                      name: "description",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.description
+                     }] as IOption[]
                   },
                   {
                      name: "functional",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.functional}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.functional
+                     }] as IOption[]
                   },
                   {
                      name: "technical",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.technical}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.technical
+                     }] as IOption[]
                   },
                   {
                      name: "hour",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.hour}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.hour
+                     }] as IOption[]
                   },
                   {
                      name: "mergenote",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.mergenote}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.mergenote
+                     }] as IOption[]
                   },
                   {
                      name: "mergenote",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.mergenote}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.mergenote
+                     }] as IOption[]
                   },
                   {
                      name: "status",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.status}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.status
+                     }] as IOption[]
                   },
                   {
                      name: "note",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.note}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.note
+                     }] as IOption[]
                   },
                   {
                      name: "groupid",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.groupid}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.groupid
+                     }] as IOption[]
                   }
                ] as IField[]);
          }
@@ -307,7 +391,8 @@ export default class CActivity extends CBase {
    public delete(): void {
       if(this.id)
          this._delete("activity", [{
-            name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+            name: "id",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
    }
 
@@ -352,19 +437,24 @@ export default class CActivity extends CBase {
 
       // Genera i nuovi indici di ricerca:
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.internal_ref}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.internal_ref}',
                                '${this.description}', '/activity/${this.id}', 3)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.external_ref}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.external_ref}',
                                '${this.description}', '/activity/${this.id}', 3)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.description}',
                                '${this.description}', '/activity/${this.id}', 3)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.functional}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.functional}',
                                '${this.description}', '/activity/${this.id}', 3)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.technical}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.technical}
+                               ',
                                '${this.description}', '/activity/${this.id}', 3)`);
    }
 }

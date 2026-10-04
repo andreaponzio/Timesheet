@@ -94,15 +94,9 @@ export default class CDatabase {
     * @public
     */
    public getDatetime(): string {
-      let date:Date = new Date();
-      let year = date.getFullYear();
-      let month = date.getMonth();
-      let day = date.getDate();
-      let hour = date.getHours();
-      let min = date.getMinutes();
-      let sec = date.getSeconds();
-
-      return new Date(Date.UTC(year, month, day, hour, min, sec)).toISOString();
+      CDatabase._statement =
+         CDatabase._db.prepare("SELECT strftime('%Y-%m-%dT%H:%M:%S.000Z', datetime(CURRENT_TIMESTAMP, 'localtime')) as datetime;");
+      return (CDatabase._statement.get())["datetime"] as string;
    }
 
    /**
@@ -112,6 +106,7 @@ export default class CDatabase {
     * - 1 = data con orario azzerato;
     * - 2 = solo data senza orario;
     * - 3 = formato per la valorizzazione del controllo HTML;
+    * - 4 = formato YYYY-MM-DDTHH:MM:SS.000Z;
     * @param date data da convertire.
     * @param notime imposta l'ora a "00:00:00".
     * @return data nel formato SQLite.
@@ -160,7 +155,12 @@ export default class CDatabase {
                   result = `${year}-${month}-${day}T${hour}:${minute}:${second}.000`;
                   break;
 
-               default:
+               case 4:
+                  hour = date.getHours().toString().padStart(2, "0");
+                  minute = date.getMinutes().toString().padStart(2, "0");
+                  second = date.getSeconds().toString().padStart(2, "0");
+                  result = `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
+                  break;
             }
          }
 

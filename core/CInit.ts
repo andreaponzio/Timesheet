@@ -14,6 +14,7 @@ import CActivity, {IActivity} from "./CActivity";
 import CCustomer, {ICustomer} from "./CCustomer";
 import CWbs, {IWbs} from "./CWbs";
 import CActivityGroup, {IActivityGroup} from "./CActivityGroup";
+import CAccess from "./CAccess";
 
 export class CInit {
    private db: CDatabase;
@@ -189,7 +190,8 @@ export class CInit {
       customer_data = customer.loadAll([]);
       customer_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.description}',
                                      '/customer/${d.id}', 1)`);
       });
 
@@ -197,13 +199,16 @@ export class CInit {
       wbs_data = wbs.loadAll([]);
       wbs_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.internal_ref}',
                                      '/wbs/${d.id}', 2)`);
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description1}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.description1}',
                                      '/wbs/${d.id}', 2)`);
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description2}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.description2}',
                                      '/wbs/${d.id}', 2)`);
       });
 
@@ -211,10 +216,12 @@ export class CInit {
       activity_data = activity.loadAll([]);
       activity_data.forEach(d => {
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.internal_ref}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.internal_ref}',
                                      '/activity/${d.id}', 3)`);
          this.db.executeRun(`INSERT INTO main.search (id, sequence, data, url, type)
-                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
+                             VALUES (${d.id}, ${this.db.getId(numericInterval.search)},
+                                     '${d.description}',
                                      '/activity/${d.id}', 3)`);
       });
 
@@ -225,5 +232,46 @@ export class CInit {
                              VALUES (${d.id}, ${this.db.getId(numericInterval.search)}, '${d.description}',
                                      '/activitygroup/${d.id}', 5)`);
       });*/
+   }
+   public convertDate() {
+      try {
+         /*let customer = new CCustomer();
+         customer.loadAll([]).forEach(cdata => {
+            let dt = this.db.getDatetime(new Date(cdata.changed_on));
+            this.db.executeRun(`UPDATE main.customer
+                                SET changed_on = '${dt}'
+                                WHERE id = ${cdata.id}`);
+         });*/
+
+         /*let wbs = new CWbs();
+         wbs.loadAll([]).forEach(wdata => {
+            let dt = this.db.getDatetime(new Date(wdata.changed_on));
+            this.db.executeRun(`UPDATE main.wbs
+                                SET changed_on = '${dt}'
+                                WHERE id = ${wdata.id}`);
+         });*/
+
+         /*let activity = new CActivity();
+         activity.loadAll([]).forEach(adata => {
+            let dt = this.db.getDatetime(new Date(adata.changed_on));
+            this.db.executeRun(`UPDATE main.activity
+                                SET changed_on = '${dt}'
+                                WHERE id = ${adata.id}`);
+         });*/
+
+         /*let customer = new CCustomer();
+         customer.loadAll([]).forEach(cdata => {
+            let access = new CAccess(cdata.id);
+            access.loadAll([]).forEach(ccdata => {
+               let dt = this.db.getDatetime(new Date(ccdata.changed_on));
+               this.db.executeRun(`UPDATE main.access
+                                   SET changed_on = '${dt}'
+                                   WHERE id = ${ccdata.id}`);
+            });
+         });*/
+      }
+      catch(e) {
+         console.log(e);
+      }
    }
 }

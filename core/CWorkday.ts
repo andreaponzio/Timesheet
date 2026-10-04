@@ -179,7 +179,7 @@ export default class CWorkday extends CBase {
                   },
                   {
                      name: "date",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.convertDate(this.date)}] as IOption[]
+                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.convertDate(this.date, 4)}] as IOption[]
                   },
                   {
                      name: "idgroup",
