@@ -4,18 +4,89 @@
  */
 import express, {Request, Response, Router} from "express";
 import fs from "node:fs";
-import COData from "../core/COData";
-import CCustomer from "../core/CCustomer";
-import CWbs from "../core/CWbs";
 import CAccess from "../core/CAccess";
 import CActivity from "../core/CActivity";
-import CWorkday from "../core/CWorkday";
+import CActivityGroup from "../core/CActivityGroup";
+import CCustomer, {ICustomer} from "../core/CCustomer";
+import CDatabase from "../core/CDatabase";
 import CRequest from "../core/CRequest";
+import CWbs from "../core/CWbs";
+import CWorkday from "../core/CWorkday";
 
 /**
  * Dichiarazioni locali.
  */
 export let router: Router = express.Router();
+
+/**
+ * Funzioni locali.
+ */
+let get_data = (request: Request): object[] => {
+   let customer: CCustomer;
+   let wbs: CWbs;
+   let activity: CActivity;
+   let workday: CWorkday;
+   let req: CRequest;
+   let access: CAccess;
+   let activity_group: CActivityGroup;
+   let data: object[];
+   let dummy: object[];
+
+   // Legge i dati dell'oggetto richiesto:
+   switch(request.body.entity_name) {
+      case "CUSTOMER":
+         customer = new CCustomer();
+         data = customer.loadAll([]);
+         customer = null;
+         break;
+
+      case "WBS":
+         wbs = new CWbs();
+         data = wbs.loadAll([]);
+         wbs = null;
+         break;
+
+      case "ACTIVITY":
+         activity = new CActivity();
+         data = activity.loadAll([]);
+         activity = null;
+         break;
+
+      case "WORKDAY":
+         workday = new CWorkday();
+         data = workday.loadAll([]);
+         workday = null;
+         break;
+
+      case "REQUEST":
+         req = new CRequest();
+         data = req.loadAll([]);
+         req = null;
+         break;
+
+      case "ACCESS":
+         data = [];
+         customer = new CCustomer();
+         dummy = customer.loadAll([]);
+         for(let cust of dummy) {
+            access = new CAccess(cust["id"]);
+            access.data.forEach(item => {
+               data.push(item);
+            });
+            access = null;
+         }
+         break;
+
+      case "ACTIVITY_GRP":
+         activity_group = new CActivityGroup();
+         data = activity_group.loadAll([]);
+         activity = null;
+         break;
+   }
+
+   // Restituisce i dati al chiamante:
+   return data === undefined ? [] : data;
+}
 
 /**
  * Restituisce $metadata del servizio di accesso a SQLite.
@@ -25,487 +96,161 @@ router.get("/$metadata", (request: Request, response: Response) => {
 });
 
 /**
- * Estrae i customer in accordo ai parametri passati dalla chiamate OData.
+ * Permette di gestire le informazioni sui clienti.
  */
 router.get(/customer/, (request: Request, response: Response) => {
-   let o: CCustomer;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la condizione di WHERE deve essere rivista:
-   if(COData.whereAssociation(request).length)
-      where = COData.whereAssociation(request);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.customer
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CCustomer();
-   data = o.executeAll(sqlStatement);
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere un customer.
- */
 router.post("/customer", (request: Request, response: Response) => {
-   let o: CCustomer;
+   let obj: CCustomer;
 
    try {
-      o = new CCustomer();
-      o.description = request.body["data"]["description"];
-      o.save();
+      obj = new CCustomer();
+      obj.description = request.body["data"]["description"];
+      obj.save();
       response.status(200).send({
          return: {
             type: "S",
             message: "",
          },
-         data: [o.data]
+         data: obj.data
       });
    }
    catch(e) {
-      response.status(500).send({
+      response.status(400).send({
          return: {
             type: "E",
             message: e.message,
-         }
+         },
+         data: get_data(request)
       });
+   }
+   finally {
+      obj = null;
    }
 });
-
-/**
- * Permette di aggiornare un customer.
- */
-router.put("/customer", (request: Request, response: Response) => {
-   let o: CCustomer;
-
-   try {
-      o = new CCustomer();
-      o.load(parseInt(request.body["data"]["id"]));
-      o.description = request.body["data"]["description"];
-      o.save();
-      response.status(200).send({
-         return: {
-            type: "S",
-            message: "",
-         }
-      });
-   }
-   catch(e) {
-      response.status(500).send({
-         return: {
-            type: "E",
-            message: e.message,
-         }
-      });
-   }
-});
-
-/**
- * Permette di cancellare fisicamente un customer.
- */
 router.delete("/customer", (request: Request, response: Response) => {
-   let o: CCustomer;
 
-   try {
-      o = new CCustomer();
-      o.load(parseInt(request.body["parameter"]["key"][0]["value"]));
-      o.delete();
-      response.status(200).send({
-         return: {
-            type: "S",
-            message: ""
-         }
-      });
-   }
-   catch(e) {
-      response.status(500).send({
-         return: {
-            type: "E",
-            message: e.message,
-         }
-      });
-   }
 });
 
 /**
- * Estrae le commesse in accordo ai parametri passati dal chiamate OData.
+ * Permette di gestire le informazioni sulle commesse.
  */
-router.get("/wbs", (request: Request, response: Response) => {
-   let o: CWbs;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la codizione di WHERE deve essere rivista:
-   if(COData.whereAssociation(request).length)
-      where = COData.whereAssociation(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.wbs
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CWbs();
-   data = o.executeAll(sqlStatement);
+router.get(/wbs/, (request: Request, response: Response) => {
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere una commessa.
- */
 router.post("/wbs", (request: Request, response: Response) => {
-});
 
-/**
- * Permette di aggiornare una commessa.
- */
-router.put("/wbs", (request: Request, response: Response) => {
 });
-
-/**
- * Permette di cancellare fisicamente una commessa.
- */
 router.delete("/wbs", (request: Request, response: Response) => {
+
 });
 
 /**
- * Estrae le attività in accordo ai parametri passati dal chiamate OData.
+ * Permette di gestire le informazioni sulle attività.
  */
-router.get("/activity", (request: Request, response: Response) => {
-   let o: CActivity;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la codizione di WHERE deve essere rivista:
-   if(COData.whereAssociation(request).length)
-      where = COData.whereAssociation(request);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.activity
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CActivity();
-   data = o.executeAll(sqlStatement);
+router.get(/activity/, (request: Request, response: Response) => {
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere una attività.
- */
 router.post("/activity", (request: Request, response: Response) => {
+
+});
+router.delete("/aactivity", (request: Request, response: Response) => {
+
 });
 
 /**
- * Permette di aggiornare una attività.
+ * Permette di gestire le informazioni sulle consuntivazioni.
  */
-router.put("/activity", (request: Request, response: Response) => {
-});
-
-/**
- * Permette di cancellare fisicamente una attività.
- */
-router.delete("/activity", (request: Request, response: Response) => {
-});
-
-/**
- * Estrae le consuntivazioni in accordo ai parametri passati dal chiamate OData.
- */
-router.get("/workday", (request: Request, response: Response) => {
-   let o: CWorkday;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la codizione di WHERE deve essere rivista:
-   if(COData.whereAssociation(request).length)
-      where = COData.whereAssociation(request);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.workday
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CWorkday();
-   data = o.executeAll(sqlStatement);
+router.get(/workday/, (request: Request, response: Response) => {
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere una consuntivazioni.
- */
 router.post("/workday", (request: Request, response: Response) => {
-});
 
-/**
- * Permette di aggiornare una consuntivazioni.
- */
-router.put("/workday", (request: Request, response: Response) => {
 });
-
-/**
- * Permette di cancellare fisicamente una consuntivazioni.
- */
 router.delete("/workday", (request: Request, response: Response) => {
+
 });
 
 /**
- * Estrae le richieste di trasporto in accordo ai parametri passati dal chiamate OData.
+ * Permette di gestire le informazioni sulle richieste di trasporto.
  */
-router.get("/request", (request: Request, response: Response) => {
-   let o: CRequest;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Se presente un SOURCE_NAME significa che siamo all'interno di
-   // un'associazione, quindi la codizione di WHERE deve essere rivista:
-   if(COData.whereAssociation(request).length)
-      where = COData.whereAssociation(request);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.request
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CRequest();
-   data = o.executeAll(sqlStatement);
+router.get(/request/, (request: Request, response: Response) => {
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere una richiesta di trasporto.
- */
 router.post("/request", (request: Request, response: Response) => {
-});
 
-/**
- * Permette di aggiornare una richiesta di trasporto.
- */
-router.put("/request", (request: Request, response: Response) => {
 });
-
-/**
- * Permette di cancellare fisicamente una richiesta di trasporto.
- */
 router.delete("/request", (request: Request, response: Response) => {
+
 });
 
 /**
- * Estrae le informazioni di accesso in accordo ai parametri passati dal chiamate OData.
+ * Permette di gestire le informazioni di accesso.
  */
-router.get("/access", (request: Request, response: Response) => {
-   let o: CAccess;
-   let data: Object;
-   let limit: string;
-   let where: string;
-   let orderBy: string;
-   let sqlStatement: string;
-
-   // Prepara istruzione LIMIT insieme ad OFFSET:
-   limit = COData.limit(request);
-
-   // Prepara istruzione di WHERE (1) (*_GET_ENTITYSET):
-   where = COData.whereEntitySet(request);
-
-   // Prepara istruzione di WHERE (2) (*_GET_ENTITY):
-   if(!where.length)
-      where = COData.whereEntity(request);
-
-   // Il filtro contiene comandi speciali:
-   where = COData.specialStatement(where);
-
-   // Condizione di filtro di default:
-   if(!where.length)
-      where = "1 = 1";
-
-   // Prepara ordinamento:
-   orderBy = COData.orderBy(request);
-
-   // Completa l'istruzione SQL:
-   sqlStatement = `SELECT *
-                   FROM main.access
-                   WHERE ${where} ${limit} ${orderBy}`;
-
-   // Esegue l'istruzione SQL e restituisce il risultato:
-   o = new CAccess(0);
-   data = o.executeAll(sqlStatement);
+router.get(/access/, (request: Request, response: Response) => {
    response.status(200).send({
       return: {
          type: "S",
          message: "",
       },
-      data: data
+      data: get_data(request)
    });
 });
-
-/**
- * Permette di aggiungere un'informazioni di accesso.
- */
 router.post("/access", (request: Request, response: Response) => {
-});
 
-/**
- * Permette di aggiornare un'informazioni di accesso.
- */
-router.put("/access", (request: Request, response: Response) => {
 });
-
-/**
- * Permette di cancellare fisicamente un'informazioni di accesso'.
- */
 router.delete("/access", (request: Request, response: Response) => {
+
+});
+
+/**
+ * Permette di ottenere un nuovo identificativo per l'entità specificata nel corpo
+ * del messaggio.
+ */
+router.post("/newid", (request: Request, response: Response) => {
+   let db: CDatabase;
+   let id: number;
+
+   db = new CDatabase();
+   id = db.getId(request.body["key"][0]["value"]);
+   db = null;
+
+   response.status(200).send({
+      return: {
+         type: "S",
+         message: "",
+      },
+      data: {id: id}
+   });
 });

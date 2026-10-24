@@ -23,11 +23,13 @@ export interface IRequestObject {
    lang: string;
    activity: string;
 }
+
 export interface IRequestAttribute {
    pos: number;
    attribute: string;
    reference: string;
 }
+
 export interface IRequestCofile {
    systemid: string;
    stepid: string;
@@ -37,6 +39,7 @@ export interface IRequestCofile {
    stepid_rc: number;
    action_rc: number;
 }
+
 export interface IRequest extends IBase {
    activity: number;
    request: string;
@@ -50,6 +53,7 @@ export interface IRequest extends IBase {
    cofile: IRequestCofile[];
    note: string;
 }
+
 export interface IRequestSummarize {
    id: number;
    request: string;
@@ -317,11 +321,19 @@ export default class CRequest extends CBase {
             [
                {
                   name: "activity",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.activity}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.activity
+                  }] as IOption[]
                },
                {
                   name: "request",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.request}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.request
+                  }] as IOption[]
                },
                {
                   name: "type",
@@ -333,7 +345,11 @@ export default class CRequest extends CBase {
                },
                {
                   name: "description",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.description
+                  }] as IOption[]
                },
                {
                   name: "owner",
@@ -341,7 +357,11 @@ export default class CRequest extends CBase {
                },
                {
                   name: "date",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.convertDate(this.date)}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.convertDate(this.date)
+                  }] as IOption[]
                },
             ] as IField[]);
          this.object.forEach(o => {
@@ -365,15 +385,27 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "obj_name",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.obj_name}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: o.obj_name
+                     }] as IOption[]
                   },
                   {
                      name: "objfunc",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.objfunc}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: o.objfunc
+                     }] as IOption[]
                   },
                   {
                      name: "lockflag",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.lockflag}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: o.lockflag
+                     }] as IOption[]
                   },
                   {
                      name: "lang",
@@ -381,7 +413,11 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "activity",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: o.activity}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: o.activity
+                     }] as IOption[]
                   }
                ] as IField[], true, true);
          });
@@ -398,11 +434,19 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "attribute",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: a.attribute}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: a.attribute
+                     }] as IOption[]
                   },
                   {
                      name: "reference",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: a.reference}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: a.reference
+                     }] as IOption[]
                   }
                ] as IField[], true, true);
          });
@@ -415,7 +459,11 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "systemid",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: c.systemid}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: c.systemid
+                     }] as IOption[]
                   },
                   {
                      name: "stepid",
@@ -427,19 +475,35 @@ export default class CRequest extends CBase {
                   },
                   {
                      name: "date",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.convertDate(c.date)}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: this.convertDate(c.date)
+                     }] as IOption[]
                   },
                   {
                      name: "system_rc",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: c.system_rc}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: c.system_rc
+                     }] as IOption[]
                   },
                   {
                      name: "stepid_rc",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: c.stepid_rc}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: c.stepid_rc
+                     }] as IOption[]
                   },
                   {
                      name: "action_rc",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: c.action_rc}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: c.action_rc
+                     }] as IOption[]
                   }
                ] as IField[], true, true);
          });
@@ -531,11 +595,14 @@ export default class CRequest extends CBase {
                                '${this.request} - ${this.description}', '${this.description}',
                                '/request/${this.id}', 4)`);
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.owner}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request}
+                                - ${this.owner}',
                                '${this.description}', '/request/${this.id}', 4)`);
       if(this.note !== undefined && this.note.length)
          this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                          VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.request} - ${this.note}',
+                          VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                                  '${this.request} - ${this.note}
+                                     ',
                                   '${this.description}', '/request/${this.id}', 4)`);
    }
 

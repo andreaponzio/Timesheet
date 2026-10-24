@@ -133,17 +133,26 @@ export default class CActivityGroup extends CBase {
             this._insert("activity_group",
                [{
                   name: "description",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.description
+                  }] as IOption[]
                }] as IField[]);
          }
          else {
             this._update("activity_group",
                [{
                   name: "description",
-                  value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.description}] as IOption[]
+                  value: [{
+                     sign: Sign.INCLUDE,
+                     option: Option.EQUAL,
+                     low: this.description
+                  }] as IOption[]
                }] as IField[]);
             this._delete("activity_group_id", [{
-               name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+               name: "id",
+               value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
             }] as IField[]);
             this.activity.forEach((activity: IActivityGroupId) => {
                this._insert("activity_group_id",
@@ -152,7 +161,11 @@ export default class CActivityGroup extends CBase {
                      value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
                   }, {
                      name: "activity",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: activity.activity}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: activity.activity
+                     }] as IOption[]
                   }] as IField[]);
             });
          }
@@ -177,7 +190,8 @@ export default class CActivityGroup extends CBase {
             value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
          this._delete("activity_group_id", [{
-            name: "id", value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
+            name: "id",
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this.id}] as IOption[]
          }] as IField[]);
       }
    }
@@ -202,7 +216,8 @@ export default class CActivityGroup extends CBase {
 
       // Genera i nuovi indici di ricerca:
       this.executeRun(`INSERT INTO main.search (id, sequence, data, description, url, type)
-                       VALUES (${this.id}, ${this.getId(numericInterval.search)}, '${this.description}',
+                       VALUES (${this.id}, ${this.getId(numericInterval.search)},
+                               '${this.description}',
                                '${this.description}', '/activitygroup/${this.id}', 5)`);
    }
 

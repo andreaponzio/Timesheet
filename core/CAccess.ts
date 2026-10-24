@@ -117,11 +117,19 @@ export default class CAccess extends CBase {
                   },
                   {
                      name: "valueid",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: d.valueid}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: d.valueid
+                     }] as IOption[]
                   },
                   {
                      name: "description",
-                     value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: d.description}] as IOption[]
+                     value: [{
+                        sign: Sign.INCLUDE,
+                        option: Option.EQUAL,
+                        low: d.description
+                     }] as IOption[]
                   },
                   {
                      name: "value",
@@ -152,7 +160,11 @@ export default class CAccess extends CBase {
          this._delete("access", [
             {
                name: "id",
-               value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: this._customerid}] as IOption[]
+               value: [{
+                  sign: Sign.INCLUDE,
+                  option: Option.EQUAL,
+                  low: this._customerid
+               }] as IOption[]
             }
          ] as IField[]);
    }

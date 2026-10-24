@@ -42,41 +42,40 @@ app.use(express.static(path.join(__dirname, "./views")));
  * Middleware per la modifica della proprietà METHOD presente nei form.
  */
 app.use(methodOverride((request: express.Request, response: express.Response) => {
-   if(request.body && typeof request.body === "object" && "_method" in request.body) {
-      let method = request.body._method;
-      delete request.body._method;
-      return method;
-   }
+    if (request.body && typeof request.body === "object" && "_method" in request.body) {
+        let method = request.body._method;
+        delete request.body._method;
+        return method;
+    }
 }));
 
 /**
  * Middleware dipendenti dal tipo di esecuzione.
  */
-if(process.argv[2] === undefined) {
-   app.use("/init", routerInit);
-   app.use("/", routerApp);
-   app.use("/customer", routerCustomer);
-   app.use("/wbs", routerWbs);
-   app.use("/activity", routerActivity);
-   app.use("/activitygroup", routerActivityGroup);
-   app.use("/workday", routerWorkday);
-   app.use("/report", routerReport);
-   app.use("/search", routerSearch);
-   app.use("/tools", routerTools);
-   app.use("/request", routerRequest);
-   app.use("/access", routerAccess);
-}
-else {
-   app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-      response.setHeader("Access-Control-Allow-Origin", "*");
-      response.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
-      response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-      next();
-   });
-   if(process.argv[2] === "--odatav2")
-      app.use("/odata", routerRestv2);
-   else
-      app.use("/odata", routerRestv4);
+if (process.argv[2] === undefined) {
+    app.use("/init", routerInit);
+    app.use("/", routerApp);
+    app.use("/customer", routerCustomer);
+    app.use("/wbs", routerWbs);
+    app.use("/activity", routerActivity);
+    app.use("/activitygroup", routerActivityGroup);
+    app.use("/workday", routerWorkday);
+    app.use("/report", routerReport);
+    app.use("/search", routerSearch);
+    app.use("/tools", routerTools);
+    app.use("/request", routerRequest);
+    app.use("/access", routerAccess);
+} else {
+    app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        next();
+    });
+    if (process.argv[2] === "--odatav2")
+        app.use("/odata", routerRestv2);
+    else
+        app.use("/odata", routerRestv4);
 }
 
 /**
@@ -84,8 +83,8 @@ else {
  * - non viene trovata nessuna route valida, quindi riporta sulla pagina principale;
  */
 app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-   //if(process.argv[2] === undefined)
-   //   response.redirect("/");
+    //if(process.argv[2] === undefined)
+    //   response.redirect("/");
 });
 
 /**
@@ -93,7 +92,7 @@ app.use((request: express.Request, response: express.Response, next: express.Nex
  * - utente se non è presente parametro --odata;
  * - servizio REST quando --odata è presente;
  */
-if(process.argv[2] === undefined)
-   app.listen(port);
-else if(process.argv[2] === "--odatav2" || process.argv[2] === "--odatav4")
-   app.listen(odata.port);
+if (process.argv[2] === undefined)
+    app.listen(port);
+else if (process.argv[2] === "--odatav2" || process.argv[2] === "--odatav4")
+    app.listen(odata.port);
