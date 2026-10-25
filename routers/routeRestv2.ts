@@ -7,11 +7,17 @@ import fs from "node:fs";
 import CAccess from "../core/CAccess";
 import CActivity from "../core/CActivity";
 import CActivityGroup from "../core/CActivityGroup";
-import CCustomer, {ICustomer} from "../core/CCustomer";
+import CCustomer from "../core/CCustomer";
 import CDatabase from "../core/CDatabase";
 import CRequest from "../core/CRequest";
+import {SqlGen} from "../core/CSqlGen";
 import CWbs from "../core/CWbs";
 import CWorkday from "../core/CWorkday";
+import IField = SqlGen.IField;
+import IOption = SqlGen.IOption;
+import Operator = SqlGen.Operator;
+import Option = SqlGen.Option;
+import Sign = SqlGen.Sign;
 
 /**
  * Dichiarazioni locali.
@@ -21,7 +27,7 @@ export let router: Router = express.Router();
 /**
  * Funzioni locali.
  */
-let get_data = (request: Request): object[] => {
+let get_data = (request: Request): object => {
    let customer: CCustomer;
    let wbs: CWbs;
    let activity: CActivity;
@@ -29,14 +35,31 @@ let get_data = (request: Request): object[] => {
    let req: CRequest;
    let access: CAccess;
    let activity_group: CActivityGroup;
+   let key: IField[];
    let data: object[];
    let dummy: object[];
+   let single: boolean;
+
+   // Prepara proprietà:
+   data = [];
+   key = [];
+
+   // E' presente una chiave specifica:
+   if(request.body["key"] !== undefined) {
+      request.body["key"].forEach((k) => {
+         key.push({
+            name: k["name"],
+            operator: Operator.NONE,
+            value: [{sign: Sign.INCLUDE, option: Option.EQUAL, low: parseInt(k["value"])}]
+         });
+      });
+   }
 
    // Legge i dati dell'oggetto richiesto:
    switch(request.body.entity_name) {
       case "CUSTOMER":
          customer = new CCustomer();
-         data = customer.loadAll([]);
+         data = customer.loadAll(key);
          customer = null;
          break;
 
@@ -65,7 +88,6 @@ let get_data = (request: Request): object[] => {
          break;
 
       case "ACCESS":
-         data = [];
          customer = new CCustomer();
          dummy = customer.loadAll([]);
          for(let cust of dummy) {

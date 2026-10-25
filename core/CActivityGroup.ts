@@ -123,10 +123,22 @@ export default class CActivityGroup extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+      if(this._data.description === undefined || this._data.description.length === 0)
+         throw new Error();
+   }
+
+   /**
     *
     * @public
     */
    public save(): void {
+      // Controllo delle proprietà:
+      this.check();
+
+      // Registra dati:
       try {
          if(this.id === 0) {
             super._save(numericInterval.activitygroup);

@@ -118,10 +118,28 @@ export default class CWbs extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+      if(this._data.customer === undefined || this._data.customer === 0)
+         throw new Error();
+      else if(this._data.internal_ref === undefined || this._data.internal_ref.length === 0)
+         throw new Error();
+      else if(this._data.description1 === undefined || this._data.description1.length === 0)
+         throw new Error();
+      else if(this._data.status === undefined || this._data.status === 0)
+         throw new Error();
+   }
+
+   /**
     * Aggiorna l'anagrafica in linea e anche l'indice di ricerca.
     * @public
     */
    public save(): void {
+      // Controllo delle proprietà:
+      this.check();
+
+      // Registra dati:
       try {
          if(this.id === 0) {
             super._save(numericInterval.wbs);

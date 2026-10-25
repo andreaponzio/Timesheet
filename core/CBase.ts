@@ -108,6 +108,7 @@ export default abstract class CBase extends CDatabase {
    public abstract load(id: string | number | Date): void;
    public abstract loadAll(where: IField[]): unknown[];
    public abstract loadAll(where: string): unknown[];
+   public abstract check(): void;
    public abstract save(): void;
    public abstract delete(): void;
    public abstract summarize(): unknown[];

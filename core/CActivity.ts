@@ -182,10 +182,30 @@ export default class CActivity extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+      if(this._data.wbs === undefined || this._data.wbs === 0)
+         throw new Error();
+      else if(this._data.internal_ref === undefined || this._data.internal_ref.length === 0)
+         throw new Error();
+      else if(this._data.type === undefined || this._data.type === 0)
+         throw new Error();
+      else if(this._data.description === undefined || this._data.description.length === 0)
+         throw new Error();
+      else if(this._data.status === undefined || this._data.status === 0)
+         throw new Error();
+   }
+
+   /**
     * Aggiorna l'anagrafica in linea e anche l'indice di ricerca.
     * @public
     */
    public save(): void {
+      // Controllo delle proprietà:
+      this.check();
+
+      // Registra dati:
       try {
          if(this.id === 0) {
             super._save(numericInterval.activity);

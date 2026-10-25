@@ -26,7 +26,8 @@ export namespace SqlGen {
    }
    export enum Operator {
       AND = "AND",
-      OR = "OR"
+      OR = "OR",
+      NONE = ""
    }
 
    /**
@@ -93,8 +94,8 @@ export namespace SqlGen {
                f.value.forEach(c => {
                   last++;
 
-                  // Converte le stringhe aggiungendo gli apici (tranne quando si tratta di CP o NP perchè
-                  // l'asterisco va inserito all'interno):
+                  // Converte le stringhe aggiungendo gli apici (tranne quando si tratta di CP o NP
+                  // perchè l'asterisco va inserito all'interno):
                   if(c.option !== Option.CONTAINS_PATTERN && c.option !== Option.NOT_CONTAINS_PATTERN) {
                      if(typeof c.low === "string")
                         c.low = `'${c.low}'`;

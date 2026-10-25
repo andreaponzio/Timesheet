@@ -97,10 +97,25 @@ export default class CAccess extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+      this._data.forEach(e => {
+         if(e.description === undefined || e.description.length === 0)
+            throw new Error();
+         else if(e.value === undefined || e.value.length === 0)
+            throw new Error();
+      });
+   }
+
+   /**
     * Registra nella base dati i valori.
     * @public
     */
    public save(): void {
+      // Controllo delle proprietà:
+      this.check();
+
       // Per prima cosa vengono cancellati tutti i valori per semplificare il salvataggio:
       this.delete();
 

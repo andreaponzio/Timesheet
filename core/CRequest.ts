@@ -306,9 +306,19 @@ export default class CRequest extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+   }
+
+   /**
     * Effettua il salvataggio dei dati del trasporto e aggiorna indice di ricerca.
     */
    public save(): void {
+      // Controllo delle proprietà:
+      this.check();
+
+      // Registra dati:
       try {
 
          // Se l'id è valorizzato, allora viene mantenuto e vengono cancellati tutti i

@@ -160,6 +160,20 @@ export default class CWorkday extends CBase {
    }
 
    /**
+    * Effettua una verifica sulle proprietà che devono essere valorizzate obbligatoriamente.
+    */
+   public check(): void {
+      if(this._data.activity === undefined || this._data.activity === 0)
+         throw new Error();
+      else if(this._data.date === undefined)
+         throw new Error();
+      else if(this._data.hour === undefined || this._data.hour === 0)
+         throw new Error();
+      else if(this._data.place === undefined || this._data.place === 0)
+         throw new Error();
+   }
+
+   /**
     * Aggiorna la consuntivazione in linea.
     * @public
     */
